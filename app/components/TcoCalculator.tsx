@@ -68,6 +68,7 @@ interface PredictionResult {
   repairTotal: number;
   taxTotal: number;
   fuelCost: FuelCostResult;
+  capitalCost: number;
 }
 
 const FUEL_LABELS: Record<string, string> = {
@@ -98,6 +99,7 @@ function computeTco(
   reg: RegressionModel,
   curve: CurvePoint[] | undefined,
   electricShare?: number,
+  interestRate?: number,
 ): PredictionResult | null {
   const currentAge = 2026 - scenario.year;
   const futureAge = currentAge + scenario.holdingYears;
@@ -177,7 +179,13 @@ function computeTco(
   const repairTotal = costs.repair;
   const taxTotal = costs.tax;
   const fuelCost = computeFuelCost(scenario.model, scenario.fuel, scenario.annualMileage, scenario.holdingYears, electricShare);
-  const fixedCosts = insuranceTotal + serviceTotal + repairTotal + taxTotal + fuelCost.total;
+
+  // Capital cost: interest on average tied-up capital over holding period
+  const rate = interestRate ?? 0;
+  const avgCapital = (buyPrice + sellPrice) / 2;
+  const capitalCost = Math.round(avgCapital * (rate / 100) * scenario.holdingYears);
+
+  const fixedCosts = insuranceTotal + serviceTotal + repairTotal + taxTotal + fuelCost.total + capitalCost;
 
   const totalCost = valueLoss + fixedCosts;
 
@@ -196,6 +204,7 @@ function computeTco(
     repairTotal,
     taxTotal,
     fuelCost,
+    capitalCost,
   };
 }
 
@@ -223,6 +232,10 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
   const [electricPct, setElectricPct] = useState(50);
   const showElSlider = isPhev(scenario.model, scenario.fuel);
 
+  // Advanced settings
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [interestRate, setInterestRate] = useState(4.5);
+
   // Auto-populate mileage when model or year changes
   useEffect(() => {
     const points = scatter[scenario.model];
@@ -240,8 +253,8 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
     const modelCurves = predictionCurves[scenario.model];
     const curve = modelCurves?.[scenario.fuel] || modelCurves?.["all"];
 
-    return computeTco(scenario, reg, curve, showElSlider ? electricPct / 100 : undefined);
-  }, [scenario, regression, predictionCurves, electricPct, showElSlider]);
+    return computeTco(scenario, reg, curve, showElSlider ? electricPct / 100 : undefined, interestRate);
+  }, [scenario, regression, predictionCurves, electricPct, showElSlider, interestRate]);
 
   const update = (partial: Partial<ScenarioInputs>) => {
     setScenario((prev) => ({ ...prev, ...partial }));
@@ -365,6 +378,42 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
           </div>
         )}
 
+        <div>
+          <button
+            type="button"
+            onClick={() => setShowAdvanced((v) => !v)}
+            className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+          >
+            {showAdvanced ? "▾" : "▸"} Avancerat
+          </button>
+          {showAdvanced && (
+            <div className="mt-2 space-y-2">
+              <div>
+                <label className="text-xs text-[var(--muted)] block mb-1">
+                  Kalkylränta (%)
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={0.5}
+                    value={interestRate}
+                    onChange={(e) => setInterestRate(Number(e.target.value))}
+                    className="flex-1 accent-[var(--foreground)]"
+                  />
+                  <span className="text-xs font-mono text-[var(--foreground)] w-12 text-right">
+                    {interestRate.toFixed(1)}%
+                  </span>
+                </div>
+                <p className="text-[10px] text-[var(--muted)] mt-0.5">
+                  Ränta på bundet kapital (billån eller alternativkostnad)
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
         {result && (
           <div className="pt-3 border-t border-[var(--border)] space-y-3">
             <div className="grid grid-cols-2 gap-y-2 text-sm">
@@ -403,6 +452,12 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 <span>Drivmedel ({result.fuelCost.label})</span>
                 <span className="font-mono text-[var(--foreground)]">{result.fuelCost.total.toLocaleString("sv-SE")} kr</span>
               </div>
+              {result.capitalCost > 0 && (
+                <div className="flex justify-between">
+                  <span>Kapitalkostnad ({interestRate.toFixed(1)}%)</span>
+                  <span className="font-mono text-[var(--foreground)]">{result.capitalCost.toLocaleString("sv-SE")} kr</span>
+                </div>
+              )}
               <p className="text-[10px] text-[var(--muted)] pt-0.5">
                 Bensin {FUEL_PRICES.petrol} kr/l, diesel {FUEL_PRICES.diesel} kr/l, el {FUEL_PRICES.electricity} kr/kWh
               </p>
