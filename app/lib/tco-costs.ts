@@ -71,6 +71,12 @@ const INS_PREMIUM_HIGH: CostBrackets  = [[3, 16000],[7, 12000], [12, 8000], [99,
 // ── Per-model cost profiles ─────────────────────────────────────────
 
 const COST_PROFILES: Record<string, ModelCostProfile> = {
+  LandCruiser: {
+    service: TOYOTA_SERVICE,
+    repair: TOYOTA_REPAIR,
+    insurance: [[3, 12000], [7, 10000], [12, 7500], [99, 5000]],
+    tax: { Diesel: 4200, Petrol: 4800 },
+  },
   RAV4: {
     service: TOYOTA_SERVICE,
     repair: TOYOTA_REPAIR,
@@ -180,6 +186,10 @@ export const FUEL_PRICES = {
 const PHEV_ELECTRIC_SHARE = 0.50;
 
 const FUEL_PROFILES: Record<string, Record<string, FuelProfile>> = {
+  LandCruiser: {
+    Diesel:  { fuelL100km: 10.0, electricShare: 0, fuelType: "diesel" },
+    Petrol:  { fuelL100km: 14.0, electricShare: 0, fuelType: "petrol" },
+  },
   RAV4: {
     Hybrid:  { fuelL100km: 5.5, electricShare: 0, fuelType: "petrol" },
     PHEV:    { fuelL100km: 6.0, elKWh100km: 18, electricShare: PHEV_ELECTRIC_SHARE, fuelType: "petrol" },

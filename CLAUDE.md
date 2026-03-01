@@ -150,9 +150,22 @@ good  = residual < −0.75 × residual_se (~23% of cars)
 - Moved from static JSON files to Neon Postgres via API routes
 - 5-minute cache with stale-while-revalidate for performance
 
-## Models tracked (12 models, ~10,353 cars)
+## Adding a new model
 
-BMW X3, BMW X3 M, Kia Niro, Mercedes GLC, Tesla Model Y, Toyota RAV4, Volvo XC40, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
+Use the `/add-model` slash command for a guided walkthrough. The pipeline is:
+
+1. **model_config.py** — add entry in `helanotan-scraping/` (canonical), copy to enrichment + statistics
+2. **Scrape** — `python3 scrape_blocket.py "<make> <model>"` → `cars_raw`
+3. **enums.py** — add trims/motor variants/generations in `helanotan-enrichment/enums.py`
+4. **Enrich** — `python3 tag_cars.py --full --model <Key>` → `cars_enriched`
+5. **tco_defaults** — insert row in DB (insurance, service, tax)
+6. **Statistics** — `python3 export_for_web.py` → `web_cache`
+7. **tco-costs.ts** — add COST_PROFILES + FUEL_PROFILES entries
+8. **Build & deploy** — `npm run build && git push`
+
+## Models tracked (13 models)
+
+BMW X3, BMW X3 M, Kia Niro, Mercedes GLC, Tesla Model Y, Toyota RAV4, Volvo XC40, Volvo XC40 Recharge, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
 
 ## Dev workflow
 
