@@ -241,18 +241,17 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   }, [trendData, modelsWithCurve]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div className="h-[350px] sm:h-[500px]">
       <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
+        <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="age" type="number" name="Age"
-            label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }}
+            label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }}
             ticks={AGE_TICKS} tick={{ fill: "var(--muted)", fontSize: 11 }} domain={[0, 15]} />
           <YAxis dataKey="price" type="number" name="Price"
-            label={{ value: "Pris (kr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
             tick={{ fill: "var(--muted)", fontSize: 11 }}
-            tickFormatter={formatPriceK} domain={[0, "auto"]} width={45} />
+            tickFormatter={formatPriceK} domain={[0, "auto"]} width={35} />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
           {Object.entries(filteredScatter).map(([model, points]) => (
@@ -283,15 +282,14 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       {modelsWithCurve.length > 0 ? (
         <div className="h-[280px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
+          <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
             <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
               tick={{ fill: "var(--muted)", fontSize: 11 }}
-              label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+              label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
             <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }}
               tickFormatter={formatTkr} domain={[0, trendYMax]} allowDataOverflow
-              label={{ value: "Predikterat pris (tkr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
-              width={45} />
+              width={35} />
             <Tooltip
               contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any

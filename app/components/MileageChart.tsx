@@ -145,15 +145,14 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
   return (
     <div className="h-[300px] sm:h-[450px]">
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
+      <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="mileage" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
           tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`}
-          label={{ value: "Miltal (mil)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+          label={{ value: "Miltal (mil)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
         <YAxis type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
           tickFormatter={formatPriceK} domain={[0, "auto"]}
-          label={{ value: "Pris (kr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
-          width={45} />
+          width={35} />
         <Tooltip
           contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

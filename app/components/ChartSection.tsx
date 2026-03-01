@@ -113,7 +113,7 @@ export default function ChartSection() {
       </div>
 
       {/* Depreciation by Age */}
-      <section id="depreciation" className="space-y-4">
+      <section id="depreciation" className="space-y-2">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Pris per ålder</h2>
           <p className="text-[var(--muted)] text-sm mt-1">
@@ -134,7 +134,7 @@ export default function ChartSection() {
       </section>
 
       {/* Value Retention */}
-      <section className="space-y-4">
+      <section className="space-y-2">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Restvärde</h2>
           <p className="text-[var(--muted)] text-sm mt-1">
@@ -154,7 +154,7 @@ export default function ChartSection() {
       </section>
 
       {/* Mileage Impact */}
-      <section id="mileage" className="space-y-4">
+      <section id="mileage" className="space-y-2">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Miltalseffekt</h2>
           <p className="text-[var(--muted)] text-sm mt-1">

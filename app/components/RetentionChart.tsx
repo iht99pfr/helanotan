@@ -155,15 +155,14 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
   return (
     <div className="h-[300px] sm:h-[450px]">
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
+      <ComposedChart data={data} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
           tick={{ fill: "var(--muted)", fontSize: 11 }}
-          label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+          label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
         <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }} domain={[0, 100]}
-          ticks={[0, 25, 50, 75, 100]}
+          ticks={[0, 25, 50, 75, 100]} allowDataOverflow
           tickFormatter={(v: number) => `${v}%`}
-          label={{ value: "% av nypris kvar", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
           width={40} />
         <Tooltip
           contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}

@@ -8,7 +8,7 @@ import DataTableSection from "./components/DataTableSection";
 export default function Home() {
   return (
     <ModelSelectionProvider>
-      <div className="space-y-10">
+      <div className="space-y-6 sm:space-y-10">
         {/* Hero */}
         <HeroSection />
 
