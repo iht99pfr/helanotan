@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,10 +13,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://helanotan.se";
+const siteName = "Hela Notan";
+const siteDescription =
+  "Se hela kostnaden för att äga en bil. Jämför värdeminskning, försäkring, skatt och service för populära bilmodeller baserat på riktiga Blocket-annonser.";
+
 export const metadata: Metadata = {
-  title: "Hela Notan — Vad kostar det egentligen?",
-  description:
-    "Se hela kostnaden för att äga en bil. Jämför värdeminskning, försäkring, skatt och service för populära bilmodeller baserat på riktiga Blocket-annonser.",
+  title: {
+    default: "Hela Notan — Vad kostar det egentligen?",
+    template: "%s | Hela Notan",
+  },
+  description: siteDescription,
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Hela Notan — Vad kostar det egentligen?",
+    description: siteDescription,
+    url: siteUrl,
+    siteName,
+    locale: "sv_SE",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hela Notan — Vad kostar det egentligen?",
+    description: siteDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default function RootLayout({
@@ -25,6 +54,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv">
+      <head>
+        {process.env.NEXT_PUBLIC_UMAMI_URL && process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID && (
+          <Script
+            defer
+            src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          />
+        )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: siteName,
+              url: siteUrl,
+              description: siteDescription,
+              applicationCategory: "FinanceApplication",
+              operatingSystem: "Web",
+              inLanguage: "sv",
+              creator: {
+                "@type": "Organization",
+                name: "Up North AI",
+                url: "https://www.upnorth.ai",
+              },
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
