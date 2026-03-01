@@ -77,6 +77,12 @@ const COST_PROFILES: Record<string, ModelCostProfile> = {
     insurance: [[3, 12000], [7, 10000], [12, 7500], [99, 5000]],
     tax: { Diesel: 4200, Petrol: 4800 },
   },
+  Defender: {
+    service: [[3, 0], [7, 8000], [12, 12000], [99, 16000]],
+    repair: [[3, 0], [7, 5000], [12, 12000], [99, 20000]],
+    insurance: INS_PREMIUM_SUV,
+    tax: { PHEV: 1500, Diesel: 4500, Petrol: 5200 },
+  },
   RAV4: {
     service: TOYOTA_SERVICE,
     repair: TOYOTA_REPAIR,
@@ -189,6 +195,11 @@ const FUEL_PROFILES: Record<string, Record<string, FuelProfile>> = {
   LandCruiser: {
     Diesel:  { fuelL100km: 10.0, electricShare: 0, fuelType: "diesel" },
     Petrol:  { fuelL100km: 14.0, electricShare: 0, fuelType: "petrol" },
+  },
+  Defender: {
+    PHEV:    { fuelL100km: 9.0, elKWh100km: 25, electricShare: PHEV_ELECTRIC_SHARE, fuelType: "petrol" },
+    Diesel:  { fuelL100km: 9.5, electricShare: 0, fuelType: "diesel" },
+    Petrol:  { fuelL100km: 12.0, electricShare: 0, fuelType: "petrol" },
   },
   RAV4: {
     Hybrid:  { fuelL100km: 5.5, electricShare: 0, fuelType: "petrol" },
