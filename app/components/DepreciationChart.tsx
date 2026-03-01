@@ -133,7 +133,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
               <svg width={10} height={10}>
                 <circle cx={5} cy={5} r={5} fill={entry.color} />
               </svg>
-              <span style={{ color: "var(--muted)", fontSize: 14 }}>{entry.value}</span>
+              <span style={{ color: "var(--muted)", fontSize: 14 }}>{displayName(entry.value)}</span>
             </span>
           );
         })}
@@ -143,6 +143,10 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 }
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
+const AGE_TICKS = [0, 3, 6, 9, 12, 15];
+const formatPriceK = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1).replace(".0", "")}M` : `${(v / 1000).toFixed(0)}k`;
+const formatTkr = (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1).replace(".0", "")}M` : `${v.toFixed(0)}k`;
+const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
 export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel }: Props) {
   const COLORS = getColorsMap(modelConfig);
@@ -224,19 +228,31 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
 
   const visibleModelsWithCurve = modelsWithCurve.filter((m) => !hiddenModels.has(m));
 
+  // Cap trend Y-axis to prediction values + 30% (not confidence bands)
+  const trendYMax = useMemo(() => {
+    let max = 0;
+    for (const model of modelsWithCurve) {
+      for (const point of trendData) {
+        const val = point[model];
+        if (typeof val === "number" && val > max) max = val;
+      }
+    }
+    return Math.ceil((max * 1.3) / 50) * 50; // Round up to nearest 50k
+  }, [trendData, modelsWithCurve]);
+
   return (
     <div className="space-y-4">
       <div className="h-[350px] sm:h-[500px]">
       <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
+        <ScatterChart margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="age" type="number" name="Age"
-            label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", offset: 15 }}
-            tick={{ fill: "var(--muted)", fontSize: 12 }} domain={[0, 15]} />
+            label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }}
+            ticks={AGE_TICKS} tick={{ fill: "var(--muted)", fontSize: 11 }} domain={[0, 15]} />
           <YAxis dataKey="price" type="number" name="Price"
-            label={{ value: "Pris (kr)", angle: -90, position: "insideLeft", fill: "var(--muted)", offset: 10 }}
-            tick={{ fill: "var(--muted)", fontSize: 12 }}
-            tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`} domain={[0, "auto"]} />
+            label={{ value: "Pris (kr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
+            tick={{ fill: "var(--muted)", fontSize: 11 }}
+            tickFormatter={formatPriceK} domain={[0, "auto"]} width={45} />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
           {Object.entries(filteredScatter).map(([model, points]) => (
@@ -267,19 +283,21 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       {modelsWithCurve.length > 0 ? (
         <div className="h-[280px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={trendData} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
+          <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-            <XAxis dataKey="age" tick={{ fill: "var(--muted)", fontSize: 12 }}
-              label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", offset: 15 }} />
-            <YAxis tick={{ fill: "var(--muted)", fontSize: 12 }}
-              tickFormatter={(v: number) => `${v.toFixed(0)}k`} domain={[0, "auto"]}
-              label={{ value: "Predikterat pris (tkr)", angle: -90, position: "insideLeft", fill: "var(--muted)", offset: 10 }} />
+            <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
+              tick={{ fill: "var(--muted)", fontSize: 11 }}
+              label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+            <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }}
+              tickFormatter={formatTkr} domain={[0, trendYMax]} allowDataOverflow
+              label={{ value: "Predikterat pris (tkr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
+              width={45} />
             <Tooltip
               contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(value: any, name: any) => {
                 if (typeof name === "string" && name.includes("_range")) return null;
-                return [`${Number(value || 0).toFixed(0)}k kr`, name];
+                return [`${Number(value || 0).toFixed(0)}k kr`, displayName(String(name))];
               }}
               labelFormatter={(label: any) => `Ålder: ${label} år`}
             />
@@ -291,7 +309,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
             ))}
             {modelsWithCurve.map((model) => (
               <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
-                strokeWidth={3} dot={{ r: 4, fill: COLORS[model] }} connectNulls
+                strokeWidth={2.5} dot={{ r: 3, fill: COLORS[model] }} connectNulls
                 hide={hiddenModels.has(model)} />
             ))}
           </ComposedChart>

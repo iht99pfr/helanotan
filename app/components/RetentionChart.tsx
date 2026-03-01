@@ -63,7 +63,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
               <svg width={10} height={10}>
                 <circle cx={5} cy={5} r={5} fill={entry.color} />
               </svg>
-              <span style={{ color: "var(--muted)", fontSize: 14 }}>{entry.value}</span>
+              <span style={{ color: "var(--muted)", fontSize: 14 }}>{displayName(entry.value)}</span>
             </span>
           );
         })}
@@ -73,6 +73,8 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 }
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
+const AGE_TICKS = [0, 3, 6, 9, 12, 15];
+const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
 export default function RetentionChart({ retention, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel }: Props) {
   const COLORS = getColorsMap(modelConfig);
@@ -153,19 +155,22 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
   return (
     <div className="h-[300px] sm:h-[450px]">
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
+      <ComposedChart data={data} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-        <XAxis dataKey="age" tick={{ fill: "var(--muted)", fontSize: 12 }}
-          label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", offset: 15 }} />
-        <YAxis tick={{ fill: "var(--muted)", fontSize: 12 }} domain={[0, 100]}
+        <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
+          tick={{ fill: "var(--muted)", fontSize: 11 }}
+          label={{ value: "Bilens ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+        <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }} domain={[0, 100]}
+          ticks={[0, 25, 50, 75, 100]}
           tickFormatter={(v: number) => `${v}%`}
-          label={{ value: "% av nypris kvar", angle: -90, position: "insideLeft", fill: "var(--muted)", offset: 10 }} />
+          label={{ value: "% av nypris kvar", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
+          width={40} />
         <Tooltip
           contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           formatter={(value: any, name: any) => {
             if (typeof name === "string" && name.includes("_range")) return null;
-            return [`${Number(value || 0).toFixed(1)}%`, name];
+            return [`${Number(value || 0).toFixed(1)}%`, displayName(String(name))];
           }}
           labelFormatter={(label: any) => `Ålder: ${label} år`}
         />
@@ -179,7 +184,7 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
         ))}
         {models.map((model) => (
           <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
-            strokeWidth={3} dot={{ r: 5, fill: COLORS[model] }} connectNulls
+            strokeWidth={2.5} dot={{ r: 3, fill: COLORS[model] }} connectNulls
             hide={hiddenModels.has(model)} />
         ))}
       </ComposedChart>

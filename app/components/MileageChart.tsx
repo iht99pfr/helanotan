@@ -28,6 +28,8 @@ interface Props {
 }
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
+const formatPriceK = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1).replace(".0", "")}M` : `${(v / 1000).toFixed(0)}k`;
+const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
 function computeTrendLine(points: { mileage: number; price: number }[], bucketSize: number = 2000) {
   const buckets: Record<number, number[]> = {};
@@ -91,7 +93,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
               <svg width={10} height={10}>
                 <circle cx={5} cy={5} r={5} fill={entry.color} />
               </svg>
-              <span style={{ color: "var(--muted)", fontSize: 14 }}>{entry.value}</span>
+              <span style={{ color: "var(--muted)", fontSize: 14 }}>{displayName(entry.value)}</span>
             </span>
           );
         })}
@@ -143,18 +145,19 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
   return (
     <div className="h-[300px] sm:h-[450px]">
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={trendData} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
+      <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 30, left: 5 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-        <XAxis dataKey="mileage" type="number" tick={{ fill: "var(--muted)", fontSize: 12 }}
+        <XAxis dataKey="mileage" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
           tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`}
-          label={{ value: "Miltal (mil)", position: "bottom", fill: "var(--muted)", offset: 15 }} />
-        <YAxis type="number" tick={{ fill: "var(--muted)", fontSize: 12 }}
-          tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`} domain={[0, "auto"]}
-          label={{ value: "Pris (tkr)", angle: -90, position: "insideLeft", fill: "var(--muted)", offset: 10 }} />
+          label={{ value: "Miltal (mil)", position: "bottom", fill: "var(--muted)", fontSize: 11, offset: 10 }} />
+        <YAxis type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
+          tickFormatter={formatPriceK} domain={[0, "auto"]}
+          label={{ value: "Pris (kr)", angle: -90, position: "insideLeft", fill: "var(--muted)", fontSize: 11, offset: 0 }}
+          width={45} />
         <Tooltip
           contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          formatter={(value: any, name: any) => [`${Number(value || 0).toLocaleString("sv-SE")} kr`, name]}
+          formatter={(value: any, name: any) => [`${Number(value || 0).toLocaleString("sv-SE")} kr`, displayName(String(name))]}
           labelFormatter={(label: any) => `${Number(label).toLocaleString("sv-SE")} mil`}
         />
         <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
