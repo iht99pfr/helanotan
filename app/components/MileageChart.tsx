@@ -141,7 +141,8 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
   const models = Object.keys(displayData);
 
   return (
-    <ResponsiveContainer width="100%" height={450}>
+    <div className="h-[300px] sm:h-[450px]">
+    <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={trendData} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="mileage" type="number" tick={{ fill: "var(--muted)", fontSize: 12 }}
@@ -171,5 +172,6 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
         ))}
       </ComposedChart>
     </ResponsiveContainer>
+    </div>
   );
 }

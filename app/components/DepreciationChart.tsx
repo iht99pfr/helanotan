@@ -51,6 +51,7 @@ interface Props {
   onToggleModel: (model: string) => void;
   modelConfig: ModelConfigMap;
   fuelFilter: string;
+  maxAgePerModel?: Record<string, number>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -143,7 +144,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
 
-export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter }: Props) {
+export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel }: Props) {
   const COLORS = getColorsMap(modelConfig);
 
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
@@ -180,6 +181,9 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
     trendData = [...allAges].sort((a, b) => a - b).filter(a => a <= 15).map((age) => {
       const point: Record<string, number | number[]> = { age };
       for (const model of modelsWithCurve) {
+        // Don't extrapolate beyond the oldest actual data point
+        const modelMax = maxAgePerModel?.[model];
+        if (modelMax != null && age > modelMax) continue;
         const curve = predictionCurves[model]?.[curveKey];
         const match = curve?.find((p) => p.age === age);
         if (match) {
@@ -222,7 +226,8 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
 
   return (
     <div className="space-y-4">
-      <ResponsiveContainer width="100%" height={500}>
+      <div className="h-[350px] sm:h-[500px]">
+      <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="age" type="number" name="Age"
@@ -246,6 +251,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           ))}
         </ScatterChart>
       </ResponsiveContainer>
+      </div>
 
       <div className="flex justify-center gap-5 text-xs text-[var(--muted)]">
         <span className="inline-flex items-center gap-1.5">
@@ -259,7 +265,8 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       </div>
 
       {modelsWithCurve.length > 0 ? (
-        <ResponsiveContainer width="100%" height={400}>
+        <div className="h-[280px] sm:h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={trendData} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
             <XAxis dataKey="age" tick={{ fill: "var(--muted)", fontSize: 12 }}
@@ -289,6 +296,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
             ))}
           </ComposedChart>
         </ResponsiveContainer>
+        </div>
       ) : (
         <div className="text-center py-8 text-[var(--muted)] text-sm">
           Ingen prediktionskurva tillgänglig för &ldquo;{fuelFilter}&rdquo;.

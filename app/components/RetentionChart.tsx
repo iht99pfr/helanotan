@@ -26,6 +26,7 @@ interface Props {
   onToggleModel: (model: string) => void;
   modelConfig: ModelConfigMap;
   fuelFilter: string;
+  maxAgePerModel?: Record<string, number>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,7 +74,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
 
-export default function RetentionChart({ retention, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter }: Props) {
+export default function RetentionChart({ retention, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel }: Props) {
   const COLORS = getColorsMap(modelConfig);
   const hasPredictions = predictionCurves && Object.keys(predictionCurves).length > 0;
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
@@ -97,6 +98,9 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
   const data = sortedAges.map((age) => {
     const point: Record<string, number | number[]> = { age };
     for (const [model, r] of Object.entries(retention)) {
+      // Don't extrapolate beyond the oldest actual data point
+      const modelMax = maxAgePerModel?.[model];
+      if (modelMax != null && age > modelMax) continue;
       if (useFuelCurves) {
         // Derive retention from fuel-specific prediction curve
         const curve = predictionCurves![model]?.[curveKey];
@@ -147,7 +151,8 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
   }
 
   return (
-    <ResponsiveContainer width="100%" height={450}>
+    <div className="h-[300px] sm:h-[450px]">
+    <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={data} margin={{ top: 10, right: 20, bottom: 40, left: 20 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis dataKey="age" tick={{ fill: "var(--muted)", fontSize: 12 }}
@@ -179,5 +184,6 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
         ))}
       </ComposedChart>
     </ResponsiveContainer>
+    </div>
   );
 }

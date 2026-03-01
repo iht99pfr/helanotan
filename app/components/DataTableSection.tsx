@@ -95,7 +95,7 @@ export default function DataTableSection() {
                 setSortDir("asc");
               }
             }}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
+            className={`px-3 py-2.5 sm:py-1.5 rounded-full text-sm font-medium transition ${
               dealFilter === btn.key ? btn.activeColor : btn.color
             } border border-[var(--border)] hover:opacity-80`}
           >
@@ -103,6 +103,27 @@ export default function DataTableSection() {
           </button>
         ))}
       </div>
+
+      {/* Mobile sort dropdown */}
+      <div className="sm:hidden">
+        <select
+          value={`${sortKey}-${sortDir}`}
+          onChange={(e) => {
+            const [key, dir] = e.target.value.split("-") as [SortKey, "asc" | "desc"];
+            setSortKey(key);
+            setSortDir(dir);
+          }}
+          className="w-full bg-white border border-[var(--border)] px-3 py-2.5 text-sm text-[var(--muted)] rounded-lg"
+        >
+          <option value="price-asc">Pris (lägst först)</option>
+          <option value="price-desc">Pris (högst först)</option>
+          <option value="year-desc">Årsmodell (nyast)</option>
+          <option value="year-asc">Årsmodell (äldst)</option>
+          <option value="mileage-asc">Miltal (lägst)</option>
+          <option value="deal-asc">Bästa fynd</option>
+        </select>
+      </div>
+
       <DataTable cars={data.cars} total={data.total} sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
 
       {/* Pagination */}
@@ -111,7 +132,7 @@ export default function DataTableSection() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="px-3 py-1.5 rounded-lg text-sm border border-[var(--border)] text-[var(--muted)] hover:border-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 sm:px-3 sm:py-1.5 rounded-lg text-sm border border-[var(--border)] text-[var(--muted)] hover:border-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Föregående
           </button>
@@ -121,7 +142,7 @@ export default function DataTableSection() {
           <button
             onClick={() => setPage((p) => Math.min(data.pages, p + 1))}
             disabled={page >= data.pages}
-            className="px-3 py-1.5 rounded-lg text-sm border border-[var(--border)] text-[var(--muted)] hover:border-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="px-4 py-2.5 sm:px-3 sm:py-1.5 rounded-lg text-sm border border-[var(--border)] text-[var(--muted)] hover:border-[var(--muted)] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Nästa
           </button>

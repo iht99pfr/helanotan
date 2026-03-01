@@ -65,7 +65,64 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
           {total.toLocaleString("sv-SE")} bilar
         </span>
       </div>
-      <div className="overflow-x-auto border border-[var(--border)]">
+
+      {/* Mobile card view */}
+      <div className="sm:hidden space-y-2">
+        {sorted.map((car) => (
+          <a
+            key={car.id}
+            href={car.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`block p-3 border border-[var(--border)] rounded-lg active:bg-[var(--card)] transition ${
+              car.deal === "great" ? "bg-green-50/60" : car.deal === "good" ? "bg-green-50/30" : ""
+            }`}
+          >
+            <div className="flex justify-between items-start">
+              <span className="font-medium text-sm text-[var(--foreground)]">{car.make} {car.model}</span>
+              <span className="font-mono font-semibold text-sm text-[var(--foreground)]">
+                {car.price.toLocaleString("sv-SE")} kr
+              </span>
+            </div>
+            <div className="flex items-center gap-2 mt-1.5 text-xs text-[var(--muted)]">
+              <span>{car.year}</span>
+              <span>·</span>
+              <span>{car.mileage.toLocaleString("sv-SE")} mil</span>
+              <span>·</span>
+              <span>{car.hp} hk</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-full ${
+                  car.fuel === "Hybrid"
+                    ? "bg-green-100 text-green-700"
+                    : car.fuel === "PHEV"
+                    ? "bg-blue-100 text-blue-700"
+                    : car.fuel === "Diesel"
+                    ? "bg-amber-100 text-amber-700"
+                    : car.fuel === "Electric"
+                    ? "bg-purple-100 text-purple-700"
+                    : "bg-stone-100 text-stone-600"
+                }`}
+              >
+                {FUEL_LABELS[car.fuel] || car.fuel}
+              </span>
+            </div>
+            {car.deal && (
+              <div className="mt-1.5">
+                <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                  car.deal === "great"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-green-50 text-green-600"
+                }`}>
+                  {car.deal === "great" ? "Fyndpris" : "Bra pris"} −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
+                </span>
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+
+      {/* Desktop table view */}
+      <div className="hidden sm:block overflow-x-auto border border-[var(--border)]">
         <table className="w-full text-sm">
           <thead className="bg-[var(--card)] text-[var(--muted)]">
             <tr>

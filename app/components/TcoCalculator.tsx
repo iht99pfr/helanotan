@@ -265,9 +265,9 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
   return (
     <div className="max-w-xl space-y-6">
       <div className="bg-[var(--card)] border border-[var(--border)] p-5 space-y-4">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Modell</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Modell</label>
             <select
               value={scenario.model}
               onChange={(e) => {
@@ -275,7 +275,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 const fuels = getFuelOptions(modelConfig, model);
                 update({ model, fuel: fuels[0] });
               }}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm text-[var(--foreground)]"
             >
               {Object.entries(modelConfig)
                 .filter(([key]) => regression[key])
@@ -285,11 +285,11 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
             </select>
           </div>
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Bränsle</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Bränsle</label>
             <select
               value={scenario.fuel}
               onChange={(e) => update({ fuel: e.target.value })}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm text-[var(--foreground)]"
             >
               {getFuelOptions(modelConfig, scenario.model).map((f) => (
                 <option key={f} value={f}>
@@ -299,11 +299,11 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
             </select>
           </div>
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Årsmodell</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Årsmodell</label>
             <select
               value={scenario.year}
               onChange={(e) => update({ year: Number(e.target.value) })}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm text-[var(--foreground)]"
             >
               {Array.from({ length: 12 }, (_, i) => 2025 - i).map((y) => (
                 <option key={y} value={y}>{y}</option>
@@ -311,7 +311,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
             </select>
           </div>
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Nuvarande miltal</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Nuvarande miltal</label>
             <input
               type="text"
               inputMode="numeric"
@@ -321,7 +321,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 const v = e.target.value.replace(/\D/g, "");
                 update({ mileage: Number(v) });
               }}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm font-mono text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm font-mono text-[var(--foreground)]"
             />
             {scatterCount > 0 && (
               <p className="text-[10px] text-[var(--muted)] mt-0.5">
@@ -330,11 +330,11 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
             )}
           </div>
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Behålla i (år)</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Behålla i (år)</label>
             <select
               value={scenario.holdingYears}
               onChange={(e) => update({ holdingYears: Number(e.target.value) })}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm text-[var(--foreground)]"
             >
               {[1, 2, 3, 4, 5, 6, 7, 8].map((y) => (
                 <option key={y} value={y}>{y} år</option>
@@ -342,7 +342,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
             </select>
           </div>
           <div>
-            <label className="text-xs text-[var(--muted)] block mb-1">Årlig körning (mil/år)</label>
+            <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Årlig körning (mil/år)</label>
             <input
               type="text"
               inputMode="numeric"
@@ -352,7 +352,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 const v = e.target.value.replace(/\D/g, "");
                 update({ annualMileage: Number(v) });
               }}
-              className="w-full bg-white border border-[var(--border)] px-3 py-2 text-sm font-mono text-[var(--foreground)]"
+              className="w-full bg-white border border-[var(--border)] px-3 py-2.5 sm:py-2 text-sm font-mono text-[var(--foreground)]"
             />
           </div>
         </div>
@@ -463,7 +463,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
               </p>
             </div>
 
-            <div className="bg-white/60 p-3 space-y-1">
+            <div className="bg-white/60 p-4 sm:p-3 space-y-1">
               <div className="flex justify-between text-sm">
                 <span className="text-[var(--muted)]">Månadskostnad (värdeförlust)</span>
                 <span className="font-mono font-semibold text-[var(--foreground)]">

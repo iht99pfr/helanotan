@@ -68,6 +68,18 @@ export default function ChartSection() {
     };
   }, [aggregates, selectedModels]);
 
+  // Compute max age with actual data per model (don't extrapolate beyond data)
+  const maxAgePerModel = useMemo<Record<string, number>>(() => {
+    if (!filteredScatter) return {};
+    const result: Record<string, number> = {};
+    for (const [model, points] of Object.entries(filteredScatter)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const ages = (points as any[]).map((p: any) => p.age as number);
+      if (ages.length > 0) result[model] = Math.max(...ages);
+    }
+    return result;
+  }, [filteredScatter]);
+
   if (!filteredAggregates || !filteredScatter) {
     return (
       <div className="space-y-8">
@@ -89,7 +101,7 @@ export default function ChartSection() {
           <button
             key={fuel}
             onClick={() => setFuelFilter(fuel)}
-            className={`px-3 py-1.5 rounded-lg text-sm transition ${
+            className={`px-3 py-2.5 sm:py-1.5 rounded-lg text-sm transition ${
               fuelFilter === fuel
                 ? "bg-[var(--foreground)] text-white"
                 : "bg-white text-[var(--muted)] border border-[var(--border)] hover:border-[var(--muted)]"
@@ -117,6 +129,7 @@ export default function ChartSection() {
           hiddenModels={hiddenModels}
           onToggleModel={toggleModel}
           fuelFilter={fuelFilter}
+          maxAgePerModel={maxAgePerModel}
         />
       </section>
 
@@ -136,6 +149,7 @@ export default function ChartSection() {
           hiddenModels={hiddenModels}
           onToggleModel={toggleModel}
           fuelFilter={fuelFilter}
+          maxAgePerModel={maxAgePerModel}
         />
       </section>
 
@@ -178,7 +192,7 @@ export default function ChartSection() {
                     <span className="font-mono font-semibold text-[var(--foreground)]">
                       −{pctPer1000.toFixed(2)}%
                     </span>
-                    <span className="text-[var(--muted)] text-xs">av aktuellt värde per 1 000 mil</span>
+                    <span className="text-[var(--muted)] text-xs"><span className="hidden sm:inline">av aktuellt värde </span>/ 1 000 mil</span>
                   </div>
                 );
               })}
