@@ -80,6 +80,15 @@ function KiaLogo({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
+function LandRoverLogo({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="12" cy="12" rx="10.5" ry="7.5" stroke="currentColor" strokeWidth="1.4" />
+      <text x="12" y="13.5" textAnchor="middle" fill="currentColor" fontSize="4.5" fontWeight="700" fontFamily="system-ui, sans-serif" letterSpacing="0.5">L R</text>
+    </svg>
+  );
+}
+
 function ChevronDown({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,9 +107,11 @@ const BRAND_LOGOS: Record<string, React.FC<{ className?: string }>> = {
   Toyota: ToyotaLogo,
   Tesla: TeslaLogo,
   Kia: KiaLogo,
+  "Land Rover": LandRoverLogo,
 };
 
-const BRAND_ORDER = ["BMW", "Mercedes", "VW", "Kia", "Toyota", "Volvo", "Tesla"];
+const BRAND_ORDER = ["BMW", "Land Rover", "Mercedes", "VW", "Kia", "Toyota", "Volvo", "Tesla"];
+const TWO_WORD_BRANDS = new Set(["Land Rover"]);
 
 /* ─── Types & helpers ─── */
 
@@ -118,8 +129,10 @@ function groupByBrand(
   for (const key of availableModels) {
     const meta = getModelMeta(modelConfig, key);
     const parts = meta.label.split(" ");
-    const brand = parts[0];
-    const shortName = parts.slice(1).join(" ") || key;
+    const twoWord = `${parts[0]} ${parts[1] || ""}`.trim();
+    const isTwoWord = TWO_WORD_BRANDS.has(twoWord);
+    const brand = isTwoWord ? twoWord : parts[0];
+    const shortName = parts.slice(isTwoWord ? 2 : 1).join(" ") || key;
     if (!groups.has(brand)) groups.set(brand, []);
     groups.get(brand)!.push({ key, shortName, color: meta.color });
   }
