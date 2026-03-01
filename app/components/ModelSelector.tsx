@@ -165,9 +165,9 @@ export default function ModelSelector() {
 
   if (loading) {
     return (
-      <div className="max-w-xl space-y-0">
+      <div className="max-w-xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
         {[0, 1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex items-center gap-3 px-3 min-h-[48px] border-b border-[var(--border)]">
+          <div key={i} className="flex items-center gap-3 px-4 min-h-[48px] border-b border-[var(--border)] last:border-b-0">
             <div className="animate-pulse w-5 h-5 bg-[var(--border)] rounded-full" />
             <div className="animate-pulse h-4 bg-[var(--border)] rounded" style={{ width: `${60 + i * 15}px` }} />
             <div className="ml-auto animate-pulse w-12 h-5 bg-[var(--border)] rounded-full" />
@@ -178,7 +178,7 @@ export default function ModelSelector() {
   }
 
   return (
-    <div className="max-w-xl">
+    <div className="max-w-xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
       {BRAND_ORDER.map((brand) => {
         const models = brandGroups.get(brand);
         if (!models) return null;
@@ -193,7 +193,7 @@ export default function ModelSelector() {
             {/* Brand header row */}
             <button
               onClick={() => toggleBrand(brand)}
-              className="w-full flex items-center gap-3 px-3 min-h-[52px] hover:bg-[var(--card)] transition-colors duration-150 cursor-pointer"
+              className="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-[var(--card)] transition-colors duration-150 cursor-pointer"
             >
               {Logo && <Logo className="w-5 h-5 text-[var(--foreground)] shrink-0" />}
               <span className="text-sm font-semibold text-[var(--foreground)]">{brand}</span>
@@ -232,7 +232,7 @@ export default function ModelSelector() {
               style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
             >
               <div className="overflow-hidden min-h-0">
-                <div className="px-3 pb-3 pt-1 flex flex-wrap gap-2">
+                <div className="px-4 pb-3 pt-1 flex flex-wrap gap-2">
                   {models.map(({ key, shortName, color }) => {
                     const active = selectedModels.has(key);
                     return (
