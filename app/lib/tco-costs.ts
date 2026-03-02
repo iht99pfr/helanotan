@@ -83,6 +83,18 @@ const COST_PROFILES: Record<string, ModelCostProfile> = {
     insurance: INS_PREMIUM_SUV,
     tax: { PHEV: 1500, Diesel: 4500, Petrol: 5200 },
   },
+  YarisCross: {
+    service: TOYOTA_SERVICE,
+    repair: TOYOTA_REPAIR,
+    insurance: INS_COMPACT,
+    tax: { Hybrid: 900, PHEV: 360, Petrol: 1800 },
+  },
+  Yaris: {
+    service: TOYOTA_SERVICE,
+    repair: TOYOTA_REPAIR,
+    insurance: [[3, 5500], [7, 4500], [12, 3500], [99, 2500]],
+    tax: { Hybrid: 900, PHEV: 360, Petrol: 1500 },
+  },
   RAV4: {
     service: TOYOTA_SERVICE,
     repair: TOYOTA_REPAIR,
@@ -200,6 +212,16 @@ const FUEL_PROFILES: Record<string, Record<string, FuelProfile>> = {
     PHEV:    { fuelL100km: 9.0, elKWh100km: 25, electricShare: PHEV_ELECTRIC_SHARE, fuelType: "petrol" },
     Diesel:  { fuelL100km: 9.5, electricShare: 0, fuelType: "diesel" },
     Petrol:  { fuelL100km: 12.0, electricShare: 0, fuelType: "petrol" },
+  },
+  YarisCross: {
+    Hybrid:  { fuelL100km: 4.5, electricShare: 0, fuelType: "petrol" },
+    PHEV:    { fuelL100km: 5.0, elKWh100km: 16, electricShare: PHEV_ELECTRIC_SHARE, fuelType: "petrol" },
+    Petrol:  { fuelL100km: 6.5, electricShare: 0, fuelType: "petrol" },
+  },
+  Yaris: {
+    Hybrid:  { fuelL100km: 4.0, electricShare: 0, fuelType: "petrol" },
+    PHEV:    { fuelL100km: 4.5, elKWh100km: 15, electricShare: PHEV_ELECTRIC_SHARE, fuelType: "petrol" },
+    Petrol:  { fuelL100km: 5.8, electricShare: 0, fuelType: "petrol" },
   },
   RAV4: {
     Hybrid:  { fuelL100km: 5.5, electricShare: 0, fuelType: "petrol" },
