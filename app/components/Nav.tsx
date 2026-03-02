@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useCallback } from "react";
 
 const NAV_ITEMS = [
   { label: "Värdeminskning", href: "/#depreciation" },
@@ -19,29 +20,65 @@ export default function Nav() {
     return false;
   }
 
+  // Auto-scroll active pill into view on mobile
+  const activeRef = useCallback((node: HTMLAnchorElement | null) => {
+    if (node) {
+      node.scrollIntoView({ inline: "center", block: "nearest" });
+    }
+  }, []);
+
   return (
-    <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/95 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-4 shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+    <nav className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-md shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">
+      {/* Desktop: single row */}
+      <div className="hidden sm:flex items-center gap-4 max-w-7xl mx-auto px-6 py-4 border-b border-[var(--border)]">
         <a href="/" className="text-xl font-bold tracking-tight shrink-0 text-[var(--foreground)]">
           Hela Notan
         </a>
-        <div className="relative flex-1 min-w-0">
-          <div className="flex gap-1 sm:gap-5 text-sm text-[var(--muted)] overflow-x-auto scrollbar-hide">
-            {NAV_ITEMS.map(({ label, href }) => (
-              <a
-                key={href}
-                href={href}
-                className={`whitespace-nowrap px-2 py-2 sm:px-0 sm:py-0 transition ${
-                  isActive(href)
-                    ? "text-[var(--foreground)] font-medium"
-                    : "hover:text-[var(--foreground)]"
-                }`}
-              >
-                {label}
-              </a>
-            ))}
+        <div className="flex gap-5 text-sm text-[var(--muted)]">
+          {NAV_ITEMS.map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              className={`transition ${
+                isActive(href)
+                  ? "text-[var(--foreground)] font-medium"
+                  : "hover:text-[var(--foreground)]"
+              }`}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile: two rows — logo + scrollable tabs */}
+      <div className="sm:hidden border-b border-[var(--border)]">
+        <div className="px-4 pt-3 pb-2">
+          <a href="/" className="text-lg font-bold tracking-tight text-[var(--foreground)]">
+            Hela Notan
+          </a>
+        </div>
+        <div className="relative">
+          <div className="flex gap-1.5 px-3 pb-3 overflow-x-auto scrollbar-hide">
+            {NAV_ITEMS.map(({ label, href }) => {
+              const active = isActive(href);
+              return (
+                <a
+                  key={href}
+                  href={href}
+                  ref={active ? activeRef : undefined}
+                  className={`whitespace-nowrap text-xs font-medium px-3.5 py-1.5 rounded-full border transition ${
+                    active
+                      ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+                      : "bg-[var(--card)] text-[var(--muted)] border-[var(--border)] active:bg-[var(--border)]"
+                  }`}
+                >
+                  {label}
+                </a>
+              );
+            })}
           </div>
-          <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[var(--background)]/95 to-transparent pointer-events-none sm:hidden" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[var(--background)]/95 to-transparent pointer-events-none" />
         </div>
       </div>
     </nav>

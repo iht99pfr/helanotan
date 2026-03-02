@@ -51,7 +51,8 @@ app/
 │   └── StatsBadges.tsx        — model precision badges (R², RMSE)
 ├── lib/
 │   ├── db.ts                  — Neon Postgres connection
-│   └── model-config.ts       — model metadata types and helpers
+│   ├── model-config.ts       — model metadata types and helpers
+│   └── tco-costs.ts          — per-model cost profiles (insurance, service, repair, tax by fuel, fuel consumption)
 ├── layout.tsx                 — root layout with nav
 ├── tco/
 │   └── page.tsx               — TCO calculator page (separate route)
@@ -73,8 +74,8 @@ The Python pipeline writes two keys to `web_cache`:
 ### `scatter` (per model)
 - `scatter[model]` — `[{age, mileage, price, year, fuel, hp, seller, predicted, residual, deal}]`. **Has** fuel field — used for client-side fuel filtering of mileage chart. Deal fields added by statistics pipeline: `predicted` (regression estimate), `residual` (actual − predicted), `deal` (`'good'` | `'great'` | `null`).
 
-### `aggregates.regressionModels` (per model)
-- `regressionModels[model]` — `{intercept, coefficients, residual_se, medianHp, medianEquipment, typicalAwd}`. Used by TcoCalculator (client-side) and `/api/cars` (server-side deal scoring).
+### `aggregates.regression` (per model)
+- `regression[model]` — `{intercept, coefficients, r2, rmse, residual_se_log, log_transform, n_samples, features, medianHp, medianEquipment, typicalAwd}`. Used by TcoCalculator (client-side) and `/api/cars` (server-side deal scoring). Features include `age_squared` and `mileage_squared` for non-linear depreciation.
 
 ## Key improvements made
 
@@ -138,12 +139,15 @@ good  = residual < −0.75 × residual_se (~23% of cars)
 
 **Problem**: TCO calculator was a dual-scenario (A/B) comparison embedded in the main page. Overly complex for most users — they just want to know the cost for one car.
 
-**Solution**: Moved to its own page (`/tco`) with a single scenario. Key change: mileage auto-populates from the **median mileage** of real scatter data for the selected model+year. E.g. picking RAV4 2022 sets mileage to 7 900 mil (median of 106 ads). Falls back to `age × 1500` if insufficient data.
+**Solution**: Moved to its own page (`/tco`) with a single scenario. Key change: mileage auto-populates from the **median mileage** of real scatter data for the selected model+year. E.g. picking RAV4 2022 sets mileage to 7 800 mil (median of 108 ads). Falls back to `age × 1500` if insufficient data.
 
 - **`/tco` page**: Fetches `/api/aggregates` (regression, tcoDefaults, modelConfig) and `/api/scatter` (for median mileage)
-- **TcoCalculator**: Single scenario, `useEffect` auto-updates mileage on model/year change. Shows "Median från N annonser" hint.
+- **TcoCalculator**: Single scenario, `useEffect` auto-updates mileage on model/year change. Shows "Median från N annonser" hint. Supports quadratic features (`age_squared`, `mileage_squared`) in both curve-based and fallback regression paths.
 - **Main page**: TCO section removed entirely. Nav link points to `/tco`.
-- **TcoSection.tsx**: Deleted (data fetching moved into /tco page).
+
+**Dual cost system:**
+- `tco_defaults` DB table — all 15 models have entries with `insurance_per_year`, `service_per_year`, `tax_per_year`. Used by the statistics pipeline for aggregated TCO estimates passed to the frontend.
+- `tco-costs.ts` — frontend cost profiles with per-fuel-type granularity (e.g. RAV4 Hybrid tax=1200, PHEV tax=360, Petrol tax=2500), age-dependent service/repair curves, and fuel consumption profiles. Used by `computeOwnershipCosts()` and `computeFuelCost()` in TcoCalculator.
 
 ### 7. Database migration (commit `ee2b804`)
 
@@ -158,9 +162,9 @@ Use the `/add-model` slash command for a guided walkthrough. The pipeline is:
 2. **Scrape** — `python3 scrape_blocket.py "<make> <model>"` → `cars_raw`
 3. **enums.py** — add trims/motor variants/generations in `helanotan-enrichment/enums.py`
 4. **Enrich** — `python3 tag_cars.py --full --model <Key>` → `cars_enriched`
-5. **tco_defaults** — insert row in DB (insurance, service, tax)
+5. **tco_defaults** — insert row in DB (`INSERT INTO tco_defaults (model_key, insurance_per_year, service_per_year, tax_per_year) VALUES (...)`)
 6. **Statistics** — `python3 export_for_web.py` → `web_cache`
-7. **tco-costs.ts** — add COST_PROFILES + FUEL_PROFILES entries
+7. **tco-costs.ts** — add COST_PROFILES + FUEL_PROFILES entries (per-fuel tax, consumption, age-based service/repair)
 8. **Build & deploy** — `npm run build && git push`
 
 ## Refreshing data

@@ -63,6 +63,8 @@ function predictPrice(
     mileage_x_electric: mileage * isElectric,
     age_x_phev: age * isPhev,
     mileage_x_phev: mileage * isPhev,
+    age_squared: age * age,
+    mileage_squared: mileage * mileage,
     is_oldest_gen: isOldestGen,
     is_middle_gen: isMiddleGen,
     premium_equip_count: premiumEquipCount,
@@ -142,6 +144,7 @@ export async function GET(req: NextRequest) {
         WHERE (exclusion_tags = '[]'::jsonb OR exclusion_tags IS NULL)
           AND model_year >= 2005
           AND mileage_mil >= 0
+          AND (is_active = TRUE OR is_active IS NULL)
           AND (${!hasModels} OR model_key = ANY(${modelKeys}))
           AND (${!hasFuel} OR (
             (${isHybrid} AND LOWER(fuel_type) LIKE '%hybrid%' AND LOWER(fuel_type) NOT LIKE '%laddhybrid%' AND LOWER(fuel_type) NOT LIKE '%plug%')
@@ -161,6 +164,7 @@ export async function GET(req: NextRequest) {
         WHERE (exclusion_tags = '[]'::jsonb OR exclusion_tags IS NULL)
           AND model_year >= 2005
           AND mileage_mil >= 0
+          AND (is_active = TRUE OR is_active IS NULL)
           AND (${!hasModels} OR model_key = ANY(${modelKeys}))
           AND (${!hasFuel} OR (
             (${isHybrid} AND LOWER(fuel_type) LIKE '%hybrid%' AND LOWER(fuel_type) NOT LIKE '%laddhybrid%' AND LOWER(fuel_type) NOT LIKE '%plug%')
@@ -180,6 +184,7 @@ export async function GET(req: NextRequest) {
         WHERE (exclusion_tags = '[]'::jsonb OR exclusion_tags IS NULL)
           AND model_year >= 2005
           AND mileage_mil >= 0
+          AND (is_active = TRUE OR is_active IS NULL)
           AND (${!hasModels} OR model_key = ANY(${modelKeys}))
           AND (${!hasFuel} OR (
             (${isHybrid} AND LOWER(fuel_type) LIKE '%hybrid%' AND LOWER(fuel_type) NOT LIKE '%laddhybrid%' AND LOWER(fuel_type) NOT LIKE '%plug%')

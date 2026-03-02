@@ -147,6 +147,8 @@ function computeTco(
         age_x_electric: scenario.fuel === "Electric" ? currentAge : 0,
         mileage_x_phev: scenario.fuel === "PHEV" ? scenario.mileage : 0,
         mileage_x_electric: scenario.fuel === "Electric" ? scenario.mileage : 0,
+        age_squared: currentAge * currentAge,
+        mileage_squared: scenario.mileage * scenario.mileage,
       };
       buyPred += coef * (buyFeatures[key] || 0);
 
@@ -158,6 +160,8 @@ function computeTco(
         age_x_electric: scenario.fuel === "Electric" ? futureAge : 0,
         mileage_x_phev: scenario.fuel === "PHEV" ? futureMileage : 0,
         mileage_x_electric: scenario.fuel === "Electric" ? futureMileage : 0,
+        age_squared: futureAge * futureAge,
+        mileage_squared: futureMileage * futureMileage,
       };
       sellPred += coef * (sellFeatures[key] || 0);
     }
