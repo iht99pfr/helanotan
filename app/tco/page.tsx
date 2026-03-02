@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import TcoCalculator from "@/app/components/TcoCalculator";
 
 export default function TcoPage() {
@@ -16,30 +15,21 @@ export default function TcoPage() {
   }, []);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <Link
-          href="/"
-          className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition"
-        >
-          &larr; Tillbaka
-        </Link>
-      </div>
-
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
           Ägandekostnadsberäknare
         </h1>
-        <p className="text-[var(--muted)] text-sm mt-1">
+        <p className="text-[var(--muted)] text-sm sm:text-base mt-2">
           Beräkna den totala ägandekostnaden för en bil. Prediktioner baseras på
           vår regressionsmodell tränad på verkliga Blocket-annonser.
         </p>
       </div>
 
       {!aggregates ? (
-        <div className="animate-pulse space-y-4 max-w-xl">
-          <div className="h-64 bg-[var(--border)] rounded" />
-          <div className="h-48 bg-[var(--border)] rounded" />
+        <div className="animate-pulse space-y-4 max-w-2xl">
+          <div className="h-64 bg-[var(--border)] rounded-lg" />
+          <div className="h-48 bg-[var(--border)] rounded-lg" />
         </div>
       ) : (
         <TcoCalculator
@@ -51,8 +41,8 @@ export default function TcoPage() {
         />
       )}
 
-      <div className="bg-[var(--card)] p-5 border border-[var(--border)] text-sm text-[var(--muted)] space-y-2 max-w-xl">
-        <h3 className="text-[var(--foreground)] font-semibold">Så fungerar beräkningen</h3>
+      <div className="bg-[var(--card)] p-5 sm:p-6 border border-[var(--border)] rounded-lg text-sm text-[var(--muted)] space-y-2 max-w-2xl">
+        <h2 className="text-[var(--foreground)] font-semibold">Så fungerar beräkningen</h2>
         <p>
           Köp- och säljpris predikteras med multivariat regression baserad på
           {" "}bilålder, miltal, bränsle, hästkrafter, utrustning, drivlina och säljartyp.

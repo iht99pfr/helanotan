@@ -122,7 +122,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
       </div>
 
       {/* Desktop table view */}
-      <div className="hidden sm:block overflow-x-auto border border-[var(--border)]">
+      <div className="hidden sm:block overflow-x-auto border border-[var(--border)] rounded-lg">
         <table className="w-full text-sm">
           <thead className="bg-[var(--card)] text-[var(--muted)]">
             <tr>

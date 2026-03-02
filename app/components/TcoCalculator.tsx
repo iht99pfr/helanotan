@@ -263,8 +263,8 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
   const scatterCount = scatter[scenario.model]?.filter((p) => p.year === scenario.year).length || 0;
 
   return (
-    <div className="max-w-xl space-y-6">
-      <div className="bg-[var(--card)] border border-[var(--border)] p-5 space-y-4">
+    <div className="max-w-2xl space-y-6">
+      <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 sm:p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="text-sm sm:text-xs text-[var(--muted)] block mb-1">Modell</label>

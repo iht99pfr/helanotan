@@ -8,21 +8,25 @@ import DataTableSection from "./components/DataTableSection";
 export default function Home() {
   return (
     <ModelSelectionProvider>
-      <div className="space-y-6 sm:space-y-10">
+      <div className="space-y-8 sm:space-y-12">
         {/* Hero */}
         <HeroSection />
 
         {/* Model Selector */}
         <section>
-          <p className="text-xs text-[var(--muted)] mb-2">Välj modeller att jämföra</p>
+          <h2 className="text-sm font-medium text-[var(--muted)] mb-3">Välj modeller att jämföra</h2>
           <ModelSelector />
         </section>
 
         {/* Summary stats + model accuracy */}
         <StatsSection />
 
+        <hr className="border-[var(--border)]" />
+
         {/* Charts — shared legend filter state */}
         <ChartSection />
+
+        <hr className="border-[var(--border)]" />
 
         {/* Data Explorer */}
         <section id="explorer" className="space-y-4">
@@ -35,8 +39,10 @@ export default function Home() {
           <DataTableSection />
         </section>
 
+        <hr className="border-[var(--border)]" />
+
         {/* Methodology */}
-        <section className="bg-[var(--card)] p-5 border border-[var(--border)] text-sm text-[var(--muted)] space-y-2">
+        <section className="bg-[var(--card)] p-5 sm:p-6 border border-[var(--border)] rounded-lg text-sm text-[var(--muted)] space-y-2">
           <h2 className="text-[var(--foreground)] font-semibold">Metod</h2>
           <p>
             Data insamlades från Blocket.se i februari 2026. Annonser

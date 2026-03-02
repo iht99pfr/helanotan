@@ -14,11 +14,11 @@ export default function HeroSection() {
       : labels.slice(0, -1).join(", ") + " och " + labels[labels.length - 1];
 
   return (
-    <section className="text-center py-6 sm:py-8">
-      <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-[var(--foreground)]">
+    <section className="text-center py-8 sm:py-12">
+      <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[var(--foreground)]">
         Hela Notan — vad kostar bilen egentligen?
       </h1>
-      <p className="text-[var(--muted)] mt-3 max-w-2xl mx-auto text-sm sm:text-base">
+      <p className="text-[var(--muted)] mt-4 max-w-2xl mx-auto text-sm sm:text-lg">
         Riktig data från Blocket.se.
         Jämför hur {modelText} tappar i värde
         över tid, miltal och bränsletyp.

@@ -178,7 +178,7 @@ export default function ModelSelector() {
 
   if (loading) {
     return (
-      <div className="max-w-xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
+      <div className="max-w-2xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
         {[0, 1, 2, 3, 4].map((i) => (
           <div key={i} className="flex items-center gap-3 px-4 min-h-[48px] border-b border-[var(--border)] last:border-b-0">
             <div className="animate-pulse w-5 h-5 bg-[var(--border)] rounded-full" />
@@ -191,7 +191,7 @@ export default function ModelSelector() {
   }
 
   return (
-    <div className="max-w-xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
+    <div className="max-w-2xl rounded-xl border border-[var(--border)] bg-white overflow-hidden">
       {BRAND_ORDER.map((brand) => {
         const models = brandGroups.get(brand);
         if (!models) return null;
