@@ -105,6 +105,9 @@ export default function RootLayout({
                 <a href="#explorer" className="hover:text-[var(--foreground)] transition whitespace-nowrap px-2 py-2 sm:px-0 sm:py-0">
                   Alla bilar
                 </a>
+                <a href="/artiklar" className="hover:text-[var(--foreground)] transition whitespace-nowrap px-2 py-2 sm:px-0 sm:py-0">
+                  Artiklar
+                </a>
               </div>
               <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[var(--background)]/90 to-transparent pointer-events-none sm:hidden" />
             </div>

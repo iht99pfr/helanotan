@@ -4,7 +4,7 @@
 
 Helanotan ("Hela Notan") is a Swedish car depreciation analysis platform. It scrapes used car listings from Blocket.se, runs multivariate regression models, and presents interactive charts showing how cars lose value over time, mileage, and fuel type.
 
-Live at: https://helanotan.upnorth.ai
+Live at: https://helanotan.se
 
 ## Tech stack
 
@@ -163,9 +163,15 @@ Use the `/add-model` slash command for a guided walkthrough. The pipeline is:
 7. **tco-costs.ts** — add COST_PROFILES + FUEL_PROFILES entries
 8. **Build & deploy** — `npm run build && git push`
 
-## Models tracked (13 models)
+## Refreshing data
 
-BMW X3, BMW X3 M, Kia Niro, Mercedes GLC, Tesla Model Y, Toyota RAV4, Volvo XC40, Volvo XC40 Recharge, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
+Use the `/refresh` Claude skill to update all car data. It scrapes new listings, detects sold ones, enriches new data with AI, and updates regression models. See `helanotan-scraping/CLAUDE.md` for details.
+
+Sold listings have `is_active = FALSE` in both `cars_raw` and `cars_enriched`. The `/api/cars` route filters these out. Regression models still include sold cars for better statistical power.
+
+## Models tracked (15 models)
+
+BMW X3, BMW X3 M, Kia Niro, Land Rover Defender, Mercedes GLC, Tesla Model Y, Toyota Land Cruiser, Toyota RAV4, Volvo XC40, Volvo XC40 Recharge, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
 
 ## Dev workflow
 
@@ -173,5 +179,5 @@ BMW X3, BMW X3 M, Kia Niro, Mercedes GLC, Tesla Model Y, Toyota RAV4, Volvo XC40
 cd /home/patrik/helanotan
 npm run dev          # starts on port 3456 (Turbopack)
 npm run build        # production build check
-git push origin main # auto-deploys to Vercel → helanotan.upnorth.ai
+git push origin main # auto-deploys to Vercel → helanotan.se
 ```
