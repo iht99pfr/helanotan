@@ -107,6 +107,7 @@ export default function DataTableSection() {
       {/* Mobile sort dropdown */}
       <div className="sm:hidden">
         <select
+          aria-label="Sortera efter"
           value={`${sortKey}-${sortDir}`}
           onChange={(e) => {
             const [key, dir] = e.target.value.split("-") as [SortKey, "asc" | "desc"];

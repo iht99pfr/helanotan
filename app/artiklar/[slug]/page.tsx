@@ -100,7 +100,7 @@ export default async function ArticlePage({ params }: Props) {
         <Content />
       </ArticleBody>
 
-      {/* JSON-LD */}
+      {/* JSON-LD Article */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -122,6 +122,36 @@ export default async function ArticlePage({ params }: Props) {
             },
             mainEntityOfPage: `https://helanotan.se/artiklar/${slug}`,
             inLanguage: "sv",
+          }),
+        }}
+      />
+
+      {/* JSON-LD BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Hela Notan",
+                item: "https://helanotan.se",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Artiklar",
+                item: "https://helanotan.se/artiklar",
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: article.title,
+              },
+            ],
           }),
         }}
       />

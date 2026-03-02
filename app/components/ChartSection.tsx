@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
+import dynamic from "next/dynamic";
 import { useModelSelection } from "./ModelSelectionContext";
-import DepreciationChart from "./DepreciationChart";
-import RetentionChart from "./RetentionChart";
-import MileageChart from "./MileageChart";
+
+const DepreciationChart = dynamic(() => import("./DepreciationChart"), { ssr: false });
+const RetentionChart = dynamic(() => import("./RetentionChart"), { ssr: false });
+const MileageChart = dynamic(() => import("./MileageChart"), { ssr: false });
 
 const FUEL_FILTERS = ["Alla", "Hybrid", "Laddhybrid", "Diesel", "Bensin"] as const;
 

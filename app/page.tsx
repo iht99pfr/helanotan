@@ -37,7 +37,7 @@ export default function Home() {
 
         {/* Methodology */}
         <section className="bg-[var(--card)] p-5 border border-[var(--border)] text-sm text-[var(--muted)] space-y-2">
-          <h3 className="text-[var(--foreground)] font-semibold">Metod</h3>
+          <h2 className="text-[var(--foreground)] font-semibold">Metod</h2>
           <p>
             Data insamlades från Blocket.se i februari 2026. Annonser
             med priser under 20 000 kr eller årsmodeller före 2005 exkluderades.
