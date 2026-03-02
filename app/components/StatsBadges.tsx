@@ -18,9 +18,9 @@ interface Props {
 }
 
 function qualityColor(r2: number) {
-  if (r2 >= 0.9) return "text-green-600";
-  if (r2 >= 0.8) return "text-amber-600";
-  return "text-red-500";
+  if (r2 >= 0.9) return "text-green-800";
+  if (r2 >= 0.8) return "text-amber-800";
+  return "text-red-700";
 }
 
 function qualityLabel(r2: number) {

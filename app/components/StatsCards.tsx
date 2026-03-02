@@ -31,7 +31,7 @@ export default function StatsCards({ summary, modelConfig, selectedModels }: Pro
             key={model}
             className={`bg-[var(--card)] border-l-4 ${meta.borderClass} p-5 space-y-3`}
           >
-            <h3 className="text-lg font-bold">{meta.label}</h3>
+            <h2 className="text-lg font-bold">{meta.label}</h2>
             <div className="grid grid-cols-2 gap-y-2 text-sm">
               <div className="text-[var(--muted)]">Antal annonser</div>
               <div className="text-right font-mono text-[var(--foreground)]">{stats.count}</div>

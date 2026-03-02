@@ -111,7 +111,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                 <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                   car.deal === "great"
                     ? "bg-green-100 text-green-700"
-                    : "bg-green-50 text-green-600"
+                    : "bg-green-50 text-green-800"
                 }`}>
                   {car.deal === "great" ? "Fyndpris" : "Bra pris"} −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
                 </span>
@@ -184,7 +184,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                     </span>
                   )}
                   {car.deal === "good" && (
-                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-600 whitespace-nowrap">
+                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-800 whitespace-nowrap">
                       −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
                     </span>
                   )}
