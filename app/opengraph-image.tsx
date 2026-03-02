@@ -1,10 +1,15 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "fs/promises";
+import { join } from "path";
 
 export const alt = "Hela Notan — Vad kostar bilen egentligen?";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
+  const logoData = await readFile(join(process.cwd(), "public/logo-cropped.png"));
+  const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -20,21 +25,13 @@ export default async function Image() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        {/* Receipt icon */}
-        <svg
-          width="80"
-          height="80"
-          viewBox="0 0 32 32"
+        {/* Logo */}
+        <img
+          src={logoBase64}
+          width={120}
+          height={96}
           style={{ marginBottom: 32 }}
-        >
-          <path
-            d="M6 2h20c1.1 0 2 .9 2 2v23l-3-2-3 2-3-2-3 2-3-2-3 2-3-2-3 2V4c0-1.1.9-2 2-2z"
-            fill="#1e1c19"
-          />
-          <rect x="10" y="8" width="12" height="2" rx="1" fill="#f7f3ec" />
-          <rect x="10" y="13" width="12" height="2" rx="1" fill="#f7f3ec" />
-          <rect x="10" y="18" width="8" height="2" rx="1" fill="#f7f3ec" />
-        </svg>
+        />
         <div
           style={{
             fontSize: 64,

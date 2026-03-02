@@ -110,7 +110,10 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <span className="text-base font-bold text-[var(--foreground)]">Hela Notan</span>
+                <div className="flex items-center gap-2">
+                  <img src="/logo-cropped.png" alt="" width={22} height={18} />
+                  <span className="text-base font-bold text-[var(--foreground)]">Hela Notan</span>
+                </div>
                 <p className="text-xs text-[var(--muted)] mt-1 max-w-sm">
                   Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
                 </p>

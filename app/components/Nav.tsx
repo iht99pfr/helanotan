@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useCallback } from "react";
+import Image from "next/image";
 
 const NAV_ITEMS = [
   { label: "Värdeminskning", href: "/#depreciation" },
@@ -31,8 +32,9 @@ export default function Nav() {
     <nav className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-md shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">
       {/* Desktop: single row */}
       <div className="hidden sm:flex items-center gap-4 max-w-7xl mx-auto px-6 py-4 border-b border-[var(--border)]">
-        <a href="/" className="text-xl font-bold tracking-tight shrink-0 text-[var(--foreground)]">
-          Hela Notan
+        <a href="/" className="flex items-center gap-2 shrink-0">
+          <Image src="/logo-cropped.png" alt="" width={35} height={28} className="shrink-0" />
+          <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">Hela Notan</span>
         </a>
         <div className="flex gap-5 text-sm text-[var(--muted)]">
           {NAV_ITEMS.map(({ label, href }) => (
@@ -54,8 +56,9 @@ export default function Nav() {
       {/* Mobile: two rows — logo + scrollable tabs */}
       <div className="sm:hidden border-b border-[var(--border)]">
         <div className="px-4 pt-3 pb-2">
-          <a href="/" className="text-lg font-bold tracking-tight text-[var(--foreground)]">
-            Hela Notan
+          <a href="/" className="flex items-center gap-2">
+            <Image src="/logo-cropped.png" alt="" width={30} height={24} className="shrink-0" />
+            <span className="text-lg font-bold tracking-tight text-[var(--foreground)]">Hela Notan</span>
           </a>
         </div>
         <div className="relative">
