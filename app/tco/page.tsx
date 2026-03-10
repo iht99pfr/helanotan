@@ -1,18 +1,50 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import { getDb } from "@/app/lib/db";
 import TcoCalculator from "@/app/components/TcoCalculator";
 
-export default function TcoPage() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [aggregates, setAggregates] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [scatter, setScatter] = useState<Record<string, any[]>>({});
+interface Props {
+  searchParams: Promise<Record<string, string | undefined>>;
+}
 
-  useEffect(() => {
-    fetch("/api/aggregates").then((r) => r.json()).then(setAggregates);
-    fetch("/api/scatter").then((r) => r.json()).then(setScatter);
-  }, []);
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const params = await searchParams;
+  const model = params.model;
+  if (!model) return {};
+
+  const fuel = params.fuel || "";
+  const year = params.year || "";
+  const fuelLabel = { Hybrid: "Hybrid", PHEV: "Laddhybrid", Diesel: "Diesel", Petrol: "Bensin", Electric: "El" }[fuel] || fuel;
+  const title = `${model} ${fuelLabel} ${year} — Ägandekostnad`;
+
+  const ogParams = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v) ogParams.set(k, v);
+  }
+
+  return {
+    title,
+    openGraph: {
+      title: `${title} | Hela Notan`,
+      images: [{ url: `/api/og/tco?${ogParams.toString()}`, width: 1200, height: 630 }],
+    },
+  };
+}
+
+async function fetchData() {
+  const sql = getDb();
+  const [aggRows, scatterRows] = await Promise.all([
+    sql`SELECT data FROM web_cache WHERE key = 'aggregates'`,
+    sql`SELECT data FROM web_cache WHERE key = 'scatter'`,
+  ]);
+  return {
+    aggregates: aggRows[0]?.data || null,
+    scatter: scatterRows[0]?.data || {},
+  };
+}
+
+export default async function TcoPage() {
+  const { aggregates, scatter } = await fetchData();
 
   return (
     <div className="space-y-8">
@@ -32,13 +64,20 @@ export default function TcoPage() {
           <div className="h-48 bg-[var(--border)] rounded-lg" />
         </div>
       ) : (
-        <TcoCalculator
-          regression={aggregates.regression}
-          tcoDefaults={aggregates.tcoDefaults}
-          modelConfig={aggregates.modelConfig || {}}
-          scatter={scatter}
-          predictionCurves={aggregates.predictionCurves || {}}
-        />
+        <Suspense fallback={
+          <div className="animate-pulse space-y-4 max-w-2xl">
+            <div className="h-64 bg-[var(--border)] rounded-lg" />
+            <div className="h-48 bg-[var(--border)] rounded-lg" />
+          </div>
+        }>
+          <TcoCalculator
+            regression={aggregates.regression}
+            tcoDefaults={aggregates.tcoDefaults}
+            modelConfig={aggregates.modelConfig || {}}
+            scatter={scatter}
+            predictionCurves={aggregates.predictionCurves || {}}
+          />
+        </Suspense>
       )}
 
       <div className="bg-[var(--card)] p-5 sm:p-6 border border-[var(--border)] rounded-lg text-sm text-[var(--muted)] space-y-2 max-w-2xl">

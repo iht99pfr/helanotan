@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useModelSelection } from "./ModelSelectionContext";
 import DataTable from "./DataTable";
 import type { SortKey } from "./DataTable";
+import DealAlertSignup from "./DealAlertSignup";
 
 const FUEL_KEY_MAP: Record<string, string> = {
   Bensin: "Petrol",
@@ -103,6 +104,8 @@ export default function DataTableSection() {
           </button>
         ))}
       </div>
+
+      <DealAlertSignup dealFilter={dealFilter} />
 
       {/* Mobile sort dropdown */}
       <div className="sm:hidden">

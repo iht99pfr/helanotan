@@ -1,40 +1,21 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { getFuelOptions } from "@/app/lib/model-config";
 import type { ModelConfigMap } from "@/app/lib/model-config";
-import { computeOwnershipCosts, computeFuelCost, isPhev, FUEL_PRICES } from "@/app/lib/tco-costs";
-import type { FuelCostResult } from "@/app/lib/tco-costs";
-
-interface RegressionModel {
-  intercept: number;
-  coefficients: Record<string, number>;
-  r2: number;
-  rmse: number;
-  residual_se_log: number;
-  log_transform: boolean;
-  n_samples: number;
-  features: string[];
-  medianHp: number;
-  medianEquipment: number;
-  typicalAwd: number;
-}
-
-interface ScatterPoint {
-  age: number;
-  mileage: number;
-  price: number;
-  year: number;
-  fuel: string;
-}
-
-interface CurvePoint {
-  age: number;
-  predicted: number;
-  lower: number;
-  upper: number;
-  mileage: number;
-}
+import { isPhev, FUEL_PRICES } from "@/app/lib/tco-costs";
+import {
+  computeTco,
+  getMedianMileage,
+  FUEL_LABELS,
+} from "@/app/lib/tco-compute";
+import type {
+  RegressionModel,
+  ScatterPoint,
+  CurvePoint,
+  ScenarioInputs,
+} from "@/app/lib/tco-compute";
 
 interface Props {
   regression: Record<string, RegressionModel>;
@@ -44,193 +25,37 @@ interface Props {
   predictionCurves: Record<string, Record<string, CurvePoint[]>>;
 }
 
-interface ScenarioInputs {
-  model: string;
-  year: number;
-  fuel: string;
-  mileage: number;
-  holdingYears: number;
-  annualMileage: number;
-}
-
-interface PredictionResult {
-  buyPrice: number;
-  sellPrice: number;
-  valueLoss: number;
-  monthlyDepreciation: number;
-  annualDepreciation: number;
-  costPerMil: number;
-  confidence: number;
-  totalCostWithFixed: number;
-  monthlyTotal: number;
-  insuranceTotal: number;
-  serviceTotal: number;
-  repairTotal: number;
-  taxTotal: number;
-  fuelCost: FuelCostResult;
-  capitalCost: number;
-}
-
-const FUEL_LABELS: Record<string, string> = {
-  Hybrid: "Hybrid",
-  PHEV: "Laddhybrid",
-  Diesel: "Diesel",
-  Petrol: "Bensin",
-  Electric: "El",
-};
-
-/** Look up a prediction curve point by age, clamping predicted to >= 0 */
-function curveAt(curve: CurvePoint[], age: number): CurvePoint | null {
-  const point = curve.find((p) => p.age === age);
-  if (!point) return null;
-  return { ...point, predicted: Math.max(0, point.predicted) };
-}
-
-/** Get effective mileage coefficient including fuel interaction terms */
-function getEffectiveMileageCoeff(reg: RegressionModel, fuel: string): number {
-  let coeff = reg.coefficients.mileage_mil || 0;
-  if (fuel === "PHEV") coeff += reg.coefficients.mileage_x_phev || 0;
-  if (fuel === "Electric") coeff += reg.coefficients.mileage_x_electric || 0;
-  return coeff;
-}
-
-function computeTco(
-  scenario: ScenarioInputs,
-  reg: RegressionModel,
-  curve: CurvePoint[] | undefined,
-  electricShare?: number,
-  interestRate?: number,
-): PredictionResult | null {
-  const currentAge = 2026 - scenario.year;
-  const futureAge = currentAge + scenario.holdingYears;
-
-  let buyPrice: number;
-  let sellPrice: number;
-
-  const buyPoint = curve && curveAt(curve, currentAge);
-  const sellPoint = curve && curveAt(curve, futureAge);
-
-  if (buyPoint && sellPoint) {
-    // Curve-based pricing — captures non-linear depreciation
-    // Adjust buy price for mileage deviation from typical at this age
-    const mileageCoeff = getEffectiveMileageCoeff(reg, scenario.fuel);
-    const buyMileageDelta = scenario.mileage - buyPoint.mileage;
-    // Log-transform coefficients are in log-space, so adjustment is multiplicative
-    if (reg.log_transform) {
-      buyPrice = Math.max(0, Math.round(buyPoint.predicted * Math.exp(mileageCoeff * buyMileageDelta)));
-    } else {
-      buyPrice = Math.max(0, Math.round(buyPoint.predicted + mileageCoeff * buyMileageDelta));
-    }
-
-    // Sell price from curve (market value at that age)
-    sellPrice = Math.max(0, Math.round(sellPoint.predicted));
-  } else {
-    // Fallback: simple regression (linear, same loss regardless of year)
-    const mileageCoeff = getEffectiveMileageCoeff(reg, scenario.fuel);
-    const futureMileage = scenario.mileage + scenario.annualMileage * scenario.holdingYears;
-
-    let buyPred = reg.intercept;
-    let sellPred = reg.intercept;
-    for (const [key, coef] of Object.entries(reg.coefficients)) {
-      const buyFeatures: Record<string, number> = {
-        car_age_years: currentAge,
-        mileage_mil: scenario.mileage,
-        horsepower: reg.medianHp,
-        equipment_count: reg.medianEquipment,
-        is_hybrid: scenario.fuel === "Hybrid" ? 1 : 0,
-        is_phev: scenario.fuel === "PHEV" ? 1 : 0,
-        is_diesel: scenario.fuel === "Diesel" ? 1 : 0,
-        is_electric: scenario.fuel === "Electric" ? 1 : 0,
-        is_dealer: 0,
-        is_awd: reg.typicalAwd,
-        age_x_phev: scenario.fuel === "PHEV" ? currentAge : 0,
-        age_x_electric: scenario.fuel === "Electric" ? currentAge : 0,
-        mileage_x_phev: scenario.fuel === "PHEV" ? scenario.mileage : 0,
-        mileage_x_electric: scenario.fuel === "Electric" ? scenario.mileage : 0,
-        age_squared: currentAge * currentAge,
-        mileage_squared: scenario.mileage * scenario.mileage,
-      };
-      buyPred += coef * (buyFeatures[key] || 0);
-
-      const sellFeatures: Record<string, number> = {
-        ...buyFeatures,
-        car_age_years: futureAge,
-        mileage_mil: futureMileage,
-        age_x_phev: scenario.fuel === "PHEV" ? futureAge : 0,
-        age_x_electric: scenario.fuel === "Electric" ? futureAge : 0,
-        mileage_x_phev: scenario.fuel === "PHEV" ? futureMileage : 0,
-        mileage_x_electric: scenario.fuel === "Electric" ? futureMileage : 0,
-        age_squared: futureAge * futureAge,
-        mileage_squared: futureMileage * futureMileage,
-      };
-      sellPred += coef * (sellFeatures[key] || 0);
-    }
-    if (reg.log_transform) {
-      buyPred = Math.exp(buyPred);
-      sellPred = Math.exp(sellPred);
-    }
-    buyPrice = Math.max(0, Math.round(buyPred));
-    sellPrice = Math.max(0, Math.round(sellPred));
-  }
-
-  const valueLoss = Math.max(0, buyPrice - sellPrice);
-  const months = scenario.holdingYears * 12;
-  const totalMilesDriven = scenario.annualMileage * scenario.holdingYears;
-
-  const costs = computeOwnershipCosts(scenario.model, scenario.fuel, currentAge, scenario.holdingYears);
-  const insuranceTotal = costs.insurance;
-  const serviceTotal = costs.service;
-  const repairTotal = costs.repair;
-  const taxTotal = costs.tax;
-  const fuelCost = computeFuelCost(scenario.model, scenario.fuel, scenario.annualMileage, scenario.holdingYears, electricShare);
-
-  // Capital cost: interest on average tied-up capital over holding period
-  const rate = interestRate ?? 0;
-  const avgCapital = (buyPrice + sellPrice) / 2;
-  const capitalCost = Math.round(avgCapital * (rate / 100) * scenario.holdingYears);
-
-  const fixedCosts = insuranceTotal + serviceTotal + repairTotal + taxTotal + fuelCost.total + capitalCost;
-
-  const totalCost = valueLoss + fixedCosts;
-
-  return {
-    buyPrice,
-    sellPrice,
-    valueLoss,
-    monthlyDepreciation: Math.round(valueLoss / months),
-    annualDepreciation: Math.round(valueLoss / scenario.holdingYears),
-    costPerMil: totalMilesDriven > 0 ? Math.round(totalCost / totalMilesDriven) : 0,
-    confidence: reg.residual_se_log,
-    totalCostWithFixed: totalCost,
-    monthlyTotal: Math.round(totalCost / months),
-    insuranceTotal,
-    serviceTotal,
-    repairTotal,
-    taxTotal,
-    fuelCost,
-    capitalCost,
-  };
-}
-
-function getMedianMileage(scatter: ScatterPoint[], year: number): number {
-  const points = scatter.filter((p) => p.year === year);
-  if (points.length < 3) return Math.max(0, (2026 - year) * 1500);
-  const sorted = points.map((p) => p.mileage).sort((a, b) => a - b);
-  return Math.round(sorted[Math.floor(sorted.length / 2)] / 100) * 100;
-}
-
 export default function TcoCalculator({ regression, modelConfig, scatter, predictionCurves }: Props) {
+  const searchParams = useSearchParams();
   const firstModel = Object.keys(regression)[0] || "RAV4";
   const firstFuel = getFuelOptions(modelConfig, firstModel)[0] || "Hybrid";
 
-  const [scenario, setScenario] = useState<ScenarioInputs>({
-    model: firstModel,
-    year: 2022,
-    fuel: firstFuel,
-    mileage: 5000,
-    holdingYears: 3,
-    annualMileage: 1500,
+  const [scenario, setScenario] = useState<ScenarioInputs>(() => {
+    const urlModel = searchParams.get("model");
+    if (urlModel && regression[urlModel]) {
+      const fuels = getFuelOptions(modelConfig, urlModel);
+      const urlFuel = searchParams.get("fuel");
+      return {
+        model: urlModel,
+        fuel: urlFuel && fuels.includes(urlFuel) ? urlFuel : fuels[0],
+        year: Number(searchParams.get("year")) || 2022,
+        mileage: Number(searchParams.get("mileage")) || 5000,
+        holdingYears: Number(searchParams.get("keep")) || 3,
+        annualMileage: Number(searchParams.get("driving")) || 1500,
+      };
+    }
+    return {
+      model: firstModel,
+      year: 2022,
+      fuel: firstFuel,
+      mileage: 5000,
+      holdingYears: 3,
+      annualMileage: 1500,
+    };
   });
+
+  // Track whether URL specified mileage (skip auto-populate on mount)
+  const hydratedFromUrl = useRef(!!searchParams.get("model"));
 
   // PHEV electric share slider (0-100, displayed as percentage)
   const [electricPct, setElectricPct] = useState(50);
@@ -240,8 +65,15 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [interestRate, setInterestRate] = useState(4.5);
 
+  // Share state
+  const [copied, setCopied] = useState(false);
+
   // Auto-populate mileage when model or year changes
   useEffect(() => {
+    if (hydratedFromUrl.current) {
+      hydratedFromUrl.current = false;
+      return;
+    }
     const points = scatter[scenario.model];
     if (points) {
       const median = getMedianMileage(points, scenario.year);
@@ -485,9 +317,42 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 <span className="font-mono">{result.costPerMil.toLocaleString("sv-SE")} kr/mil</span>
               </div>
             </div>
-            <p className="text-xs text-[var(--muted)]">
-              ±{((Math.exp(1.96 * result.confidence) - 1) * 100).toFixed(0)}% prediktionsosäkerhet (95% KI)
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-[var(--muted)]">
+                ±{((Math.exp(1.96 * result.confidence) - 1) * 100).toFixed(0)}% prediktionsosäkerhet (95% KI)
+              </p>
+              <button
+                type="button"
+                onClick={async () => {
+                  const params = new URLSearchParams({
+                    model: scenario.model,
+                    fuel: scenario.fuel,
+                    year: String(scenario.year),
+                    mileage: String(scenario.mileage),
+                    keep: String(scenario.holdingYears),
+                    driving: String(scenario.annualMileage),
+                  });
+                  const url = `https://helanotan.se/tco?${params.toString()}`;
+                  const modelLabel = modelConfig[scenario.model]?.label || scenario.model;
+                  const title = `${modelLabel} — ${result.monthlyTotal.toLocaleString("sv-SE")} kr/mån | Hela Notan`;
+                  if (navigator.share) {
+                    try {
+                      await navigator.share({ title, url });
+                    } catch {
+                      // User cancelled share
+                    }
+                  } else {
+                    await navigator.clipboard.writeText(url);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }
+                }}
+                className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors flex items-center gap-1"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                {copied ? "Kopierad!" : "Dela"}
+              </button>
+            </div>
           </div>
         )}
       </div>
