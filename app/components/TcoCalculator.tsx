@@ -317,41 +317,74 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                 <span className="font-mono">{result.costPerMil.toLocaleString("sv-SE")} kr/mil</span>
               </div>
             </div>
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-[var(--muted)]">
-                ±{((Math.exp(1.96 * result.confidence) - 1) * 100).toFixed(0)}% prediktionsosäkerhet (95% KI)
-              </p>
-              <button
-                type="button"
-                onClick={async () => {
-                  const params = new URLSearchParams({
-                    model: scenario.model,
-                    fuel: scenario.fuel,
-                    year: String(scenario.year),
-                    mileage: String(scenario.mileage),
-                    keep: String(scenario.holdingYears),
-                    driving: String(scenario.annualMileage),
-                  });
-                  const url = `https://helanotan.se/tco?${params.toString()}`;
-                  const modelLabel = modelConfig[scenario.model]?.label || scenario.model;
-                  const title = `${modelLabel} — ${result.monthlyTotal.toLocaleString("sv-SE")} kr/mån | Hela Notan`;
-                  if (navigator.share) {
-                    try {
-                      await navigator.share({ title, url });
-                    } catch {
-                      // User cancelled share
-                    }
-                  } else {
-                    await navigator.clipboard.writeText(url);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }
-                }}
-                className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] transition-colors flex items-center gap-1"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                {copied ? "Kopierad!" : "Dela"}
-              </button>
+            <p className="text-xs text-[var(--muted)]">
+              ±{((Math.exp(1.96 * result.confidence) - 1) * 100).toFixed(0)}% prediktionsosäkerhet (95% KI)
+            </p>
+          </div>
+        )}
+
+        {/* Share card */}
+        {result && (
+          <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 sm:p-6 max-w-2xl">
+            <div className="flex items-start gap-4">
+              <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-[var(--foreground)]/5 flex-shrink-0 mt-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--foreground)]"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-[var(--foreground)]">
+                  Dela beräkningen
+                </p>
+                <p className="text-xs text-[var(--muted)] mt-0.5">
+                  Skicka till din partner, kompis eller spara för senare. Länken öppnar exakt samma beräkning.
+                </p>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      const params = new URLSearchParams({
+                        model: scenario.model,
+                        fuel: scenario.fuel,
+                        year: String(scenario.year),
+                        mileage: String(scenario.mileage),
+                        keep: String(scenario.holdingYears),
+                        driving: String(scenario.annualMileage),
+                      });
+                      const url = `https://helanotan.se/tco?${params.toString()}`;
+                      const modelLabel = modelConfig[scenario.model]?.label || scenario.model;
+                      const fuelLabel = FUEL_LABELS[scenario.fuel] || scenario.fuel;
+                      const text = `Kolla vad det kostar att äga en ${modelLabel} ${fuelLabel} ${scenario.year} — ${result.monthlyTotal.toLocaleString("sv-SE")} kr/mån totalt`;
+                      if (navigator.share) {
+                        try {
+                          await navigator.share({ text, url });
+                        } catch {
+                          // User cancelled
+                        }
+                      } else {
+                        await navigator.clipboard.writeText(url);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2500);
+                      }
+                    }}
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      copied
+                        ? "bg-green-600 text-white"
+                        : "bg-[var(--foreground)] text-white hover:opacity-90"
+                    }`}
+                  >
+                    {copied ? (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                        Länk kopierad!
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                        Dela
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
