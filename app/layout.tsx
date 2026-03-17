@@ -123,9 +123,13 @@ export default function RootLayout({
                   Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
                 </p>
               </div>
-              <div className="flex gap-6 text-sm text-[var(--muted)]">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--muted)]">
                 <a href="/" className="hover:text-[var(--foreground)] transition">Hem</a>
                 <a href="/tco" className="hover:text-[var(--foreground)] transition">Ägandekostnad</a>
+                <a href="/toppen" className="hover:text-[var(--foreground)] transition">Toppen</a>
+                <a href="/kopguide" className="hover:text-[var(--foreground)] transition">Köpguide</a>
+                <a href="/bevaka" className="hover:text-[var(--foreground)] transition">Bevaka</a>
+                <a href="/fakta" className="hover:text-[var(--foreground)] transition">Fakta</a>
                 <a href="/artiklar" className="hover:text-[var(--foreground)] transition">Artiklar</a>
                 <a href="/nyheter" className="hover:text-[var(--foreground)] transition">Nyheter</a>
               </div>
