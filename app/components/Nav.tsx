@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { label: "Ägandekostnad", href: "/tco" },
   { label: "Alla bilar", href: "/#explorer" },
   { label: "Artiklar", href: "/artiklar" },
+  { label: "Nyheter", href: "/nyheter" },
 ];
 
 export default function Nav() {
@@ -18,6 +19,7 @@ export default function Nav() {
   function isActive(href: string) {
     if (href === "/tco") return pathname === "/tco";
     if (href === "/artiklar") return pathname.startsWith("/artiklar");
+    if (href === "/nyheter") return pathname.startsWith("/nyheter");
     return false;
   }
 
