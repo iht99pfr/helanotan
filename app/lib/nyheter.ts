@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 
-const newsDir = path.join(process.cwd(), "content", "nyheter");
+const newsDir = path.join(process.cwd(), "content", "nyheter", "sv");
 
 export interface NewsArticle {
   slug: string;
