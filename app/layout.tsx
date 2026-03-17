@@ -66,6 +66,11 @@ export default function RootLayout({
             data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
           />
         )}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","vx69lib1k2");`,
+          }}
+        />
         {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID && (
           <>
             <Script
@@ -122,6 +127,7 @@ export default function RootLayout({
                 <a href="/" className="hover:text-[var(--foreground)] transition">Hem</a>
                 <a href="/tco" className="hover:text-[var(--foreground)] transition">Ägandekostnad</a>
                 <a href="/artiklar" className="hover:text-[var(--foreground)] transition">Artiklar</a>
+                <a href="/nyheter" className="hover:text-[var(--foreground)] transition">Nyheter</a>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted)]">

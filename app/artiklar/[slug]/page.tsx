@@ -10,6 +10,7 @@ import BackLink from "../components/BackLink";
 import ArticleBody from "../components/ArticleBody";
 import CategoryBadge from "../components/CategoryBadge";
 import RelatedArticles from "../components/RelatedArticles";
+import ShareBar from "@/app/components/ShareBar";
 
 /* Static content imports */
 import VolvoXC60Generationer from "../data/content/volvo-xc60-generationer";
@@ -88,10 +89,18 @@ export default async function ArticlePage({ params }: Props) {
         <p className="text-[var(--muted)] text-base sm:text-lg leading-relaxed">
           {article.subtitle}
         </p>
-        <div className="flex gap-3 text-xs text-[var(--muted)]">
-          <time dateTime={article.date}>{formatDate(article.date)}</time>
-          <span>&middot;</span>
-          <span>{article.readingTime} min läsning</span>
+        <div className="flex items-center justify-between">
+          <div className="flex gap-3 text-xs text-[var(--muted)]">
+            <time dateTime={article.date}>{formatDate(article.date)}</time>
+            <span>&middot;</span>
+            <span>{article.readingTime} min läsning</span>
+          </div>
+          <ShareBar
+            url={`https://helanotan.se/artiklar/${article.slug}`}
+            title={article.title}
+            description={article.excerpt}
+            eventPrefix="artikel"
+          />
         </div>
       </header>
 

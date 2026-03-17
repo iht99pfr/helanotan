@@ -6,6 +6,7 @@ import {
   getNewsArticleWithHtml,
   getNewsArticle,
 } from "@/app/lib/nyheter";
+import ShareBar from "@/app/components/ShareBar";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -87,9 +88,17 @@ export default async function NyheterArticlePage({ params }: Props) {
         >
           {formatDate(article.date)}
         </time>
-        <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] mt-2 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] mt-2 mb-4">
           {article.title}
         </h1>
+        <div className="mb-8">
+          <ShareBar
+            url={`https://helanotan.se/nyheter/${slug}`}
+            title={article.title}
+            description={article.description}
+            eventPrefix="nyhet"
+          />
+        </div>
 
         <div
           className="
