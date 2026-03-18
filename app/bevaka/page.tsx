@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import ShareBar from "@/app/components/ShareBar";
 
 interface ModelConfig {
   label: string;
@@ -221,7 +222,7 @@ export default function BevakaPage() {
                   return (
                     <div key={p.age} className="flex items-center gap-3">
                       <span className="text-xs text-[var(--muted)] w-12 shrink-0">
-                        {2026 - (p.age - currentAge + (2026 - modelYear))}
+                        {p.age === currentAge ? "Idag" : `Om ${p.age - currentAge} år`}
                       </span>
                       <div className="flex-1 h-6 bg-[var(--border)] rounded-full overflow-hidden">
                         <div
@@ -241,6 +242,15 @@ export default function BevakaPage() {
                   );
                 })}
             </div>
+          </div>
+
+          <div className="mb-8">
+            <ShareBar
+              url={`https://helanotan.se/bevaka?model=${modelKey}&fuel=${fuelType}&year=${modelYear}`}
+              title={`Min ${data.modelConfig[modelKey]?.label} ${modelYear} tappar ${formatKr(monthlyLoss)} per månad`}
+              description={`Se vad din bil tappar i värde på helanotan.se`}
+              eventPrefix="bevaka"
+            />
           </div>
 
           {/* Email signup */}

@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ShareBar from "@/app/components/ShareBar";
 import type { ModelConfigMap } from "@/app/lib/model-config";
+import { computeOwnershipCosts } from "@/app/lib/tco-costs";
 
 const FUEL_LABELS: Record<string, string> = {
   Hybrid: "Hybrid",
@@ -26,6 +27,8 @@ interface AgeRow {
   price: number;
   depPerYear: number | null;
   costPerMonth: number | null;
+  runningCostPerMonth: number | null;
+  totalCostPerMonth: number | null;
   tag: string | null;
 }
 
@@ -127,11 +130,18 @@ export default function KopguidePage() {
       const futurePoint = fuelCurve.find((p) => p.age === point.age + 3);
       let costPerMonth: number | null = null;
       let depPerYear: number | null = null;
+      let runningCostPerMonth: number | null = null;
+      let totalCostPerMonth: number | null = null;
 
       if (futurePoint && price > 0) {
         const totalDep = price - futurePoint.predicted;
         costPerMonth = totalDep / 36;
         depPerYear = totalDep / 3;
+
+        // Running costs (service, repair, insurance, tax) for 3 years at this age
+        const ownership = computeOwnershipCosts(selectedModel, activeFuel, point.age, 3);
+        runningCostPerMonth = (ownership.service + ownership.repair + ownership.insurance + ownership.tax) / 36;
+        totalCostPerMonth = costPerMonth + runningCostPerMonth;
       }
 
       result.push({
@@ -140,6 +150,8 @@ export default function KopguidePage() {
         price,
         depPerYear,
         costPerMonth,
+        runningCostPerMonth,
+        totalCostPerMonth,
         tag: null,
       });
     }
@@ -150,18 +162,18 @@ export default function KopguidePage() {
       const newest = result.find((r) => r.age === 0);
       if (newest) newest.tag = "Maximal komfort";
 
-      // Best value: lowest cost/month among rows with valid data
-      const withCost = result.filter((r) => r.costPerMonth !== null && r.costPerMonth > 0);
+      // Best value: lowest total cost/month (depreciation + running) among rows with valid data
+      const withCost = result.filter((r) => r.totalCostPerMonth !== null && r.totalCostPerMonth > 0);
       if (withCost.length > 0) {
         const best = withCost.reduce((a, b) =>
-          (a.costPerMonth ?? Infinity) < (b.costPerMonth ?? Infinity) ? a : b
+          (a.totalCostPerMonth ?? Infinity) < (b.totalCostPerMonth ?? Infinity) ? a : b
         );
         best.tag = "Bästa värdet";
       }
 
       // Budget pick: oldest with valid cost data
       const budgetCandidates = result.filter(
-        (r) => r.costPerMonth !== null && r.age >= 5
+        (r) => r.totalCostPerMonth !== null && r.age >= 5
       );
       if (budgetCandidates.length > 0) {
         const oldest = budgetCandidates[budgetCandidates.length - 1];
@@ -260,7 +272,7 @@ export default function KopguidePage() {
               {modelLabel} {fuelLabel} — jämförelse per årsmodell
             </h2>
             <p className="text-[var(--muted)] text-sm mt-1">
-              Kostnad per månad baseras på enbart värdeminskning vid 3 års ägande.
+              Kostnad per månad inkluderar värdeminskning, service, reparation, försäkring och skatt vid 3 års ägande.
             </p>
           </div>
 
@@ -270,10 +282,13 @@ export default function KopguidePage() {
                 <tr className="border-b border-[var(--border)] text-left text-[var(--muted)]">
                   <th className="py-3 pr-3 font-medium">Årsmodell</th>
                   <th className="py-3 pr-3 font-medium text-right">Snitt-pris</th>
+                  <th className="py-3 pr-3 font-medium text-right">Total/mån</th>
                   <th className="py-3 pr-3 font-medium text-right hidden sm:table-cell">
-                    Värdeminskning/år
+                    varav värdem.
                   </th>
-                  <th className="py-3 pr-3 font-medium text-right">Kostnad/mån</th>
+                  <th className="py-3 pr-3 font-medium text-right hidden sm:table-cell">
+                    varav drift
+                  </th>
                   <th className="py-3 font-medium">Rekommendation</th>
                 </tr>
               </thead>
@@ -294,11 +309,14 @@ export default function KopguidePage() {
                     <td className="py-3 pr-3 text-right font-mono text-[var(--muted)]">
                       {formatKr(row.price)}
                     </td>
-                    <td className="py-3 pr-3 text-right font-mono text-[var(--muted)] hidden sm:table-cell">
-                      {row.depPerYear !== null ? formatKr(row.depPerYear) : "\u2014"}
-                    </td>
                     <td className="py-3 pr-3 text-right font-mono font-semibold text-[var(--foreground)]">
-                      {row.costPerMonth !== null ? `${formatKr(row.costPerMonth)}/mån` : "\u2014"}
+                      {row.totalCostPerMonth !== null ? `${formatKr(row.totalCostPerMonth)}/mån` : "\u2014"}
+                    </td>
+                    <td className="py-3 pr-3 text-right font-mono text-[var(--muted)] hidden sm:table-cell">
+                      {row.costPerMonth !== null ? formatKr(row.costPerMonth) : "\u2014"}
+                    </td>
+                    <td className="py-3 pr-3 text-right font-mono text-[var(--muted)] hidden sm:table-cell">
+                      {row.runningCostPerMonth !== null ? formatKr(row.runningCostPerMonth) : "\u2014"}
                     </td>
                     <td className="py-3">
                       {row.tag && (
@@ -340,12 +358,14 @@ export default function KopguidePage() {
         <h2 className="text-[var(--foreground)] font-semibold">Så fungerar guiden</h2>
         <p>
           Snitt-priset för varje årsmodell kommer från vår regressionsmodell tränad på
-          verkliga Blocket-annonser. Kostnad per månad beräknas som skillnaden mellan köppris
-          och förväntat säljpris efter 3 års ägande, delat med 36 månader.
+          verkliga Blocket-annonser. Total kostnad per månad beräknas som värdeminskning
+          plus driftskostnader (service, reparation, försäkring och skatt) vid 3 års ägande,
+          delat med 36 månader.
         </p>
         <p>
-          Siffrorna visar enbart värdeminskningskostnad. För en komplett bild inklusive
-          försäkring, skatt, service och bränsle — se{" "}
+          Driftskostnaderna ökar med bilens ålder — service och reparationer blir dyrare
+          medan försäkringspremien sjunker. Därför hamnar den bästa balansen ofta vid 3–5 års
+          ålder, inte vid den äldsta bilen. För en ännu mer detaljerad kalkyl inklusive bränslekostnad — se{" "}
           <a href="/tco" className="underline hover:text-[var(--foreground)] transition">
             ägandekostnadsberäknaren
           </a>

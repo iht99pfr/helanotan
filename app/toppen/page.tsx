@@ -144,6 +144,9 @@ export default async function ToppenPage() {
       // Cap at 100%
       retention3yr = Math.min(100, retention3yr);
 
+      // Filter out unrealistic retention values (data errors)
+      if (retention3yr > 99 || retention3yr < 5) continue;
+
       const newPrice = retData.newPrice;
       const value3yr = newPrice * (retention3yr / 100);
 
@@ -183,6 +186,9 @@ export default async function ToppenPage() {
       const depreciationPerMonth = (priceAt1 - priceAt4) / 36;
 
       if (depreciationPerMonth <= 0) continue;
+
+      // Filter out unrealistically low depreciation (data errors from too few data points)
+      if (depreciationPerMonth < 100) continue;
 
       bestBuys.push({
         modelKey,

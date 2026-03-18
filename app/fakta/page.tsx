@@ -19,6 +19,33 @@ function formatKr(n: number): string {
   return Math.round(n).toLocaleString("sv-SE");
 }
 
+const MODEL_LABELS: Record<string, string> = {
+  X3: "BMW X3",
+  X3M: "BMW X3 M",
+  Niro: "Kia Niro",
+  Defender: "Land Rover Defender",
+  GLC: "Mercedes GLC",
+  ModelY: "Tesla Model Y",
+  LandCruiser: "Toyota Land Cruiser",
+  RAV4: "Toyota RAV4",
+  XC40: "Volvo XC40",
+  XC40Recharge: "Volvo XC40 Recharge",
+  XC60: "Volvo XC60",
+  Golf: "VW Golf",
+  GolfGTI: "VW Golf GTI",
+  GolfR: "VW Golf R",
+  Tiguan: "VW Tiguan",
+  Yaris: "Toyota Yaris",
+  YarisCross: "Toyota Yaris Cross",
+  Polestar2: "Polestar 2",
+  Polestar3: "Polestar 3",
+  Polestar4: "Polestar 4",
+};
+
+function modelLabel(key: string): string {
+  return MODEL_LABELS[key] || key;
+}
+
 interface StatCard {
   title: string;
   value: string;
@@ -95,7 +122,7 @@ export default async function FaktaPage() {
   const [dealerPremium] = await sql`
     SELECT
       AVG(CASE WHEN seller_type = 'Dealer' THEN price_sek END) as dealer_avg,
-      AVG(CASE WHEN seller_type != 'Dealer' THEN price_sek END) as private_avg
+      AVG(CASE WHEN seller_type IN ('Privat', 'Private') THEN price_sek END) as private_avg
     FROM cars_enriched
     WHERE (exclusion_tags = '[]'::jsonb OR exclusion_tags IS NULL)
       AND model_year >= 2018
@@ -157,47 +184,57 @@ export default async function FaktaPage() {
       description: "Genomsnittspriset för alla modeller vi spårar (2005 och nyare).",
       color: "blue",
     },
-    {
-      title: "Handlarpremien",
-      value: `+${dealerPremiumPct.toFixed(0)}%`,
-      description: `En bil hos handlare kostar i snitt ${dealerPremiumPct.toFixed(0)}% mer än samma bil privat. Det är ${formatKr(dealerAvg - privateAvg)} kr extra.`,
-      color: "amber",
-    },
+    ...(dealerPremiumPct > 0
+      ? [
+          {
+            title: "Handlarpremien",
+            value: `+${dealerPremiumPct.toFixed(0)}%`,
+            description: `En bil hos handlare kostar i snitt ${dealerPremiumPct.toFixed(0)}% mer än samma bil privat. Det är ${formatKr(dealerAvg - privateAvg)} kr extra.`,
+            color: "amber" as const,
+          },
+        ]
+      : []),
   ];
 
   if (biggestDrop && dropAmount > 0) {
+    const dropLabel = modelLabel(biggestDrop.model_key);
     stats.push({
-      title: `${biggestDrop.model_key}: första årets tapp`,
+      title: `${dropLabel}: första årets tapp`,
       value: `−${formatKr(dropAmount)} kr`,
-      description: `En ny ${biggestDrop.model_key} tappar i snitt ${formatKr(dropAmount)} kr det första året. Det är ${formatKr(dropAmount / 12)} kr per månad bara i värdeminskning.`,
+      description: `En ny ${dropLabel} tappar i snitt ${formatKr(dropAmount)} kr det första året. Det är ${formatKr(dropAmount / 12)} kr per månad bara i värdeminskning.`,
       color: "red",
     });
   }
 
   if (priciest) {
+    const priciestLabel = modelLabel(priciest.model_key);
     stats.push({
       title: "Dyraste modellen (snitt)",
-      value: `${priciest.model_key}`,
-      description: `${priciest.model_key} har det högsta snittpriset bland 2020+ modeller: ${formatKr(Number(priciest.avg_price))} kr.`,
+      value: priciestLabel,
+      description: `${priciestLabel} har det högsta snittpriset bland 2020+ modeller: ${formatKr(Number(priciest.avg_price))} kr.`,
       color: "red",
     });
   }
 
   if (cheapest) {
+    const cheapestLabel = modelLabel(cheapest.model_key);
     stats.push({
       title: "Billigaste modellen (snitt)",
-      value: `${cheapest.model_key}`,
-      description: `${cheapest.model_key} är billigast i snitt bland 2020+ modeller: ${formatKr(Number(cheapest.avg_price))} kr.`,
+      value: cheapestLabel,
+      description: `${cheapestLabel} är billigast i snitt bland 2020+ modeller: ${formatKr(Number(cheapest.avg_price))} kr.`,
       color: "green",
     });
   }
 
   if (evAvg > 0 && petrolAvg > 0) {
     const diff = evAvg - petrolAvg;
+    const absDiff = Math.abs(diff);
     stats.push({
       title: "Elbil vs bensin",
-      value: `+${formatKr(diff)} kr`,
-      description: `En elbil kostar i snitt ${formatKr(diff)} kr mer än en bensinbil (2020+ modeller). Men driftskostnaden är lägre — kolla vår TCO-kalkylator.`,
+      value: diff >= 0 ? `+${formatKr(absDiff)} kr mer` : `−${formatKr(absDiff)} kr billigare`,
+      description: diff >= 0
+        ? `En elbil kostar i snitt ${formatKr(absDiff)} kr mer än en bensinbil (2020+ modeller). Men driftskostnaden är lägre — kolla vår TCO-kalkylator.`
+        : `En elbil kostar i snitt ${formatKr(absDiff)} kr mindre än en bensinbil (2020+ modeller). Dessutom är driftskostnaden lägre — kolla vår TCO-kalkylator.`,
       color: "amber",
     });
   }
@@ -211,7 +248,9 @@ export default async function FaktaPage() {
         <ShareBar
           url="https://helanotan.se/fakta"
           title="Kostar mer än du tror — bilkostnader i Sverige"
-          description={`Vi analyserade ${formatKr(totalCars).replace(" kr", "")} bilar på Blocket. Handlarpremien är ${dealerPremiumPct.toFixed(0)}%.`}
+          description={dealerPremiumPct > 0
+            ? `Vi analyserade ${formatKr(totalCars).replace(" kr", "")} bilar på Blocket. Handlarpremien är ${dealerPremiumPct.toFixed(0)}%.`
+            : `Vi analyserade ${formatKr(totalCars).replace(" kr", "")} bilar på Blocket. Insikter om verkliga bilkostnader i Sverige.`}
           eventPrefix="fakta"
         />
       </div>
