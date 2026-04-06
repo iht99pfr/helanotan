@@ -118,8 +118,10 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
         let filtered = isFiltered
           ? points.filter((p) => p.fuel === internalFuel)
           : points;
-        if (yearMin) filtered = filtered.filter((p) => p.year >= yearMin);
-        if (yearMax) filtered = filtered.filter((p) => p.year <= yearMax);
+        const lo = (yearMin && yearMax && yearMin > yearMax) ? yearMax : yearMin;
+        const hi = (yearMin && yearMax && yearMin > yearMax) ? yearMin : yearMax;
+        if (lo) filtered = filtered.filter((p) => p.year >= lo);
+        if (hi) filtered = filtered.filter((p) => p.year <= hi);
         result[model] = filtered;
       }
       return result;
