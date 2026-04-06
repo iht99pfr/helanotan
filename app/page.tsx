@@ -1,12 +1,15 @@
 import { ModelSelectionProvider } from "./components/ModelSelectionContext";
+import { CartProvider } from "./components/CartContext";
 import ModelSelector from "./components/ModelSelector";
 import HeroSection from "./components/HeroSection";
 import StatsSection from "./components/StatsSection";
 import ChartSection from "./components/ChartSection";
 import DataTableSection from "./components/DataTableSection";
+import CartButton from "./components/CartButton";
 
 export default function Home() {
   return (
+    <CartProvider>
     <ModelSelectionProvider>
       <div className="space-y-8 sm:space-y-12">
         {/* Hero */}
@@ -64,6 +67,8 @@ export default function Home() {
           </p>
         </section>
       </div>
+      <CartButton />
     </ModelSelectionProvider>
+    </CartProvider>
   );
 }

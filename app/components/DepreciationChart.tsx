@@ -52,6 +52,7 @@ interface Props {
   modelConfig: ModelConfigMap;
   fuelFilter: string;
   maxAgePerModel?: Record<string, number>;
+  onDotClick?: (modelKey: string, point: ScatterPoint) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,12 +60,12 @@ function DealDot(props: any) {
   const { cx, cy, payload, fill } = props;
   if (!cx || !cy) return null;
   if (payload?.deal === "great") {
-    return <circle cx={cx} cy={cy} r={6} fill="#16a34a" stroke="#fff" strokeWidth={1.5} />;
+    return <circle cx={cx} cy={cy} r={6} fill="#16a34a" stroke="#fff" strokeWidth={1.5} style={{ cursor: "pointer" }} />;
   }
   if (payload?.deal === "good") {
-    return <circle cx={cx} cy={cy} r={5} fill="#4ade80" opacity={0.85} />;
+    return <circle cx={cx} cy={cy} r={5} fill="#4ade80" opacity={0.85} style={{ cursor: "pointer" }} />;
   }
-  return <circle cx={cx} cy={cy} r={4} fill={fill} opacity={0.6} />;
+  return <circle cx={cx} cy={cy} r={4} fill={fill} opacity={0.6} style={{ cursor: "pointer" }} />;
 }
 
 function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: ScatterPoint }> }) {
@@ -148,7 +149,7 @@ const formatPriceK = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1).r
 const formatTkr = (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1).replace(".0", "")}M` : `${v.toFixed(0)}k`;
 const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
-export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel }: Props) {
+export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel, onDotClick }: Props) {
   const COLORS = getColorsMap(modelConfig);
 
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
@@ -257,7 +258,8 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           {Object.entries(filteredScatter).map(([model, points]) => (
             points.length > 0 && !hiddenModels.has(model) && (
               <Scatter key={model} name={model} data={points} fill={COLORS[model]}
-                shape={<DealDot fill={COLORS[model]} />} />
+                shape={<DealDot fill={COLORS[model]} />}
+                onClick={(data: { payload: ScatterPoint }) => onDotClick?.(model, data.payload)} />
             )
           ))}
           {/* Invisible scatters for hidden models so they still appear in the legend */}

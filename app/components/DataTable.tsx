@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useCart, tableItemId, type CartItemFromTable } from "./CartContext";
 
 interface Car {
   id: string;
@@ -41,6 +42,52 @@ const FUEL_LABELS: Record<string, string> = {
   Electric: "El",
 };
 
+function SaveButton({ car }: { car: Car }) {
+  const { addItem, removeItem, isInCart } = useCart();
+  const cartId = tableItemId(car.id);
+  const inCart = isInCart(cartId);
+
+  function toggle() {
+    if (inCart) {
+      removeItem(cartId);
+    } else {
+      const item: CartItemFromTable = {
+        cartId,
+        source: "table",
+        modelKey: car.modelKey || "",
+        modelLabel: `${car.make} ${car.model}`,
+        blocketId: car.id,
+        url: car.url,
+        make: car.make,
+        model: car.model,
+        year: car.year,
+        price: car.price,
+        mileage: car.mileage,
+        fuel: car.fuel,
+        hp: car.hp,
+        seller: car.seller,
+        predicted: car.predicted ?? undefined,
+        residual: car.residual ?? undefined,
+        deal: car.deal,
+        addedAt: Date.now(),
+      };
+      addItem(item);
+    }
+  }
+
+  return (
+    <button
+      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(); }}
+      className={`p-1 rounded transition ${inCart ? "text-amber-500" : "text-[var(--muted)] hover:text-amber-400"}`}
+      title={inCart ? "Ta bort ur kopkorg" : "Spara i kopkorg"}
+    >
+      <svg width={18} height={18} viewBox="0 0 24 24" fill={inCart ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+      </svg>
+    </button>
+  );
+}
+
 export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Props) {
   const sorted = useMemo(() => {
     const result = [...cars];
@@ -69,16 +116,22 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
       {/* Mobile card view */}
       <div className="sm:hidden space-y-2">
         {sorted.map((car) => (
-          <a
+          <div
             key={car.id}
-            href={car.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`block p-3 border border-[var(--border)] rounded-lg active:bg-[var(--card)] transition ${
+            className={`relative p-3 border border-[var(--border)] rounded-lg transition ${
               car.deal === "great" ? "bg-green-50/60" : car.deal === "good" ? "bg-green-50/30" : ""
             }`}
           >
-            <div className="flex justify-between items-start">
+            <div className="absolute top-2 right-2 z-10">
+              <SaveButton car={car} />
+            </div>
+            <a
+              href={car.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block active:bg-[var(--card)]"
+            >
+            <div className="flex justify-between items-start pr-8">
               <span className="font-medium text-sm text-[var(--foreground)]">{car.make} {car.model}</span>
               <span className="font-mono font-semibold text-sm text-[var(--foreground)]">
                 {car.price.toLocaleString("sv-SE")} kr
@@ -117,7 +170,8 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                 </span>
               </div>
             )}
-          </a>
+            </a>
+          </div>
         ))}
       </div>
 
@@ -160,6 +214,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
               </th>
               <th className="px-3 py-2 text-left hidden sm:table-cell">Säljare</th>
               <th className="px-3 py-2 text-center">Länk</th>
+              <th className="px-3 py-2 text-center w-10"></th>
             </tr>
           </thead>
           <tbody>
@@ -222,6 +277,9 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                   >
                     Blocket
                   </a>
+                </td>
+                <td className="px-3 py-2 text-center">
+                  <SaveButton car={car} />
                 </td>
               </tr>
             ))}

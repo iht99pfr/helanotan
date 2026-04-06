@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useModelSelection } from "./ModelSelectionContext";
+import CarDetailModal from "./CarDetailModal";
 
 const DepreciationChart = dynamic(() => import("./DepreciationChart"), { ssr: false });
 const RetentionChart = dynamic(() => import("./RetentionChart"), { ssr: false });
@@ -10,9 +11,13 @@ const MileageChart = dynamic(() => import("./MileageChart"), { ssr: false });
 
 const FUEL_FILTERS = ["Alla", "Hybrid", "Laddhybrid", "Diesel", "Bensin"] as const;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface SelectedDot { modelKey: string; point: any; }
+
 export default function ChartSection() {
   const { selectedModels, modelConfig, fuelFilter, setFuelFilter } = useModelSelection();
   const [hiddenModels, setHiddenModels] = useState<Set<string>>(new Set());
+  const [selectedDot, setSelectedDot] = useState<SelectedDot | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [aggregates, setAggregates] = useState<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,6 +137,7 @@ export default function ChartSection() {
           onToggleModel={toggleModel}
           fuelFilter={fuelFilter}
           maxAgePerModel={maxAgePerModel}
+          onDotClick={(modelKey, point) => setSelectedDot({ modelKey, point })}
         />
       </section>
 
@@ -207,8 +213,19 @@ export default function ChartSection() {
           hiddenModels={hiddenModels}
           onToggleModel={toggleModel}
           fuelFilter={fuelFilter}
+          onDotClick={(modelKey, point) => setSelectedDot({ modelKey, point })}
         />
       </section>
+
+      {/* Car detail modal for scatter dot clicks */}
+      {selectedDot && (
+        <CarDetailModal
+          point={selectedDot.point}
+          modelKey={selectedDot.modelKey}
+          modelLabel={modelConfig[selectedDot.modelKey]?.label || selectedDot.modelKey}
+          onClose={() => setSelectedDot(null)}
+        />
+      )}
     </>
   );
 }

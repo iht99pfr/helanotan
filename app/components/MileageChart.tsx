@@ -25,6 +25,7 @@ interface Props {
   onToggleModel: (model: string) => void;
   modelConfig: ModelConfigMap;
   fuelFilter: string;
+  onDotClick?: (modelKey: string, point: ScatterPoint) => void;
 }
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
@@ -102,7 +103,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
   };
 }
 
-export default function MileageChart({ data, scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter }: Props) {
+export default function MileageChart({ data, scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter, onDotClick }: Props) {
   const COLORS = getColorsMap(modelConfig);
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
   const isFiltered = internalFuel !== "All";
@@ -165,7 +166,14 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
             ? <Scatter key={model} name={model} data={[]} dataKey="price"
                 fill={COLORS[model]} opacity={0.5} r={3} legendType="circle" />
             : <Scatter key={model} name={model} data={displayData[model]} dataKey="price"
-                fill={COLORS[model]} opacity={0.5} r={3} legendType="circle" />
+                fill={COLORS[model]} opacity={0.5} r={3} legendType="circle"
+                style={{ cursor: onDotClick ? "pointer" : undefined }}
+                onClick={onDotClick && scatter?.[model] ? (data: { payload: MileagePoint }) => {
+                  // Find the matching full scatter point
+                  const mp = data.payload;
+                  const match = scatter[model]?.find((s) => s.mileage === mp.mileage && s.price === mp.price);
+                  if (match) onDotClick(model, match);
+                } : undefined} />
         ))}
         {Object.keys(trendLines).map((model) => (
           <Line key={`${model}_trend`} type="monotone" dataKey={model} stroke={COLORS[model]}
