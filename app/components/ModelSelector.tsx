@@ -80,6 +80,16 @@ function KiaLogo({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
+function PolestarLogo({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2 L14.5 9.5 L12 7.5 L9.5 9.5 Z" fill="currentColor" />
+      <path d="M12 22 L9.5 14.5 L12 16.5 L14.5 14.5 Z" fill="currentColor" />
+      <path d="M12 2 L12 22" stroke="currentColor" strokeWidth="0.5" opacity="0.3" />
+    </svg>
+  );
+}
+
 function LandRoverLogo({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,9 +118,10 @@ const BRAND_LOGOS: Record<string, React.FC<{ className?: string }>> = {
   Tesla: TeslaLogo,
   Kia: KiaLogo,
   "Land Rover": LandRoverLogo,
+  Polestar: PolestarLogo,
 };
 
-const BRAND_ORDER = ["BMW", "Land Rover", "Mercedes", "VW", "Kia", "Toyota", "Volvo", "Tesla"];
+const BRAND_ORDER = ["BMW", "Land Rover", "Mercedes", "Polestar", "VW", "Kia", "Toyota", "Volvo", "Tesla"];
 const TWO_WORD_BRANDS = new Set(["Land Rover"]);
 
 /* ─── Types & helpers ─── */
