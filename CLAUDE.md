@@ -45,7 +45,11 @@ app/
 │   ├── TcoCalculator.tsx      — ownership cost calculator (single scenario, auto-mileage from scatter data)
 │   ├── DataTable.tsx          — sortable/filterable car listings table with deal badges
 │   ├── DataTableSection.tsx   — data table section wrapper, manages sort + deal filter state
+│   ├── DealAlertSignup.tsx    — email signup for deal alerts
+│   ├── DataLoader.tsx         — shared data loading component
 │   ├── HeroSection.tsx        — hero with dynamic text based on selected models
+│   ├── Nav.tsx                — top navigation bar with all page links
+│   ├── ShareBar.tsx           — social share buttons (X, Facebook, LinkedIn, copy link)
 │   ├── StatsSection.tsx       — per-model stat cards
 │   ├── StatsCards.tsx         — individual stat card component
 │   └── StatsBadges.tsx        — model precision badges (R², RMSE)
@@ -53,11 +57,40 @@ app/
 │   ├── db.ts                  — Neon Postgres connection
 │   ├── model-config.ts       — model metadata types and helpers
 │   └── tco-costs.ts          — per-model cost profiles (insurance, service, repair, tax by fuel, fuel consumption)
-├── layout.tsx                 — root layout with nav
+├── layout.tsx                 — root layout with Nav
 ├── tco/
-│   └── page.tsx               — TCO calculator page (separate route)
+│   └── page.tsx               — TCO calculator page (/tco)
+├── toppen/
+│   └── page.tsx               — Depreciation leaderboard (/toppen)
+├── kopguide/
+│   ├── layout.tsx             — SEO metadata for köpguide
+│   └── page.tsx               — Year-model buying guide (/kopguide)
+├── bevaka/
+│   ├── layout.tsx             — SEO metadata + OG tags for bevaka
+│   └── page.tsx               — Car value tracker with timeline + email signup (/bevaka)
+├── fakta/
+│   └── page.tsx               — Stats dashboard with shareable insights (/fakta)
+├── artiklar/
+│   ├── components/            — ArticleBody, ArticleCard, ArticleHero, BackLink, CategoryBadge, RelatedArticles
+│   ├── data/articles.ts       — article registry
+│   ├── data/content/          — 10 article TSX files (elbil-phev, handlarpremie, etc.)
+│   ├── data/types.ts          — article type definitions
+│   ├── layout.tsx             — articles layout
+│   ├── page.tsx               — article listing page (/artiklar)
+│   └── [slug]/
+│       ├── page.tsx           — individual article page
+│       └── opengraph-image.tsx — dynamic OG images for articles
+├── nyheter/
+│   ├── page.tsx               — news listing page (/nyheter)
+│   └── [slug]/page.tsx        — individual news article page
 ├── page.tsx                   — main page composing all sections
 └── globals.css                — Tailwind base styles
+
+content/
+└── nyheter/
+    └── sv/                    — Swedish news markdown files (e.g. 2026-03-17.md)
+
+growth/                        — Growth experiments and features
 ```
 
 ## Data structures (from Python backend)
@@ -154,6 +187,39 @@ good  = residual < −0.75 × residual_se (~23% of cars)
 - Moved from static JSON files to Neon Postgres via API routes
 - 5-minute cache with stale-while-revalidate for performance
 
+### 8. Growth pages (4 new pages)
+
+**`/toppen` — Värdeminskning-ligan**: Ranking page showing which cars retain value best and which lose most, based on Blocket data. Three tables: best value retention (% of new price after 3 years), loses most, and best buy (lowest kr/mån depreciation when buying 1-year-old, owning 3 years). Filters out models with extreme/insufficient data (>99% or <5% retention).
+
+**`/kopguide` — Vilken årsmodell ska jag köpa?**: Select model+fuel → see per-year-model comparison with total cost/month (depreciation + service + repair + insurance + tax). Sweet spot typically at 3-5 years — not always oldest. Shareable via ShareBar.
+
+**`/bevaka` — Bevaka din bil**: Select your car → see estimated value, monthly depreciation, and forward projection. Timeline shows "Idag → Om 1 år → Om 2 år". Email signup for monthly report. ShareBar with provocative text (e.g. "Min BMW X3 tappar 4 834 kr/mån!"). SEO metadata + OG tags.
+
+**`/fakta` — Kostar mer än du tror**: Stats dashboard with shareable insights: number of cars analyzed (11,031), average price, dealer premium, Defender's massive first-year depreciation (−345,867 kr), most/least expensive model, EV vs petrol price comparison. ShareBar with X/Facebook/LinkedIn/copy.
+
+### 9. Content: Artiklar + Nyheter
+
+**`/artiklar`**: Article system with 10 in-depth articles on car economics (EV vs PHEV value retention, dealer premium analysis, Kia Niro best value, SUV comparison at 300k, etc.). Each article has dynamic OG images, category badges, and related articles. Content stored as TSX components in `app/artiklar/data/content/`.
+
+**`/nyheter`**: News pipeline reading markdown from `content/nyheter/sv/`. First article: "Därför höjs skatten så dramatiskt" (2026-03-17). Nav link "Nyheter" added. Scheduler currently paused.
+
+### 10. ShareBar component
+
+Reusable `ShareBar.tsx` component used across `/fakta`, `/bevaka`, `/kopguide`. Supports X (Twitter), Facebook, LinkedIn share buttons + copy-to-clipboard. Each page provides custom share text.
+
+### 11. Navigation expansion
+
+Nav now includes 10 links: Värdeminskning, Miltal, Ägandekostnad, Toppen, Köpguide, Alla bilar, Bevaka, Fakta, Artiklar, Nyheter. Footer mirrors the same link set.
+
+### 12. Bugfixes (March 2026)
+
+- **Dealer premium -100%**: SQL now filters on actual private sellers (not just non-dealer flag)
+- **EV vs petrol "+−"**: Correct formatting depending on whether EV is cheaper/more expensive
+- **Model names**: "Land Rover Defender" instead of just "Defender"
+- **Leaderboard extreme values**: Polestar 3 (100%), BMW X3 M (0%) filtered out
+- **Bevaka timeline**: "Idag/Om 1 år" instead of confusing year numbers
+- **Bevaka metadata**: SEO title + description + OG tags added
+
 ## Adding a new model
 
 Use the `/add-model` slash command for a guided walkthrough. The pipeline is:
@@ -173,9 +239,22 @@ Use the `/refresh` Claude skill to update all car data. It scrapes new listings,
 
 Sold listings have `is_active = FALSE` in both `cars_raw` and `cars_enriched`. The `/api/cars` route filters these out. Regression models still include sold cars for better statistical power.
 
-## Models tracked (15 models)
+## Models tracked (19 models)
 
-BMW X3, BMW X3 M, Kia Niro, Land Rover Defender, Mercedes GLC, Tesla Model Y, Toyota Land Cruiser, Toyota RAV4, Volvo XC40, Volvo XC40 Recharge, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
+BMW X3, BMW X3 M, Kia Niro, Land Rover Defender, Mercedes GLC, Polestar 2, Polestar 4, Tesla Model Y, Toyota Land Cruiser, Toyota RAV4, Toyota Yaris, Toyota Yaris Cross, Volvo XC40, Volvo XC40 Recharge, Volvo XC60, VW Golf, VW Golf GTI, VW Golf R, VW Tiguan
+
+## Site navigation (all pages)
+
+| Route | Page | Description |
+|-------|------|-------------|
+| `/` | Hem | Main page — model selector, charts, data table |
+| `/tco` | Ägandekostnad | TCO calculator (single scenario) |
+| `/toppen` | Toppen | Depreciation leaderboard |
+| `/kopguide` | Köpguide | Year-model buying guide |
+| `/bevaka` | Bevaka | Car value tracker + email signup |
+| `/fakta` | Fakta | Stats dashboard with shareable insights |
+| `/artiklar` | Artiklar | In-depth articles on car economics |
+| `/nyheter` | Nyheter | News articles (markdown-based) |
 
 ## Dev workflow
 
