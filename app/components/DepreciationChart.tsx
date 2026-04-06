@@ -243,7 +243,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
 
   return (
     <div className="space-y-2">
-      <div className="h-[350px] sm:h-[500px]">
+      <div className="h-[350px] sm:h-[500px] [&_svg]:outline-none">
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />

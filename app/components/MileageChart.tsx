@@ -108,18 +108,23 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
   const isFiltered = internalFuel !== "All";
 
-  // When fuel is filtered and we have scatter data, use scatter points filtered by fuel
+  // Use full scatter data when available (needed for click-to-save), otherwise fall back to aggregated data
   const displayData = useMemo(() => {
-    if (isFiltered && scatter) {
-      const result: Record<string, MileagePoint[]> = {};
+    if (scatter) {
+      const result: Record<string, ScatterPoint[]> = {};
       for (const [model, points] of Object.entries(scatter)) {
-        result[model] = points
-          .filter((p) => p.fuel === internalFuel)
-          .map((p) => ({ mileage: p.mileage, price: p.price }));
+        result[model] = isFiltered
+          ? points.filter((p) => p.fuel === internalFuel)
+          : points;
       }
       return result;
     }
-    return data;
+    // Fallback: wrap MileagePoint as partial ScatterPoint
+    const result: Record<string, MileagePoint[]> = {};
+    for (const [model, points] of Object.entries(data)) {
+      result[model] = points;
+    }
+    return result;
   }, [data, scatter, isFiltered, internalFuel]);
 
   const trendLines = useMemo(() => {
@@ -144,7 +149,7 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
   const models = Object.keys(displayData);
 
   return (
-    <div className="h-[300px] sm:h-[450px]">
+    <div className="h-[300px] sm:h-[450px] [&_svg]:outline-none">
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -167,12 +172,11 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
                 fill={COLORS[model]} opacity={0.5} r={3} legendType="circle" />
             : <Scatter key={model} name={model} data={displayData[model]} dataKey="price"
                 fill={COLORS[model]} opacity={0.5} r={3} legendType="circle"
-                style={{ cursor: onDotClick ? "pointer" : undefined }}
-                onClick={onDotClick && scatter?.[model] ? (data: { payload: MileagePoint }) => {
-                  // Find the matching full scatter point
-                  const mp = data.payload;
-                  const match = scatter[model]?.find((s) => s.mileage === mp.mileage && s.price === mp.price);
-                  if (match) onDotClick(model, match);
+                cursor={onDotClick ? "pointer" : undefined}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                onClick={onDotClick ? (data: any) => {
+                  const p = data.payload;
+                  if (p.year != null) onDotClick(model, p as ScatterPoint);
                 } : undefined} />
         ))}
         {Object.keys(trendLines).map((model) => (
