@@ -109,6 +109,10 @@ export async function GET(req: NextRequest) {
     const fuelParam = searchParams.get("fuel");
     const sortParam = searchParams.get("sort"); // "deal" for deal sorting
     const dealFilter = searchParams.get("deal"); // "great", "good", or "any" (good+great)
+    const yearMin = parseInt(searchParams.get("yearMin") || "0") || 0;
+    const yearMax = parseInt(searchParams.get("yearMax") || "0") || 0;
+    const sellerParam = searchParams.get("seller"); // "private" or "dealer"
+    const priceMax = parseInt(searchParams.get("priceMax") || "0") || 0;
 
     const sql = getDb();
 
@@ -122,6 +126,10 @@ export async function GET(req: NextRequest) {
     const isPetrol = fuelParam === "Petrol";
     const isElectric = fuelParam === "Electric";
     const hasFuel = isHybrid || isPHEV || isDiesel || isPetrol || isElectric;
+    const hasYearMin = yearMin > 0;
+    const hasYearMax = yearMax > 0;
+    const hasSeller = sellerParam === "private" || sellerParam === "dealer";
+    const hasPriceMax = priceMax > 0;
 
     // Fetch regression coefficients for deal scoring
     const regression = await getRegression(sql);
@@ -153,6 +161,10 @@ export async function GET(req: NextRequest) {
             OR (${isPetrol} AND LOWER(fuel_type) LIKE '%bensin%')
             OR (${isElectric} AND LOWER(fuel_type) = 'el')
           ))
+          AND (${!hasYearMin} OR model_year >= ${yearMin})
+          AND (${!hasYearMax} OR model_year <= ${yearMax})
+          AND (${!hasSeller} OR LOWER(seller_type) = ${sellerParam || ""})
+          AND (${!hasPriceMax} OR price_sek <= ${priceMax})
         ORDER BY price_sek ASC
       `;
     } else {
@@ -173,6 +185,10 @@ export async function GET(req: NextRequest) {
             OR (${isPetrol} AND LOWER(fuel_type) LIKE '%bensin%')
             OR (${isElectric} AND LOWER(fuel_type) = 'el')
           ))
+          AND (${!hasYearMin} OR model_year >= ${yearMin})
+          AND (${!hasYearMax} OR model_year <= ${yearMax})
+          AND (${!hasSeller} OR LOWER(seller_type) = ${sellerParam || ""})
+          AND (${!hasPriceMax} OR price_sek <= ${priceMax})
         ORDER BY price_sek DESC
         LIMIT ${limit} OFFSET ${offset}
       `;
@@ -193,6 +209,10 @@ export async function GET(req: NextRequest) {
             OR (${isPetrol} AND LOWER(fuel_type) LIKE '%bensin%')
             OR (${isElectric} AND LOWER(fuel_type) = 'el')
           ))
+          AND (${!hasYearMin} OR model_year >= ${yearMin})
+          AND (${!hasYearMax} OR model_year <= ${yearMax})
+          AND (${!hasSeller} OR LOWER(seller_type) = ${sellerParam || ""})
+          AND (${!hasPriceMax} OR price_sek <= ${priceMax})
       `)[0].total
     );
 

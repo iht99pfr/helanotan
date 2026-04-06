@@ -22,6 +22,9 @@ interface CarsResponse {
   pages: number;
 }
 
+const CURRENT_YEAR = new Date().getFullYear();
+const YEAR_OPTIONS = Array.from({ length: CURRENT_YEAR - 2004 }, (_, i) => CURRENT_YEAR - i);
+
 export default function DataTableSection() {
   const { selectedModels, fuelFilter } = useModelSelection();
   const [data, setData] = useState<CarsResponse | null>(null);
@@ -29,6 +32,11 @@ export default function DataTableSection() {
   const [sortKey, setSortKey] = useState<SortKey>("price");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
   const [dealFilter, setDealFilter] = useState<string>(""); // "", "any", "great", "good"
+  const [yearMin, setYearMin] = useState(0);
+  const [yearMax, setYearMax] = useState(0);
+  const [seller, setSeller] = useState(""); // "", "private", "dealer"
+  const [priceMax, setPriceMax] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
   const limit = 30;
 
   const handleSort = (key: SortKey) => {
@@ -51,13 +59,17 @@ export default function DataTableSection() {
     // Send deal sort to server (server-side sorting by residual)
     if (sortKey === "deal") params.set("sort", "deal");
     if (dealFilter) params.set("deal", dealFilter);
+    if (yearMin) params.set("yearMin", String(yearMin));
+    if (yearMax) params.set("yearMax", String(yearMax));
+    if (seller) params.set("seller", seller);
+    if (priceMax) params.set("priceMax", String(priceMax));
     return params.toString();
-  }, [page, selectedModels, fuelFilter, sortKey, dealFilter]);
+  }, [page, selectedModels, fuelFilter, sortKey, dealFilter, yearMin, yearMax, seller, priceMax]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
-  }, [selectedModels, fuelFilter, dealFilter]);
+  }, [selectedModels, fuelFilter, dealFilter, yearMin, yearMax, seller, priceMax]);
 
   useEffect(() => {
     setData(null);
@@ -83,9 +95,11 @@ export default function DataTableSection() {
     { key: "good", label: "Bra pris", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-green-500 text-white" },
   ];
 
+  const activeFilterCount = [yearMin, yearMax, seller, priceMax].filter(Boolean).length;
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 items-center">
         {dealButtons.map((btn) => (
           <button
             key={btn.key}
@@ -103,7 +117,95 @@ export default function DataTableSection() {
             {btn.label}
           </button>
         ))}
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className={`px-3 py-2.5 sm:py-1.5 rounded-full text-sm font-medium transition border border-[var(--border)] hover:opacity-80 ${
+            showFilters || activeFilterCount > 0
+              ? "bg-[var(--foreground)] text-white"
+              : "bg-[var(--card)] text-[var(--muted)]"
+          }`}
+        >
+          Filtrera{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+        </button>
       </div>
+
+      {/* Expandable filters */}
+      {showFilters && (
+        <div className="flex flex-wrap gap-3 items-end p-3 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+          {/* Year range */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-[var(--muted)]">Årsmodell</label>
+            <select
+              value={yearMin || ""}
+              onChange={(e) => setYearMin(Number(e.target.value) || 0)}
+              className="bg-white border border-[var(--border)] px-2 py-1.5 text-sm rounded-lg"
+            >
+              <option value="">Från</option>
+              {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+            <span className="text-[var(--muted)] text-xs">–</span>
+            <select
+              value={yearMax || ""}
+              onChange={(e) => setYearMax(Number(e.target.value) || 0)}
+              className="bg-white border border-[var(--border)] px-2 py-1.5 text-sm rounded-lg"
+            >
+              <option value="">Till</option>
+              {YEAR_OPTIONS.map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Seller type */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-[var(--muted)]">Säljare</label>
+            <div className="flex gap-1">
+              {[
+                { key: "", label: "Alla" },
+                { key: "private", label: "Privat" },
+                { key: "dealer", label: "Handlare" },
+              ].map((s) => (
+                <button
+                  key={s.key}
+                  onClick={() => setSeller(s.key)}
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition border ${
+                    seller === s.key
+                      ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+                      : "bg-white text-[var(--muted)] border-[var(--border)]"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Max price */}
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-[var(--muted)]">Max pris</label>
+            <input
+              type="number"
+              placeholder="t.ex. 300000"
+              value={priceMax || ""}
+              onChange={(e) => setPriceMax(Number(e.target.value) || 0)}
+              className="bg-white border border-[var(--border)] px-2 py-1.5 text-sm rounded-lg w-28"
+            />
+            {priceMax > 0 && <span className="text-xs text-[var(--muted)]">kr</span>}
+          </div>
+
+          {/* Clear filters */}
+          {activeFilterCount > 0 && (
+            <button
+              onClick={() => { setYearMin(0); setYearMax(0); setSeller(""); setPriceMax(0); }}
+              className="text-xs text-red-500 hover:text-red-700 transition px-2 py-1.5"
+            >
+              Rensa filter
+            </button>
+          )}
+        </div>
+      )}
 
       <DealAlertSignup dealFilter={dealFilter} />
 
