@@ -66,8 +66,8 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
       <div
         className="relative bg-white rounded-xl border border-[var(--border)] shadow-xl max-w-sm w-full p-5 space-y-4"
         onClick={(e) => e.stopPropagation()}
