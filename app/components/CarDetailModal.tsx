@@ -141,17 +141,27 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
           </div>
         )}
 
-        {/* Save button */}
-        <button
-          onClick={handleToggle}
-          className={`w-full py-2.5 rounded-lg text-sm font-medium transition ${
-            inCart
-              ? "bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-              : "bg-[var(--foreground)] text-white hover:opacity-90"
-          }`}
-        >
-          {inCart ? "Ta bort ur kopkorg" : "Spara i kopkorg"}
-        </button>
+        {/* Action buttons */}
+        <div className="space-y-2">
+          <button
+            onClick={handleToggle}
+            className={`w-full py-2.5 rounded-lg text-sm font-medium transition ${
+              inCart
+                ? "bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                : "bg-[var(--foreground)] text-white hover:opacity-90"
+            }`}
+          >
+            {inCart ? "Ta bort ur köpkorg" : "Spara i köpkorg"}
+          </button>
+          <a
+            href={`https://www.blocket.se/annonser/hela_sverige/fordon/bilar?q=${encodeURIComponent(modelLabel)}&cg=1020&mys=${point.year}&mye=${point.year}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full py-2.5 rounded-lg text-sm font-medium text-center border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--card)] transition"
+          >
+            Sök på Blocket
+          </a>
+        </div>
       </div>
     </div>
   );

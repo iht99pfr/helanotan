@@ -79,7 +79,7 @@ function SaveButton({ car }: { car: Car }) {
     <button
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(); }}
       className={`p-1 rounded transition ${inCart ? "text-amber-500" : "text-[var(--muted)] hover:text-amber-400"}`}
-      title={inCart ? "Ta bort ur kopkorg" : "Spara i kopkorg"}
+      title={inCart ? "Ta bort ur köpkorg" : "Spara i köpkorg"}
     >
       <svg width={18} height={18} viewBox="0 0 24 24" fill={inCart ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />

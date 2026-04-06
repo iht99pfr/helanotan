@@ -65,6 +65,19 @@ function CartItemCard({ item, onRemove }: { item: CartItem; onRemove: () => void
           {Math.abs(item.residual).toLocaleString("sv-SE")} kr under predikterat
         </p>
       )}
+      <div className="pt-1">
+        <a
+          href={item.source === "table"
+            ? item.url
+            : `https://www.blocket.se/annonser/hela_sverige/fordon/bilar?q=${encodeURIComponent(item.modelLabel)}&cg=1020&mys=${item.year}&mye=${item.year}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-blue-600 hover:text-blue-800 underline"
+        >
+          {item.source === "table" ? "Visa på Blocket" : "Sök på Blocket"}
+        </a>
+      </div>
     </div>
   );
 }
@@ -88,7 +101,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-[var(--border)]">
           <h2 className="text-lg font-bold text-[var(--foreground)]">
-            Kopkorg ({items.length})
+            Köpkorg ({items.length})
           </h2>
           <div className="flex items-center gap-3">
             {items.length > 0 && (
@@ -114,7 +127,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
         <div className="overflow-y-auto h-[calc(100%-65px)] p-4 space-y-2">
           {items.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-[var(--muted)] text-sm">Din kopkorg är tom.</p>
+              <p className="text-[var(--muted)] text-sm">Din köpkorg är tom.</p>
               <p className="text-[var(--muted)] text-xs mt-2">
                 Klicka på en punkt i grafen eller spara en bil från listan.
               </p>
