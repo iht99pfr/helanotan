@@ -70,7 +70,9 @@ const INS_PREMIUM_HIGH: CostBrackets  = [[3, 16000],[7, 12000], [12, 8000], [99,
 
 // ── Per-model cost profiles ─────────────────────────────────────────
 
-const COST_PROFILES: Record<string, ModelCostProfile> = {
+export { type ModelCostProfile, type CostBrackets, type FuelProfile };
+
+export const COST_PROFILES: Record<string, ModelCostProfile> = {
   LandCruiser: {
     service: TOYOTA_SERVICE,
     repair: TOYOTA_REPAIR,
@@ -203,7 +205,7 @@ export const FUEL_PRICES = {
 // who charge at home but also do longer trips on weekends
 const PHEV_ELECTRIC_SHARE = 0.50;
 
-const FUEL_PROFILES: Record<string, Record<string, FuelProfile>> = {
+export const FUEL_PROFILES: Record<string, Record<string, FuelProfile>> = {
   LandCruiser: {
     Diesel:  { fuelL100km: 10.0, electricShare: 0, fuelType: "diesel" },
     Petrol:  { fuelL100km: 14.0, electricShare: 0, fuelType: "petrol" },

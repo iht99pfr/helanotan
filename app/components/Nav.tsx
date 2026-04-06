@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "Köpguide", href: "/kopguide" },
   { label: "Bevaka", href: "/bevaka" },
   { label: "Fakta", href: "/fakta" },
+  { label: "Modelldata", href: "/modelldata" },
   { label: "Artiklar", href: "/artiklar" },
   { label: "Nyheter", href: "/nyheter" },
 ];
@@ -24,6 +25,7 @@ export default function Nav() {
     if (href === "/kopguide") return pathname.startsWith("/kopguide");
     if (href === "/bevaka") return pathname === "/bevaka";
     if (href === "/fakta") return pathname === "/fakta";
+    if (href === "/modelldata") return pathname === "/modelldata";
     if (href === "/artiklar") return pathname.startsWith("/artiklar");
     if (href === "/nyheter") return pathname.startsWith("/nyheter");
     return false;
