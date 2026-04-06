@@ -48,16 +48,6 @@ function CartItemCard({ item, onRemove }: { item: CartItem; onRemove: () => void
           {item.deal === "good" && (
             <span className="text-xs px-1.5 py-0.5 rounded-full bg-green-50 text-green-600">Bra pris</span>
           )}
-          {item.source === "table" && (
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-blue-600 hover:text-blue-800 underline"
-            >
-              Blocket
-            </a>
-          )}
         </div>
       </div>
       {item.residual != null && item.residual < 0 && (
@@ -75,7 +65,7 @@ function CartItemCard({ item, onRemove }: { item: CartItem; onRemove: () => void
           rel="noopener noreferrer"
           className="text-xs text-blue-600 hover:text-blue-800 underline"
         >
-          {item.source === "table" ? "Visa på Blocket" : "Sök på Blocket"}
+          Visa på Blocket
         </a>
       </div>
     </div>
