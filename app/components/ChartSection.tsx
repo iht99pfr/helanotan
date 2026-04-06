@@ -14,10 +14,14 @@ const FUEL_FILTERS = ["Alla", "Hybrid", "Laddhybrid", "Diesel", "Bensin"] as con
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface SelectedDot { modelKey: string; point: any; }
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export default function ChartSection() {
   const { selectedModels, modelConfig, fuelFilter, setFuelFilter } = useModelSelection();
   const [hiddenModels, setHiddenModels] = useState<Set<string>>(new Set());
   const [selectedDot, setSelectedDot] = useState<SelectedDot | null>(null);
+  const [yearMin, setYearMin] = useState(0);
+  const [yearMax, setYearMax] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [aggregates, setAggregates] = useState<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -206,6 +210,39 @@ export default function ChartSection() {
               })}
           </div>
         )}
+        {/* Year filter for mileage chart */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--muted)]">Årsmodell:</span>
+          <select
+            value={yearMin || ""}
+            onChange={(e) => setYearMin(Number(e.target.value) || 0)}
+            className="bg-white border border-[var(--border)] px-2 py-1.5 text-sm rounded-lg"
+          >
+            <option value="">Från</option>
+            {Array.from({ length: CURRENT_YEAR - 2004 }, (_, i) => CURRENT_YEAR - i).map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+          <span className="text-[var(--muted)] text-xs">–</span>
+          <select
+            value={yearMax || ""}
+            onChange={(e) => setYearMax(Number(e.target.value) || 0)}
+            className="bg-white border border-[var(--border)] px-2 py-1.5 text-sm rounded-lg"
+          >
+            <option value="">Till</option>
+            {Array.from({ length: CURRENT_YEAR - 2004 }, (_, i) => CURRENT_YEAR - i).map((y) => (
+              <option key={y} value={y}>{y}</option>
+            ))}
+          </select>
+          {(yearMin > 0 || yearMax > 0) && (
+            <button
+              onClick={() => { setYearMin(0); setYearMax(0); }}
+              className="text-xs text-red-500 hover:text-red-700 transition px-1"
+            >
+              Rensa
+            </button>
+          )}
+        </div>
         <MileageChart
           data={filteredAggregates.mileageCost}
           scatter={filteredScatter}
@@ -213,6 +250,8 @@ export default function ChartSection() {
           hiddenModels={hiddenModels}
           onToggleModel={toggleModel}
           fuelFilter={fuelFilter}
+          yearMin={yearMin}
+          yearMax={yearMax}
           onDotClick={(modelKey, point) => setSelectedDot({ modelKey, point })}
         />
       </section>

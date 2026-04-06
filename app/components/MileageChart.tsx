@@ -25,6 +25,8 @@ interface Props {
   onToggleModel: (model: string) => void;
   modelConfig: ModelConfigMap;
   fuelFilter: string;
+  yearMin?: number;
+  yearMax?: number;
   onDotClick?: (modelKey: string, point: ScatterPoint) => void;
 }
 
@@ -103,7 +105,7 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
   };
 }
 
-export default function MileageChart({ data, scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter, onDotClick }: Props) {
+export default function MileageChart({ data, scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter, yearMin, yearMax, onDotClick }: Props) {
   const COLORS = getColorsMap(modelConfig);
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
   const isFiltered = internalFuel !== "All";
@@ -113,19 +115,22 @@ export default function MileageChart({ data, scatter, hiddenModels, onToggleMode
     if (scatter) {
       const result: Record<string, ScatterPoint[]> = {};
       for (const [model, points] of Object.entries(scatter)) {
-        result[model] = isFiltered
+        let filtered = isFiltered
           ? points.filter((p) => p.fuel === internalFuel)
           : points;
+        if (yearMin) filtered = filtered.filter((p) => p.year >= yearMin);
+        if (yearMax) filtered = filtered.filter((p) => p.year <= yearMax);
+        result[model] = filtered;
       }
       return result;
     }
-    // Fallback: wrap MileagePoint as partial ScatterPoint
+    // Fallback: wrap MileagePoint as partial ScatterPoint (no year filter possible)
     const result: Record<string, MileagePoint[]> = {};
     for (const [model, points] of Object.entries(data)) {
       result[model] = points;
     }
     return result;
-  }, [data, scatter, isFiltered, internalFuel]);
+  }, [data, scatter, isFiltered, internalFuel, yearMin, yearMax]);
 
   const trendLines = useMemo(() => {
     const result: Record<string, { mileage: number; median: number }[]> = {};
