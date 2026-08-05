@@ -141,6 +141,22 @@ export default async function Version2Page() {
         att den svarar på den frågan först.
       </p>
 
+      <a
+        href="/version2/design"
+        className="mt-6 block rounded-xl bg-[var(--foreground)] text-[var(--background)] px-6 py-5 hover:opacity-90 transition"
+      >
+        <span className="text-xs font-mono uppercase tracking-widest opacity-70">
+          Ny visuell identitet
+        </span>
+        <span className="block text-xl font-bold mt-1">
+          Se den nya designen i helskärm →
+        </span>
+        <span className="block text-sm mt-1 opacity-80">
+          Hela nya startsidan som klickbar prototyp — kvitto-estetik, seriff,
+          siffror i mono, grönt enbart för pengar att spara. Med riktig data.
+        </span>
+      </a>
+
       {/* Live proof that server-rendering works — the numbers below come from
           the database at request time, not from a client fetch. */}
       <div className="mt-6 rounded-lg bg-[var(--card)] border border-[var(--border)] p-4 font-mono text-sm">
