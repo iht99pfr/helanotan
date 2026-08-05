@@ -1,8 +1,11 @@
 "use client";
 
 import { useCart, scatterPointId, type CartItemFromScatter } from "./CartContext";
+import { track, priceBucket } from "@/app/lib/track";
 
 interface ScatterPoint {
+  /** Blocket listing id. Present only for ads that are still live. */
+  id?: string;
   age: number;
   price: number;
   mileage: number;
@@ -141,25 +144,47 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
           </div>
         )}
 
-        {/* Action buttons */}
-        <div className="space-y-2">
+        {/* Action buttons. When the ad is reachable it is the primary action —
+            saving to a cart is not why anyone opened this. */}
+        <div className={`space-y-2 ${point.id ? "flex flex-col-reverse space-y-reverse" : ""}`}>
           <button
             onClick={handleToggle}
             className={`w-full py-2.5 rounded-lg text-sm font-medium transition ${
-              inCart
+              inCart || point.id
                 ? "bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] hover:bg-red-50 hover:text-red-600 hover:border-red-200"
                 : "bg-[var(--foreground)] text-white hover:opacity-90"
             }`}
           >
             {inCart ? "Ta bort ur köpkorg" : "Spara i köpkorg"}
           </button>
+          {/* A dot that says "171 504 kr under predikterat" used to lead only
+              to a Blocket search for the model and year — the strongest moment
+              in the product dead-ended, and outbound clicks fired in 2 of 121
+              sessions. Live ads now link to the car itself. */}
           <a
-            href={`https://www.blocket.se/annonser/hela_sverige/fordon/bilar?q=${encodeURIComponent(modelLabel)}&cg=1020&mys=${point.year}&mye=${point.year}`}
+            href={
+              point.id
+                ? `https://www.blocket.se/mobility/item/${point.id}`
+                : `https://www.blocket.se/annonser/hela_sverige/fordon/bilar?q=${encodeURIComponent(modelLabel)}&cg=1020&mys=${point.year}&mye=${point.year}`
+            }
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full py-2.5 rounded-lg text-sm font-medium text-center border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--card)] transition"
+            onClick={() =>
+              track("listing_click", {
+                model: modelKey,
+                source: point.id ? "scatter_dot" : "scatter_dot_search",
+                deal: point.deal ?? "none",
+                price: priceBucket(point.price),
+                year: point.year,
+              })
+            }
+            className={`block w-full py-2.5 rounded-lg text-sm font-medium text-center transition ${
+              point.id
+                ? "bg-[var(--foreground)] text-white hover:opacity-90"
+                : "border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--card)]"
+            }`}
           >
-            Sök på Blocket
+            {point.id ? "Visa annonsen på Blocket" : "Sök liknande på Blocket"}
           </a>
         </div>
       </div>

@@ -11,6 +11,10 @@ interface ModelSelectionContextType {
   loading: boolean;
   fuelFilter: string;
   setFuelFilter: (fuel: string) => void;
+  // The whole aggregates payload, fetched once and shared. Three separate
+  // components used to fetch it independently on the homepage.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  aggregates: any;
 }
 
 const ModelSelectionCtx = createContext<ModelSelectionContextType>({
@@ -21,6 +25,7 @@ const ModelSelectionCtx = createContext<ModelSelectionContextType>({
   loading: true,
   fuelFilter: "Alla",
   setFuelFilter: () => {},
+  aggregates: null,
 });
 
 export function useModelSelection() {
@@ -54,11 +59,14 @@ export function ModelSelectionProvider({ children }: { children: ReactNode }) {
   const [selectedModels, setSelectedModels] = useState<Set<string>>(new Set(DEFAULT_MODELS));
   const [loading, setLoading] = useState(true);
   const [fuelFilter, setFuelFilter] = useState("Alla");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [aggregates, setAggregates] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/aggregates")
       .then((r) => r.json())
       .then((data) => {
+        setAggregates(data);
         const config: ModelConfigMap = data.modelConfig || {};
         setModelConfig(config);
         const keys = Object.keys(config);
@@ -92,7 +100,7 @@ export function ModelSelectionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ModelSelectionCtx.Provider value={{ selectedModels, toggleModel, availableModels, modelConfig, loading, fuelFilter, setFuelFilter }}>
+    <ModelSelectionCtx.Provider value={{ selectedModels, toggleModel, availableModels, modelConfig, loading, fuelFilter, setFuelFilter, aggregates }}>
       {children}
     </ModelSelectionCtx.Provider>
   );

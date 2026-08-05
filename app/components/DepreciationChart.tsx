@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { track } from "@/app/lib/track";
 import {
   ScatterChart,
   Scatter,
@@ -18,6 +19,9 @@ import { getColorsMap } from "@/app/lib/model-config";
 import type { ModelConfigMap } from "@/app/lib/model-config";
 
 interface ScatterPoint {
+  /** Blocket listing id — present only for ads still live. Lets a dot link
+      to the actual car rather than to a search for its model and year. */
+  id?: string;
   age: number;
   price: number;
   mileage: number;
@@ -154,79 +158,99 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
 
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
 
-  const filteredScatter: Record<string, ScatterPoint[]> = {};
-  const dealOrder = { undefined: 0, good: 1, great: 2 };
-  for (const [model, points] of Object.entries(scatter)) {
-    const fuelFiltered = internalFuel === "All"
-      ? points
-      : points.filter((p) => p.fuel === internalFuel);
-    const filtered = fuelFiltered.filter((p) => p.age <= 15);
-    // Sort so deals render on top (SVG paint order)
-    filteredScatter[model] = [...filtered].sort(
-      (a, b) => (dealOrder[a.deal as keyof typeof dealOrder] ?? 0) - (dealOrder[b.deal as keyof typeof dealOrder] ?? 0)
-    );
-  }
+  // This legend used to be two inert <span>s wearing the site's filter
+  // costume: a coloured dot plus the exact words that ARE buttons in the
+  // listings table below. Dead clicks fired in 14.9% of sessions with zero
+  // rage clicks — people tapped once, nothing happened, and they left. Now
+  // the affordance is real.
+  const [dealFilter, setDealFilter] = useState<"all" | "great" | "good">("all");
 
-  const models = Object.keys(medians);
-  const hasPredictions = predictionCurves && Object.keys(predictionCurves).length > 0;
-  const modelsWithCurve: string[] = [];
-
-  let trendData: Record<string, number | number[]>[];
-
-  if (hasPredictions) {
-    const curveKey = internalFuel === "All" ? "all" : internalFuel;
-    const allAges = new Set<number>();
-    for (const model of models) {
-      const curve = predictionCurves[model]?.[curveKey];
-      if (curve) {
-        modelsWithCurve.push(model);
-        curve.forEach((p) => allAges.add(p.age));
-      }
+  // Everything below used to run in the component body on every render: a
+  // filter, a copy and a comparator sort over ~5 000 points, plus a rebuild of
+  // the trend series. React re-renders this component on every fuel pill,
+  // model pill, legend tap and year change — and ChartSection renders the
+  // mileage chart from the same data — so a single click paid for it twice.
+  // That is the bulk of an INP of 1800 ms against an LCP of 0.97 s.
+  const filteredScatter = useMemo(() => {
+    const dealOrder = { undefined: 0, good: 1, great: 2 };
+    const out: Record<string, ScatterPoint[]> = {};
+    for (const [model, points] of Object.entries(scatter)) {
+      const filtered = points.filter(
+        (p) =>
+          p.age <= 15 &&
+          (internalFuel === "All" || p.fuel === internalFuel) &&
+          (dealFilter === "all" ||
+            (dealFilter === "great" ? p.deal === "great" : p.deal != null))
+      );
+      // Sort so deals render on top (SVG paint order)
+      out[model] = filtered.sort(
+        (a, b) => (dealOrder[a.deal as keyof typeof dealOrder] ?? 0) - (dealOrder[b.deal as keyof typeof dealOrder] ?? 0)
+      );
     }
-    trendData = [...allAges].sort((a, b) => a - b).filter(a => a <= 15).map((age) => {
-      const point: Record<string, number | number[]> = { age };
-      for (const model of modelsWithCurve) {
-        // Don't extrapolate beyond the oldest actual data point
-        const modelMax = maxAgePerModel?.[model];
-        if (modelMax != null && age > modelMax) continue;
-        const curve = predictionCurves[model]?.[curveKey];
-        const match = curve?.find((p) => p.age === age);
-        if (match) {
-          point[model] = Math.max(0, match.predicted) / 1000;
-          point[`${model}_range`] = [Math.max(0, match.lower) / 1000, Math.max(0, match.upper) / 1000];
-        }
-      }
-      return point;
-    });
-  } else {
-    const allAges = new Set<number>();
-    Object.values(medians).forEach((pts) => pts.forEach((p) => allAges.add(p.age)));
-    trendData = [...allAges].sort((a, b) => a - b).map((age) => {
-      const point: Record<string, number | number[]> = { age };
+    return out;
+  }, [scatter, internalFuel, dealFilter]);
+
+  const { trendData, modelsWithCurve } = useMemo(() => {
+    const models = Object.keys(medians);
+    const hasPredictions = predictionCurves && Object.keys(predictionCurves).length > 0;
+    const curveModels: string[] = [];
+    let data: Record<string, number | number[]>[];
+
+    if (hasPredictions) {
+      const curveKey = internalFuel === "All" ? "all" : internalFuel;
+      const allAges = new Set<number>();
       for (const model of models) {
-        const match = medians[model].find((p) => p.age === age);
-        if (match) point[model] = match.median / 1000;
+        const curve = predictionCurves[model]?.[curveKey];
+        if (curve) {
+          curveModels.push(model);
+          curve.forEach((p) => allAges.add(p.age));
+        }
       }
-      return point;
-    });
-    modelsWithCurve.push(...models);
-  }
+      data = [...allAges].sort((a, b) => a - b).filter((a) => a <= 15).map((age) => {
+        const point: Record<string, number | number[]> = { age };
+        for (const model of curveModels) {
+          // Don't extrapolate beyond the oldest actual data point
+          const modelMax = maxAgePerModel?.[model];
+          if (modelMax != null && age > modelMax) continue;
+          const curve = predictionCurves[model]?.[curveKey];
+          const match = curve?.find((p) => p.age === age);
+          if (match) {
+            point[model] = Math.max(0, match.predicted) / 1000;
+            point[`${model}_range`] = [Math.max(0, match.lower) / 1000, Math.max(0, match.upper) / 1000];
+          }
+        }
+        return point;
+      });
+    } else {
+      const allAges = new Set<number>();
+      Object.values(medians).forEach((pts) => pts.forEach((p) => allAges.add(p.age)));
+      data = [...allAges].sort((a, b) => a - b).map((age) => {
+        const point: Record<string, number | number[]> = { age };
+        for (const model of models) {
+          const match = medians[model].find((p) => p.age === age);
+          if (match) point[model] = match.median / 1000;
+        }
+        return point;
+      });
+      curveModels.push(...models);
+    }
 
-  // Enforce monotonic decrease on prediction trend data
-  for (const model of modelsWithCurve) {
-    let prevVal = Infinity;
-    for (const point of trendData) {
-      const val = point[model];
-      if (typeof val === "number") {
-        if (val > prevVal) {
-          point[model] = prevVal;
-        } else {
-          prevVal = val;
+    // Enforce monotonic decrease on prediction trend data
+    for (const model of curveModels) {
+      let prevVal = Infinity;
+      for (const point of data) {
+        const val = point[model];
+        if (typeof val === "number") {
+          if (val > prevVal) point[model] = prevVal;
+          else prevVal = val;
         }
       }
     }
-  }
 
+    return { trendData: data, modelsWithCurve: curveModels };
+  }, [medians, predictionCurves, internalFuel, maxAgePerModel]);
+
+  const hasPredictions = !!predictionCurves && Object.keys(predictionCurves).length > 0;
   const visibleModelsWithCurve = modelsWithCurve.filter((m) => !hiddenModels.has(m));
 
   // Cap trend Y-axis to prediction values + 30% (not confidence bands)
@@ -270,16 +294,40 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       </ResponsiveContainer>
       </div>
 
-      <div className="flex justify-center gap-5 text-xs text-[var(--muted)]">
-        <span className="inline-flex items-center gap-1.5">
-          <svg width={12} height={12}><circle cx={6} cy={6} r={6} fill="#16a34a" /></svg>
-          Fyndpris
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <svg width={10} height={10}><circle cx={5} cy={5} r={5} fill="#4ade80" /></svg>
-          Bra pris
-        </span>
+      <div className="flex flex-wrap justify-center gap-2 text-xs">
+        {([
+          { key: "all", label: "Alla annonser", dot: null, r: 0 },
+          { key: "great", label: "Fyndpris", dot: "#16a34a", r: 6 },
+          { key: "good", label: "Bra pris", dot: "#4ade80", r: 5 },
+        ] as const).map(({ key, label, dot, r }) => (
+          <button
+            key={key}
+            onClick={() => {
+              setDealFilter(key);
+              track("deal_filter", { value: key, source: "chart" });
+            }}
+            aria-pressed={dealFilter === key}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border transition ${
+              dealFilter === key
+                ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+                : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
+            }`}
+          >
+            {dot && (
+              <svg width={r * 2} height={r * 2}>
+                <circle cx={r} cy={r} r={r} fill={dot} />
+              </svg>
+            )}
+            {label}
+          </button>
+        ))}
       </div>
+      {dealFilter !== "all" && (
+        <p className="text-xs text-[var(--muted)] text-center">
+          Visar {Object.values(filteredScatter).reduce((n, p) => n + p.length, 0)} annonser
+          under predikterat pris. Klicka på en punkt för att se bilen.
+        </p>
+      )}
 
       {modelsWithCurve.length > 0 ? (
         <div className="h-[280px] sm:h-[400px]">

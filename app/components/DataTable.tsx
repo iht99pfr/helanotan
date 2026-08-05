@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useCart, tableItemId, type CartItemFromTable } from "./CartContext";
+import { track, priceBucket } from "@/app/lib/track";
 
 interface Car {
   id: string;
@@ -33,6 +34,17 @@ interface Props {
 }
 
 export type SortKey = "price" | "year" | "mileage" | "hp" | "deal";
+
+/** The north-star event: someone left here holding a specific car. */
+function trackListingClick(car: Car, source: "table_row" | "table_card") {
+  track("listing_click", {
+    model: car.modelKey ?? `${car.make} ${car.model}`,
+    source,
+    deal: car.deal ?? "none",
+    price: priceBucket(car.price),
+    year: car.year,
+  });
+}
 
 const FUEL_LABELS: Record<string, string> = {
   Hybrid: "Hybrid",
@@ -122,6 +134,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
               href={car.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackListingClick(car, "table_card")}
               className="block active:bg-[var(--card)]"
             >
             <div className="flex justify-between items-start pr-8">
@@ -266,6 +279,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                     href={car.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackListingClick(car, "table_row")}
                     className="text-xs text-blue-600 hover:text-blue-800 underline"
                   >
                     Blocket

@@ -1,20 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useModelSelection } from "./ModelSelectionContext";
 import StatsCards from "./StatsCards";
 import StatsBadges from "./StatsBadges";
 
 export default function StatsSection() {
-  const { selectedModels, modelConfig, loading: ctxLoading } = useModelSelection();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    fetch("/api/aggregates")
-      .then((r) => r.json())
-      .then(setData);
-  }, []);
+  const { selectedModels, modelConfig, loading: ctxLoading, aggregates: data } =
+    useModelSelection();
 
   if (!data || ctxLoading) {
     return (

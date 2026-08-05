@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useCallback } from "react";
 import Image from "next/image";
+import { track } from "@/app/lib/track";
 
 const NAV_ITEMS = [
   { label: "Värdeminskning", href: "/#depreciation" },
@@ -51,6 +52,7 @@ export default function Nav() {
             <a
               key={href}
               href={href}
+              onClick={() => track("nav_click", { to: href, from: pathname })}
               className={`transition ${
                 isActive(href)
                   ? "text-[var(--foreground)] font-medium"
@@ -80,6 +82,7 @@ export default function Nav() {
                   key={href}
                   href={href}
                   ref={active ? activeRef : undefined}
+                  onClick={() => track("nav_click", { to: href, from: pathname })}
                   className={`whitespace-nowrap text-xs font-medium px-3.5 py-1.5 rounded-full border transition ${
                     active
                       ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"

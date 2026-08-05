@@ -15,12 +15,10 @@ import {
 import { getColorsMap } from "@/app/lib/model-config";
 import type { ModelConfigMap } from "@/app/lib/model-config";
 
-interface MileagePoint { mileage: number; price: number; }
 interface ScatterPoint { age: number; mileage: number; price: number; year: number; fuel: string; hp: number; seller: string; }
 
 interface Props {
-  data: Record<string, MileagePoint[]>;
-  scatter?: Record<string, ScatterPoint[]>;
+  scatter: Record<string, ScatterPoint[]>;
   hiddenModels: Set<string>;
   onToggleModel: (model: string) => void;
   modelConfig: ModelConfigMap;
@@ -105,34 +103,26 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
   };
 }
 
-export default function MileageChart({ data, scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter, yearMin, yearMax, onDotClick }: Props) {
+export default function MileageChart({ scatter, hiddenModels, onToggleModel, modelConfig, fuelFilter, yearMin, yearMax, onDotClick }: Props) {
   const COLORS = getColorsMap(modelConfig);
   const internalFuel = FUEL_MAP[fuelFilter] || fuelFilter;
   const isFiltered = internalFuel !== "All";
 
   // Use full scatter data when available (needed for click-to-save), otherwise fall back to aggregated data
   const displayData = useMemo(() => {
-    if (scatter) {
-      const result: Record<string, ScatterPoint[]> = {};
-      for (const [model, points] of Object.entries(scatter)) {
-        let filtered = isFiltered
-          ? points.filter((p) => p.fuel === internalFuel)
-          : points;
-        const lo = (yearMin && yearMax && yearMin > yearMax) ? yearMax : yearMin;
-        const hi = (yearMin && yearMax && yearMin > yearMax) ? yearMin : yearMax;
-        if (lo) filtered = filtered.filter((p) => p.year >= lo);
-        if (hi) filtered = filtered.filter((p) => p.year <= hi);
-        result[model] = filtered;
-      }
-      return result;
-    }
-    // Fallback: wrap MileagePoint as partial ScatterPoint (no year filter possible)
-    const result: Record<string, MileagePoint[]> = {};
-    for (const [model, points] of Object.entries(data)) {
-      result[model] = points;
+    const result: Record<string, ScatterPoint[]> = {};
+    const lo = (yearMin && yearMax && yearMin > yearMax) ? yearMax : yearMin;
+    const hi = (yearMin && yearMax && yearMin > yearMax) ? yearMin : yearMax;
+    for (const [model, points] of Object.entries(scatter)) {
+      let filtered = isFiltered
+        ? points.filter((p) => p.fuel === internalFuel)
+        : points;
+      if (lo) filtered = filtered.filter((p) => p.year >= lo);
+      if (hi) filtered = filtered.filter((p) => p.year <= hi);
+      result[model] = filtered;
     }
     return result;
-  }, [data, scatter, isFiltered, internalFuel, yearMin, yearMax]);
+  }, [scatter, isFiltered, internalFuel, yearMin, yearMax]);
 
   const trendLines = useMemo(() => {
     const result: Record<string, { mileage: number; median: number }[]> = {};

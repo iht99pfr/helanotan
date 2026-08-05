@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useModelSelection } from "./ModelSelectionContext";
 import CarDetailModal from "./CarDetailModal";
+import { track } from "@/app/lib/track";
 
 const DepreciationChart = dynamic(() => import("./DepreciationChart"), { ssr: false });
 const RetentionChart = dynamic(() => import("./RetentionChart"), { ssr: false });
@@ -17,25 +18,42 @@ interface SelectedDot { modelKey: string; point: any; }
 const CURRENT_YEAR = new Date().getFullYear();
 
 export default function ChartSection() {
-  const { selectedModels, modelConfig, fuelFilter, setFuelFilter } = useModelSelection();
+  const { selectedModels, modelConfig, fuelFilter, setFuelFilter, aggregates } =
+    useModelSelection();
   const [hiddenModels, setHiddenModels] = useState<Set<string>>(new Set());
   const [selectedDot, setSelectedDot] = useState<SelectedDot | null>(null);
   const [yearMin, setYearMin] = useState(0);
   const [yearMax, setYearMax] = useState(0);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [aggregates, setAggregates] = useState<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [scatter, setScatter] = useState<any>(null);
 
+  // Scatter is fetched per model and accumulated, so toggling a model on and
+  // off again costs one request rather than one per toggle. Fetching all
+  // eighteen up front meant 2.3 MB parsed to draw three.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const scatterCache = useRef<Record<string, any>>({});
+  const modelsKey = useMemo(() => [...selectedModels].sort().join(","), [selectedModels]);
+
   useEffect(() => {
-    Promise.all([
-      fetch("/api/aggregates").then((r) => r.json()),
-      fetch("/api/scatter").then((r) => r.json()),
-    ]).then(([agg, scat]) => {
-      setAggregates(agg);
-      setScatter(scat);
-    });
-  }, []);
+    const wanted = modelsKey ? modelsKey.split(",") : [];
+    const missing = wanted.filter((m) => !(m in scatterCache.current));
+    if (!missing.length) {
+      setScatter({ ...scatterCache.current });
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/scatter?models=${encodeURIComponent(missing.join(","))}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        // Record every requested model, even one the payload has no points
+        // for, so a model with no data is not re-requested on every render.
+        for (const m of missing) scatterCache.current[m] = data?.[m] ?? [];
+        setScatter({ ...scatterCache.current });
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [modelsKey]);
 
   const toggleModel = useCallback((model: string) => {
     setHiddenModels((prev) => {
@@ -74,7 +92,6 @@ export default function ChartSection() {
       ...aggregates,
       priceByAge: filterRecord(aggregates.priceByAge || {}),
       retention: filterRecord(aggregates.retention || {}),
-      mileageCost: filterRecord(aggregates.mileageCost || {}),
       predictionCurves: filterRecord(aggregates.predictionCurves || {}),
     };
   }, [aggregates, selectedModels]);
@@ -111,7 +128,10 @@ export default function ChartSection() {
         {FUEL_FILTERS.map((fuel) => (
           <button
             key={fuel}
-            onClick={() => setFuelFilter(fuel)}
+            onClick={() => {
+              setFuelFilter(fuel);
+              track("fuel_filter", { fuel });
+            }}
             className={`px-3 py-2.5 sm:py-1.5 rounded-lg text-sm transition ${
               fuelFilter === fuel
                 ? "bg-[var(--foreground)] text-white"
@@ -177,7 +197,7 @@ export default function ChartSection() {
         {filteredAggregates.regression && (
           <div className="flex flex-wrap gap-3">
             {Object.keys(filteredAggregates.regression)
-              .filter((m) => selectedModels.has(m) && !hiddenModels.has(m))
+              .filter((m) => selectedModels.has(m))
               .map((model) => {
                 const reg = filteredAggregates.regression[model];
                 if (!reg?.coefficients) return null;
@@ -190,10 +210,25 @@ export default function ChartSection() {
                 const pctPer1000 = (1 - Math.exp(coeff * 1000)) * 100;
                 const cfg = modelConfig[model];
                 const label = cfg?.label?.split(" ").pop() || model;
+                // These badges carry a coloured dot, a border and rounded
+                // corners — the exact costume the fuel filters two sections
+                // above wear. They were plain divs, so tapping one did
+                // nothing. Rather than restyle them into blandness, give them
+                // the behaviour their appearance already promised: the same
+                // show/hide toggle as the chart legends.
+                const isHidden = hiddenModels.has(model);
                 return (
-                  <div
+                  <button
                     key={model}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm"
+                    onClick={() => {
+                      toggleModel(model);
+                      track("model_visibility", { model, visible: isHidden, source: "mileage_badge" });
+                    }}
+                    aria-pressed={!isHidden}
+                    title={isHidden ? `Visa ${label} i diagrammet` : `Dölj ${label} i diagrammet`}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm transition ${
+                      isHidden ? "opacity-40 line-through" : "hover:bg-[var(--card)]"
+                    }`}
                     style={{ borderColor: cfg?.color || "#888" }}
                   >
                     <span
@@ -205,7 +240,7 @@ export default function ChartSection() {
                       −{pctPer1000.toFixed(2)}%
                     </span>
                     <span className="text-[var(--muted)] text-xs"><span className="hidden sm:inline">av aktuellt värde </span>/ 1 000 mil</span>
-                  </div>
+                  </button>
                 );
               })}
           </div>
@@ -244,7 +279,6 @@ export default function ChartSection() {
           )}
         </div>
         <MileageChart
-          data={filteredAggregates.mileageCost}
           scatter={filteredScatter}
           modelConfig={modelConfig}
           hiddenModels={hiddenModels}

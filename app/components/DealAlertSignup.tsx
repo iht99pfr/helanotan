@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useModelSelection } from "./ModelSelectionContext";
+import { track } from "@/app/lib/track";
 
 interface Props {
   dealFilter: string;
@@ -30,6 +31,7 @@ export default function DealAlertSignup({ dealFilter }: Props) {
       });
       if (res.ok) {
         setStatus("success");
+        track("alert_submit", { models: [...selectedModels].sort().join(",") });
       } else {
         setStatus("error");
       }
@@ -42,7 +44,7 @@ export default function DealAlertSignup({ dealFilter }: Props) {
     return (
       <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Tack! Vi meddelar dig när nya fynd dyker upp.
+        Tack! Du står i kön — vi hör av oss när fyndbevakningen är igång.
       </div>
     );
   }
@@ -50,11 +52,12 @@ export default function DealAlertSignup({ dealFilter }: Props) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-3">
       <div className="flex-1 min-w-0">
+        {/* Honest until delivery exists — see the note in app/bevaka/page.tsx. */}
         <p className="text-sm text-[var(--foreground)] font-medium">
-          Få mejl när nya fynd dyker upp
+          Ställ dig i kö för fyndbevakning
         </p>
         <p className="text-xs text-[var(--muted)] truncate">
-          {modelLabels}
+          Skickas inte än · {modelLabels}
         </p>
       </div>
       <div className="flex gap-2">

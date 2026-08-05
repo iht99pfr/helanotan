@@ -5,6 +5,7 @@ import { useModelSelection } from "./ModelSelectionContext";
 import DataTable from "./DataTable";
 import type { SortKey } from "./DataTable";
 import DealAlertSignup from "./DealAlertSignup";
+import { track } from "@/app/lib/track";
 
 const FUEL_KEY_MAP: Record<string, string> = {
   Bensin: "Petrol",
@@ -40,6 +41,7 @@ export default function DataTableSection() {
   const limit = 30;
 
   const handleSort = (key: SortKey) => {
+    track("table_sort", { column: key });
     if (sortKey === key) {
       setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
@@ -111,6 +113,7 @@ export default function DataTableSection() {
             key={btn.key}
             onClick={() => {
               setDealFilter(btn.key);
+              track("deal_filter", { value: btn.key || "all", source: "table" });
               if (btn.key) {
                 setSortKey("deal");
                 setSortDir("asc");

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import ShareBar from "@/app/components/ShareBar";
+import { track } from "@/app/lib/track";
 
 interface ModelConfig {
   label: string;
@@ -96,8 +97,12 @@ export default function BevakaPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, modelKey, fuelType, modelYear }),
       });
-      if (res.ok) setStatus("success");
-      else setStatus("error");
+      if (res.ok) {
+        setStatus("success");
+        track("watch_submit", { model: modelKey, year: modelYear, fuel: fuelType });
+      } else {
+        setStatus("error");
+      }
     } catch {
       setStatus("error");
     }
@@ -255,13 +260,18 @@ export default function BevakaPage() {
 
           {/* Email signup */}
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5">
+            {/* This said "vi skickar ett mejl varje månad". Nothing has ever
+                been sent — there is no mail library and no scheduler — and the
+                people who signed up have been waiting since. Say what is
+                actually true until delivery exists. */}
             <h2 className="text-sm font-semibold text-[var(--foreground)] mb-1">
-              Få månadsrapport för din {data.modelConfig[modelKey]?.label}{" "}
-              {modelYear}
+              Ställ dig i kö för månadsrapport på din{" "}
+              {data.modelConfig[modelKey]?.label} {modelYear}
             </h2>
             <p className="text-xs text-[var(--muted)] mb-4">
-              Vi skickar ett mejl varje månad med uppdaterat marknadsvärde,
-              värdeminskning och tips.
+              Månadsrapporten är under uppbyggnad och skickas inte än. Lämnar du
+              din adress hör vi av oss när den första rapporten går ut — inget
+              annat mejl däremellan.
             </p>
 
             {status === "success" ? (
@@ -276,7 +286,7 @@ export default function BevakaPage() {
                 >
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
-                Tack! Du får din första rapport inom kort.
+                Tack! Du står i kön och hör av oss när rapporten är igång.
               </div>
             ) : (
               <form

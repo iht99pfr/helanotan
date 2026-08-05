@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { useModelSelection } from "./ModelSelectionContext";
 import { getModelMeta } from "@/app/lib/model-config";
+import { track } from "@/app/lib/track";
 
 /* ─── Inline SVG brand logos (monochrome, 24×24 viewBox) ─── */
 
@@ -262,7 +263,10 @@ export default function ModelSelector() {
                     return (
                       <button
                         key={key}
-                        onClick={() => toggleModel(key)}
+                        onClick={() => {
+                          toggleModel(key);
+                          track("model_selected", { model: key, selected: !active });
+                        }}
                         className={`
                           inline-flex items-center gap-1.5 px-3.5 py-2.5 sm:py-2 rounded-full text-sm
                           font-medium whitespace-nowrap transition-all duration-150
