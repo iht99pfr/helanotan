@@ -131,6 +131,7 @@ export default async function RootLayout({
               </div>
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--muted)]">
                 <a href="/" className="hover:text-[var(--foreground)] transition">Hem</a>
+                <a href="/bilar" className="hover:text-[var(--foreground)] transition">Modeller</a>
                 <a href="/tco" className="hover:text-[var(--foreground)] transition">Ägandekostnad</a>
                 <a href="/toppen" className="hover:text-[var(--foreground)] transition">Toppen</a>
                 <a href="/kopguide" className="hover:text-[var(--foreground)] transition">Köpguide</a>

@@ -7,6 +7,7 @@ import { track } from "@/app/lib/track";
 
 const NAV_ITEMS = [
   { label: "Värdeminskning", href: "/#depreciation" },
+  { label: "Modeller", href: "/bilar" },
   { label: "Ägandekostnad", href: "/tco" },
   { label: "Toppen", href: "/toppen" },
   { label: "Köpguide", href: "/kopguide" },
@@ -21,6 +22,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   function isActive(href: string) {
+    if (href === "/bilar") return pathname.startsWith("/bilar");
     if (href === "/tco") return pathname === "/tco";
     if (href === "/toppen") return pathname === "/toppen";
     if (href === "/kopguide") return pathname.startsWith("/kopguide");

@@ -1,10 +1,20 @@
 import type { MetadataRoute } from "next";
 import { articles } from "./artiklar/data/articles";
 import { getAllNewsSlugs, getNewsArticle } from "./lib/nyheter";
+import { getModelIndex } from "./lib/model-page";
 
 const baseUrl = "https://helanotan.se";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // The per-model pages are the site's only self-manufacturing traffic: each
+  // one answers a query someone actually types ("xc60 värdeminskning") with
+  // figures already in the HTML. Highest priority after the homepage.
+  const modelPages = (await getModelIndex()).filter((m) => m.indexable).map((m) => ({
+    url: `${baseUrl}/bilar/${m.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "daily" as const,
+    priority: 0.9,
+  }));
   const articlePages = articles.map((article) => ({
     url: `${baseUrl}/artiklar/${article.slug}`,
     lastModified: new Date(article.date),
@@ -30,6 +40,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: `${baseUrl}/bilar`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    ...modelPages,
     {
       url: `${baseUrl}/tco`,
       lastModified: new Date(),
