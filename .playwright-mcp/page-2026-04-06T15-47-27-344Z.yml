@@ -1,0 +1,869 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Hela Notan" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: Hela Notan
+      - generic [ref=e6]:
+        - link "Värdeminskning" [ref=e7] [cursor=pointer]:
+          - /url: /#depreciation
+        - link "Ägandekostnad" [ref=e8] [cursor=pointer]:
+          - /url: /tco
+        - link "Toppen" [ref=e9] [cursor=pointer]:
+          - /url: /toppen
+        - link "Köpguide" [ref=e10] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Bevaka" [ref=e11] [cursor=pointer]:
+          - /url: /bevaka
+        - link "Fakta" [ref=e12] [cursor=pointer]:
+          - /url: /fakta
+        - link "Artiklar" [ref=e13] [cursor=pointer]:
+          - /url: /artiklar
+        - link "Nyheter" [ref=e14] [cursor=pointer]:
+          - /url: /nyheter
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - heading "Hela Notan — vad kostar bilen egentligen?" [level=1] [ref=e18]
+        - paragraph [ref=e19]: Riktig data från Blocket.se. Jämför hur Volvo XC60, Volvo XC40 och Toyota RAV4 tappar i värde över tid, miltal och bränsletyp.
+      - generic [ref=e20]:
+        - heading "Välj modeller att jämföra" [level=2] [ref=e21]
+        - generic [ref=e22]:
+          - generic [ref=e115]:
+            - button "BMW" [ref=e116] [cursor=pointer]:
+              - img [ref=e117]
+              - generic [ref=e122]: BMW
+              - img [ref=e124]
+            - generic [ref=e126]:
+              - button "X3" [ref=e127]: X3
+              - button "X3 M" [ref=e129]: X3 M
+          - generic [ref=e131]:
+            - button "Land Rover" [ref=e132] [cursor=pointer]:
+              - img [ref=e133]:
+                - generic [ref=e135]: L R
+              - generic [ref=e136]: Land Rover
+              - img [ref=e138]
+            - button "Defender" [ref=e141]: Defender
+          - generic [ref=e143]:
+            - button "Mercedes" [ref=e144] [cursor=pointer]:
+              - img [ref=e145]
+              - generic [ref=e149]: Mercedes
+              - img [ref=e151]
+            - button "GLC" [ref=e154]: GLC
+          - generic [ref=e156]:
+            - button "VW" [ref=e157] [cursor=pointer]:
+              - img [ref=e158]
+              - generic [ref=e162]: VW
+              - img [ref=e164]
+            - generic [ref=e166]:
+              - button "Golf" [ref=e167]: Golf
+              - button "Golf R" [ref=e169]: Golf R
+              - button "Tiguan" [ref=e171]: Tiguan
+              - button "Golf GTI" [ref=e173]: Golf GTI
+          - generic [ref=e175]:
+            - button "Kia" [ref=e176] [cursor=pointer]:
+              - img [ref=e177]:
+                - generic [ref=e178]: KIA
+              - generic [ref=e179]: Kia
+              - img [ref=e181]
+            - button "Niro" [ref=e184]: Niro
+          - generic [ref=e186]:
+            - button "Toyota 1 av 4" [ref=e187] [cursor=pointer]:
+              - img [ref=e188]
+              - generic [ref=e192]: Toyota
+              - generic [ref=e193]:
+                - generic [ref=e194]: 1 av 4
+                - img [ref=e195]
+            - generic [ref=e199]:
+              - button "RAV4" [ref=e200]: RAV4
+              - button "Yaris" [ref=e202]: Yaris
+              - button "Yaris Cross" [ref=e204]: Yaris Cross
+              - button "Land Cruiser" [ref=e206]: Land Cruiser
+          - generic [ref=e208]:
+            - button "Volvo 2 av 3" [ref=e209] [cursor=pointer]:
+              - img [ref=e210]
+              - generic [ref=e213]: Volvo
+              - generic [ref=e214]:
+                - generic [ref=e215]: 2 av 3
+                - img [ref=e216]
+            - generic [ref=e220]:
+              - button "XC40" [ref=e221]: XC40
+              - button "XC60" [ref=e223]: XC60
+              - button "XC40 Recharge" [ref=e225]: XC40 Recharge
+          - generic [ref=e227]:
+            - button "Tesla" [ref=e228] [cursor=pointer]:
+              - img [ref=e229]
+              - generic [ref=e233]: Tesla
+              - img [ref=e235]
+            - button "Model Y" [ref=e238]: Model Y
+      - generic [ref=e241]:
+        - generic [ref=e242]:
+          - heading "Toyota RAV4" [level=2] [ref=e243]
+          - generic [ref=e244]:
+            - generic [ref=e245]: Antal annonser
+            - generic [ref=e246]: "1134"
+            - generic [ref=e247]: Snittpris
+            - generic [ref=e248]: 324 344 kr
+            - generic [ref=e249]: Prisintervall
+            - generic [ref=e250]: 44 000 – 599 900
+            - generic [ref=e251]: Snittålder
+            - generic [ref=e252]: 6.2 år
+            - generic [ref=e253]: Snitt miltal
+            - generic [ref=e254]: 10 515 mil
+            - generic [ref=e255]: Årsmodeller
+            - generic [ref=e256]: 2005–2026
+        - generic [ref=e257]:
+          - heading "Volvo XC40" [level=2] [ref=e258]
+          - generic [ref=e259]:
+            - generic [ref=e260]: Antal annonser
+            - generic [ref=e261]: "944"
+            - generic [ref=e262]: Snittpris
+            - generic [ref=e263]: 313 026 kr
+            - generic [ref=e264]: Prisintervall
+            - generic [ref=e265]: 136 500 – 569 000
+            - generic [ref=e266]: Snittålder
+            - generic [ref=e267]: 4.7 år
+            - generic [ref=e268]: Snitt miltal
+            - generic [ref=e269]: 8 798 mil
+            - generic [ref=e270]: Årsmodeller
+            - generic [ref=e271]: 2018–2026
+        - generic [ref=e272]:
+          - heading "Volvo XC60" [level=2] [ref=e273]
+          - generic [ref=e274]:
+            - generic [ref=e275]: Antal annonser
+            - generic [ref=e276]: "2710"
+            - generic [ref=e277]: Snittpris
+            - generic [ref=e278]: 329 385 kr
+            - generic [ref=e279]: Prisintervall
+            - generic [ref=e280]: 40 000 – 859 900
+            - generic [ref=e281]: Snittålder
+            - generic [ref=e282]: 6.7 år
+            - generic [ref=e283]: Snitt miltal
+            - generic [ref=e284]: 13 665 mil
+            - generic [ref=e285]: Årsmodeller
+            - generic [ref=e286]: 2009–2026
+      - generic [ref=e287]:
+        - generic [ref=e288]:
+          - heading "Modellprecision" [level=2] [ref=e289]
+          - paragraph [ref=e290]: Multivariat regression som tar hänsyn till ålder, miltal, bränsletyp, hästkrafter, utrustning, drivlina och säljartyp.
+        - generic [ref=e291]:
+          - generic [ref=e292]:
+            - generic [ref=e293]:
+              - generic [ref=e294]: Toyota RAV4
+              - generic [ref=e295]: Utmärkt
+            - generic [ref=e296]:
+              - generic [ref=e297]: 97.5%
+              - generic [ref=e298]: R²-precision
+            - generic [ref=e299]:
+              - generic [ref=e300]:
+                - text: "RMSE:"
+                - generic [ref=e301]: 20k
+                - text: kr
+              - generic [ref=e302]: n = 1128
+            - paragraph [ref=e303]: "Modellen förklarar 97.5% av prisvariationen. Typiskt prediktionsfel: ±15% (95% KI)."
+          - generic [ref=e304]:
+            - generic [ref=e305]:
+              - generic [ref=e306]: Volvo XC40
+              - generic [ref=e307]: Bra
+            - generic [ref=e308]:
+              - generic [ref=e309]: 85.3%
+              - generic [ref=e310]: R²-precision
+            - generic [ref=e311]:
+              - generic [ref=e312]:
+                - text: "RMSE:"
+                - generic [ref=e313]: 20k
+                - text: kr
+              - generic [ref=e314]: n = 942
+            - paragraph [ref=e315]: "Modellen förklarar 85.3% av prisvariationen. Typiskt prediktionsfel: ±14% (95% KI)."
+          - generic [ref=e316]:
+            - generic [ref=e317]:
+              - generic [ref=e318]: Volvo XC60
+              - generic [ref=e319]: Utmärkt
+            - generic [ref=e320]:
+              - generic [ref=e321]: 96.4%
+              - generic [ref=e322]: R²-precision
+            - generic [ref=e323]:
+              - generic [ref=e324]:
+                - text: "RMSE:"
+                - generic [ref=e325]: 30k
+                - text: kr
+              - generic [ref=e326]: n = 2703
+            - paragraph [ref=e327]: "Modellen förklarar 96.4% av prisvariationen. Typiskt prediktionsfel: ±20% (95% KI)."
+      - separator [ref=e48]
+      - generic [ref=e49]:
+        - button "Alla bränslen" [ref=e328]
+        - button "Hybrid" [ref=e329]
+        - button "Laddhybrid" [ref=e330]
+        - button "Diesel" [ref=e331]
+        - button "Bensin" [ref=e332]
+      - generic [ref=e333]:
+        - generic [ref=e334]:
+          - heading "Pris per ålder" [level=2] [ref=e335]
+          - paragraph [ref=e336]: Varje punkt är en verklig annons. Trendlinjer visar predikterat pris med 95% konfidensband.
+        - generic [ref=e337]:
+          - generic [ref=e340]:
+            - generic [ref=e342]:
+              - generic [ref=e343] [cursor=pointer]:
+                - img [ref=e344]
+                - generic [ref=e346]: RAV4
+              - generic [ref=e347] [cursor=pointer]:
+                - img [ref=e348]
+                - generic [ref=e350]: XC40
+              - generic [ref=e351] [cursor=pointer]:
+                - img [ref=e352]
+                - generic [ref=e354]: XC60
+            - application [ref=e355]:
+              - generic [ref=e4979]:
+                - generic [ref=e4980]:
+                  - generic [ref=e4982]: "0"
+                  - generic [ref=e4984]: "3"
+                  - generic [ref=e4986]: "6"
+                  - generic [ref=e4988]: "9"
+                  - generic [ref=e4990]: "12"
+                  - generic [ref=e4992]: "15"
+                - generic [ref=e4993]: Ålder (år)
+                - generic [ref=e4994]:
+                  - generic [ref=e4996]: 0k
+                  - generic [ref=e4998]: 250k
+                  - generic [ref=e5000]: 500k
+                  - generic [ref=e5002]: 750k
+                  - generic [ref=e5004]: 1M
+          - generic [ref=e5005]:
+            - generic [ref=e5006]:
+              - img [ref=e5007]
+              - text: Fyndpris
+            - generic [ref=e5009]:
+              - img [ref=e5010]
+              - text: Bra pris
+          - generic [ref=e5014]:
+            - generic [ref=e5016]:
+              - generic [ref=e5017] [cursor=pointer]:
+                - img [ref=e5018]
+                - generic [ref=e5020]: RAV4
+              - generic [ref=e5021] [cursor=pointer]:
+                - img [ref=e5022]
+                - generic [ref=e5024]: XC40
+              - generic [ref=e5025] [cursor=pointer]:
+                - img [ref=e5026]
+                - generic [ref=e5028]: XC60
+            - application [ref=e5029]:
+              - generic [ref=e5103]:
+                - generic [ref=e5104]:
+                  - generic [ref=e5106]: "0"
+                  - generic [ref=e5108]: "3"
+                  - generic [ref=e5110]: "6"
+                  - generic [ref=e5112]: "9"
+                  - generic [ref=e5114]: "12"
+                  - generic [ref=e5116]: "15"
+                - generic [ref=e5117]: Ålder (år)
+                - generic [ref=e5118]:
+                  - generic [ref=e5120]: 0k
+                  - generic [ref=e5122]: 250k
+                  - generic [ref=e5124]: 500k
+                  - generic [ref=e5126]: 750k
+                  - generic [ref=e5128]: 850k
+          - paragraph [ref=e5129]: Skuggade band visar 95% prediktionsintervall från multivariat regression (justerat för bränsletyp, miltal, hk, utrustning, drivlina)
+      - generic [ref=e5130]:
+        - generic [ref=e5131]:
+          - heading "Restvärde" [level=2] [ref=e5132]
+          - paragraph [ref=e5133]: Andel av nypriset som behålls vid varje ålder. Skuggade band visar 95% prediktionsosäkerhet.
+        - generic [ref=e5136]:
+          - generic [ref=e5138]:
+            - generic [ref=e5139] [cursor=pointer]:
+              - img [ref=e5140]
+              - generic [ref=e5142]: RAV4
+            - generic [ref=e5143] [cursor=pointer]:
+              - img [ref=e5144]
+              - generic [ref=e5146]: XC40
+            - generic [ref=e5147] [cursor=pointer]:
+              - img [ref=e5148]
+              - generic [ref=e5150]: XC60
+          - application [ref=e5151]:
+            - generic [ref=e5225]:
+              - generic [ref=e5226]:
+                - generic [ref=e5228]: "0"
+                - generic [ref=e5230]: "3"
+                - generic [ref=e5232]: "6"
+                - generic [ref=e5234]: "9"
+                - generic [ref=e5236]: "12"
+                - generic [ref=e5238]: "15"
+              - generic [ref=e5239]: Ålder (år)
+              - generic [ref=e5240]:
+                - generic [ref=e5242]: 0%
+                - generic [ref=e5244]: 25%
+                - generic [ref=e5246]: 50%
+                - generic [ref=e5248]: 75%
+                - generic [ref=e5250]: 100%
+              - generic [ref=e5251]: 50%
+      - generic [ref=e5252]:
+        - generic [ref=e5253]:
+          - heading "Miltalseffekt" [level=2] [ref=e5254]
+          - paragraph [ref=e5255]: Hur miltal korrelerar med begärt pris för respektive modell.
+        - generic [ref=e5256]:
+          - generic [ref=e5257]:
+            - generic [ref=e5259]: RAV4
+            - generic [ref=e5260]: −2.28%
+            - generic [ref=e5261]: av aktuellt värde / 1 000 mil
+          - generic [ref=e5262]:
+            - generic [ref=e5264]: XC40
+            - generic [ref=e5265]: −2.20%
+            - generic [ref=e5266]: av aktuellt värde / 1 000 mil
+          - generic [ref=e5267]:
+            - generic [ref=e5269]: XC60
+            - generic [ref=e5270]: −2.17%
+            - generic [ref=e5271]: av aktuellt värde / 1 000 mil
+        - generic [ref=e5274]:
+          - generic [ref=e5276]:
+            - generic [ref=e5277] [cursor=pointer]:
+              - img [ref=e5278]
+              - generic [ref=e5280]: RAV4
+            - generic [ref=e5281] [cursor=pointer]:
+              - img [ref=e5282]
+              - generic [ref=e5284]: XC40
+            - generic [ref=e5285] [cursor=pointer]:
+              - img [ref=e5286]
+              - generic [ref=e5288]: XC60
+          - application [ref=e5289]:
+            - generic [ref=e10088]:
+              - generic [ref=e10089]:
+                - generic [ref=e10091]: 0k
+                - generic [ref=e10093]: 15k
+                - generic [ref=e10095]: 30k
+                - generic [ref=e10097]: 45k
+                - generic [ref=e10099]: 60k
+              - generic [ref=e10100]: Miltal (mil)
+              - generic [ref=e10101]:
+                - generic [ref=e10103]: 0k
+                - generic [ref=e10105]: 250k
+                - generic [ref=e10107]: 500k
+                - generic [ref=e10109]: 750k
+                - generic [ref=e10111]: 1M
+      - separator [ref=e59]
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "Annonser" [level=2] [ref=e62]
+          - paragraph [ref=e63]: Visar annonser för valda modeller och bränsletyp.
+        - generic [ref=e64]:
+          - generic [ref=e10112]:
+            - button "Alla" [ref=e10113]
+            - button "Alla fynd" [ref=e10114]
+            - button "Fyndpris" [ref=e10115]
+            - button "Bra pris" [ref=e10116]
+            - button "Filtrera" [ref=e10117]
+          - generic [ref=e10118]:
+            - generic [ref=e10120]: 2 385 bilar
+            - table [ref=e10122]:
+              - rowgroup [ref=e10123]:
+                - row "Märke / Modell Årsmodell ↕ Pris ↑ Fynd ↕ Miltal ↕ Bränsle HK ↕ Säljare Länk" [ref=e10124]:
+                  - columnheader "Märke / Modell" [ref=e10125]
+                  - columnheader "Årsmodell ↕" [ref=e10126] [cursor=pointer]
+                  - columnheader "Pris ↑" [ref=e10127] [cursor=pointer]
+                  - columnheader "Fynd ↕" [ref=e10128] [cursor=pointer]
+                  - columnheader "Miltal ↕" [ref=e10129] [cursor=pointer]
+                  - columnheader "Bränsle" [ref=e10130]
+                  - columnheader "HK ↕" [ref=e10131] [cursor=pointer]
+                  - columnheader "Säljare" [ref=e10132]
+                  - columnheader "Länk" [ref=e10133]
+                  - columnheader [ref=e10134]
+              - rowgroup [ref=e10135]:
+                - row "Volvo XC60 2025 669 900 kr 2 161 mil Laddhybrid 462 Handlare Blocket" [ref=e10136]:
+                  - cell "Volvo XC60" [ref=e10137]
+                  - cell "2025" [ref=e10138]
+                  - cell "669 900 kr" [ref=e10139]
+                  - cell [ref=e10140]
+                  - cell "2 161 mil" [ref=e10141]
+                  - cell "Laddhybrid" [ref=e10142]
+                  - cell "462" [ref=e10143]
+                  - cell "Handlare" [ref=e10144]
+                  - cell "Blocket" [ref=e10145]:
+                    - link "Blocket" [ref=e10146] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/19010897
+                  - cell [ref=e10147]:
+                    - button "Spara i köpkorg" [ref=e10148]:
+                      - img [ref=e10149]
+                - row "Volvo XC60 2025 678 000 kr 1 500 mil Laddhybrid 456 Privat Blocket" [ref=e10151]:
+                  - cell "Volvo XC60" [ref=e10152]
+                  - cell "2025" [ref=e10153]
+                  - cell "678 000 kr" [ref=e10154]
+                  - cell [ref=e10155]
+                  - cell "1 500 mil" [ref=e10156]
+                  - cell "Laddhybrid" [ref=e10157]
+                  - cell "456" [ref=e10158]
+                  - cell "Privat" [ref=e10159]
+                  - cell "Blocket" [ref=e10160]:
+                    - link "Blocket" [ref=e10161] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21375157
+                  - cell [ref=e10162]:
+                    - button "Spara i köpkorg" [ref=e10163]:
+                      - img [ref=e10164]
+                - row "Volvo XC60 2025 678 800 kr 2 320 mil Laddhybrid 462 Handlare Blocket" [ref=e10166]:
+                  - cell "Volvo XC60" [ref=e10167]
+                  - cell "2025" [ref=e10168]
+                  - cell "678 800 kr" [ref=e10169]
+                  - cell [ref=e10170]
+                  - cell "2 320 mil" [ref=e10171]
+                  - cell "Laddhybrid" [ref=e10172]
+                  - cell "462" [ref=e10173]
+                  - cell "Handlare" [ref=e10174]
+                  - cell "Blocket" [ref=e10175]:
+                    - link "Blocket" [ref=e10176] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21384965
+                  - cell [ref=e10177]:
+                    - button "Spara i köpkorg" [ref=e10178]:
+                      - img [ref=e10179]
+                - row "Volvo XC60 2026 679 900 kr 801 mil Laddhybrid 350 Handlare Blocket" [ref=e10181]:
+                  - cell "Volvo XC60" [ref=e10182]
+                  - cell "2026" [ref=e10183]
+                  - cell "679 900 kr" [ref=e10184]
+                  - cell [ref=e10185]
+                  - cell "801 mil" [ref=e10186]
+                  - cell "Laddhybrid" [ref=e10187]
+                  - cell "350" [ref=e10188]
+                  - cell "Handlare" [ref=e10189]
+                  - cell "Blocket" [ref=e10190]:
+                    - link "Blocket" [ref=e10191] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/22032160
+                  - cell [ref=e10192]:
+                    - button "Spara i köpkorg" [ref=e10193]:
+                      - img [ref=e10194]
+                - row "Volvo XC60 2026 679 900 kr 1 243 mil Laddhybrid 350 Handlare Blocket" [ref=e10196]:
+                  - cell "Volvo XC60" [ref=e10197]
+                  - cell "2026" [ref=e10198]
+                  - cell "679 900 kr" [ref=e10199]
+                  - cell [ref=e10200]
+                  - cell "1 243 mil" [ref=e10201]
+                  - cell "Laddhybrid" [ref=e10202]
+                  - cell "350" [ref=e10203]
+                  - cell "Handlare" [ref=e10204]
+                  - cell "Blocket" [ref=e10205]:
+                    - link "Blocket" [ref=e10206] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21055762
+                  - cell [ref=e10207]:
+                    - button "Spara i köpkorg" [ref=e10208]:
+                      - img [ref=e10209]
+                - row "Volvo XC60 2026 684 900 kr 424 mil Laddhybrid 355 Handlare Blocket" [ref=e10211]:
+                  - cell "Volvo XC60" [ref=e10212]
+                  - cell "2026" [ref=e10213]
+                  - cell "684 900 kr" [ref=e10214]
+                  - cell [ref=e10215]
+                  - cell "424 mil" [ref=e10216]
+                  - cell "Laddhybrid" [ref=e10217]
+                  - cell "355" [ref=e10218]
+                  - cell "Handlare" [ref=e10219]
+                  - cell "Blocket" [ref=e10220]:
+                    - link "Blocket" [ref=e10221] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21128231
+                  - cell [ref=e10222]:
+                    - button "Spara i köpkorg" [ref=e10223]:
+                      - img [ref=e10224]
+                - row "Volvo XC60 2026 685 900 kr 684 mil Laddhybrid 350 Handlare Blocket" [ref=e10226]:
+                  - cell "Volvo XC60" [ref=e10227]
+                  - cell "2026" [ref=e10228]
+                  - cell "685 900 kr" [ref=e10229]
+                  - cell [ref=e10230]
+                  - cell "684 mil" [ref=e10231]
+                  - cell "Laddhybrid" [ref=e10232]
+                  - cell "350" [ref=e10233]
+                  - cell "Handlare" [ref=e10234]
+                  - cell "Blocket" [ref=e10235]:
+                    - link "Blocket" [ref=e10236] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21491527
+                  - cell [ref=e10237]:
+                    - button "Spara i köpkorg" [ref=e10238]:
+                      - img [ref=e10239]
+                - row "Volvo XC60 2025 689 900 kr 1 977 mil Laddhybrid 462 Handlare Blocket" [ref=e10241]:
+                  - cell "Volvo XC60" [ref=e10242]
+                  - cell "2025" [ref=e10243]
+                  - cell "689 900 kr" [ref=e10244]
+                  - cell [ref=e10245]
+                  - cell "1 977 mil" [ref=e10246]
+                  - cell "Laddhybrid" [ref=e10247]
+                  - cell "462" [ref=e10248]
+                  - cell "Handlare" [ref=e10249]
+                  - cell "Blocket" [ref=e10250]:
+                    - link "Blocket" [ref=e10251] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/19568869
+                  - cell [ref=e10252]:
+                    - button "Spara i köpkorg" [ref=e10253]:
+                      - img [ref=e10254]
+                - row "Volvo XC60 2026 689 900 kr 1 296 mil Laddhybrid 355 Handlare Blocket" [ref=e10256]:
+                  - cell "Volvo XC60" [ref=e10257]
+                  - cell "2026" [ref=e10258]
+                  - cell "689 900 kr" [ref=e10259]
+                  - cell [ref=e10260]
+                  - cell "1 296 mil" [ref=e10261]
+                  - cell "Laddhybrid" [ref=e10262]
+                  - cell "355" [ref=e10263]
+                  - cell "Handlare" [ref=e10264]
+                  - cell "Blocket" [ref=e10265]:
+                    - link "Blocket" [ref=e10266] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20918739
+                  - cell [ref=e10267]:
+                    - button "Spara i köpkorg" [ref=e10268]:
+                      - img [ref=e10269]
+                - row "Volvo XC60 2026 689 900 kr 1 822 mil Laddhybrid 462 Handlare Blocket" [ref=e10271]:
+                  - cell "Volvo XC60" [ref=e10272]
+                  - cell "2026" [ref=e10273]
+                  - cell "689 900 kr" [ref=e10274]
+                  - cell [ref=e10275]
+                  - cell "1 822 mil" [ref=e10276]
+                  - cell "Laddhybrid" [ref=e10277]
+                  - cell "462" [ref=e10278]
+                  - cell "Handlare" [ref=e10279]
+                  - cell "Blocket" [ref=e10280]:
+                    - link "Blocket" [ref=e10281] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20810830
+                  - cell [ref=e10282]:
+                    - button "Spara i köpkorg" [ref=e10283]:
+                      - img [ref=e10284]
+                - row "Volvo XC60 2026 699 600 kr 800 mil Laddhybrid 462 Handlare Blocket" [ref=e10286]:
+                  - cell "Volvo XC60" [ref=e10287]
+                  - cell "2026" [ref=e10288]
+                  - cell "699 600 kr" [ref=e10289]
+                  - cell [ref=e10290]
+                  - cell "800 mil" [ref=e10291]
+                  - cell "Laddhybrid" [ref=e10292]
+                  - cell "462" [ref=e10293]
+                  - cell "Handlare" [ref=e10294]
+                  - cell "Blocket" [ref=e10295]:
+                    - link "Blocket" [ref=e10296] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21128227
+                  - cell [ref=e10297]:
+                    - button "Spara i köpkorg" [ref=e10298]:
+                      - img [ref=e10299]
+                - row "Volvo XC60 2024 699 900 kr 4 950 mil Hybrid 456 Handlare Blocket" [ref=e10301]:
+                  - cell "Volvo XC60" [ref=e10302]
+                  - cell "2024" [ref=e10303]
+                  - cell "699 900 kr" [ref=e10304]
+                  - cell [ref=e10305]
+                  - cell "4 950 mil" [ref=e10306]
+                  - cell "Hybrid" [ref=e10307]
+                  - cell "456" [ref=e10308]
+                  - cell "Handlare" [ref=e10309]
+                  - cell "Blocket" [ref=e10310]:
+                    - link "Blocket" [ref=e10311] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20572528
+                  - cell [ref=e10312]:
+                    - button "Spara i köpkorg" [ref=e10313]:
+                      - img [ref=e10314]
+                - row "Volvo XC60 2023 700 000 kr 5 400 mil Laddhybrid 456 Privat Blocket" [ref=e10316]:
+                  - cell "Volvo XC60" [ref=e10317]
+                  - cell "2023" [ref=e10318]
+                  - cell "700 000 kr" [ref=e10319]
+                  - cell [ref=e10320]
+                  - cell "5 400 mil" [ref=e10321]
+                  - cell "Laddhybrid" [ref=e10322]
+                  - cell "456" [ref=e10323]
+                  - cell "Privat" [ref=e10324]
+                  - cell "Blocket" [ref=e10325]:
+                    - link "Blocket" [ref=e10326] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21347041
+                  - cell [ref=e10327]:
+                    - button "Spara i köpkorg" [ref=e10328]:
+                      - img [ref=e10329]
+                - row "Volvo XC60 2023 735 000 kr 3 699 mil Laddhybrid 456 Privat Blocket" [ref=e10331]:
+                  - cell "Volvo XC60" [ref=e10332]
+                  - cell "2023" [ref=e10333]
+                  - cell "735 000 kr" [ref=e10334]
+                  - cell [ref=e10335]
+                  - cell "3 699 mil" [ref=e10336]
+                  - cell "Laddhybrid" [ref=e10337]
+                  - cell "456" [ref=e10338]
+                  - cell "Privat" [ref=e10339]
+                  - cell "Blocket" [ref=e10340]:
+                    - link "Blocket" [ref=e10341] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/13746541
+                  - cell [ref=e10342]:
+                    - button "Spara i köpkorg" [ref=e10343]:
+                      - img [ref=e10344]
+                - row "Volvo XC60 2025 739 000 kr 4 087 mil Laddhybrid 462 Handlare Blocket" [ref=e10346]:
+                  - cell "Volvo XC60" [ref=e10347]
+                  - cell "2025" [ref=e10348]
+                  - cell "739 000 kr" [ref=e10349]
+                  - cell [ref=e10350]
+                  - cell "4 087 mil" [ref=e10351]
+                  - cell "Laddhybrid" [ref=e10352]
+                  - cell "462" [ref=e10353]
+                  - cell "Handlare" [ref=e10354]
+                  - cell "Blocket" [ref=e10355]:
+                    - link "Blocket" [ref=e10356] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20578006
+                  - cell [ref=e10357]:
+                    - button "Spara i köpkorg" [ref=e10358]:
+                      - img [ref=e10359]
+                - row "Volvo XC60 2026 739 800 kr 400 mil Hybrid 350 Handlare Blocket" [ref=e10361]:
+                  - cell "Volvo XC60" [ref=e10362]
+                  - cell "2026" [ref=e10363]
+                  - cell "739 800 kr" [ref=e10364]
+                  - cell [ref=e10365]
+                  - cell "400 mil" [ref=e10366]
+                  - cell "Hybrid" [ref=e10367]
+                  - cell "350" [ref=e10368]
+                  - cell "Handlare" [ref=e10369]
+                  - cell "Blocket" [ref=e10370]:
+                    - link "Blocket" [ref=e10371] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21667455
+                  - cell [ref=e10372]:
+                    - button "Spara i köpkorg" [ref=e10373]:
+                      - img [ref=e10374]
+                - row "Volvo XC60 2024 739 900 kr 741 mil Laddhybrid 456 Handlare Blocket" [ref=e10376]:
+                  - cell "Volvo XC60" [ref=e10377]
+                  - cell "2024" [ref=e10378]
+                  - cell "739 900 kr" [ref=e10379]
+                  - cell [ref=e10380]
+                  - cell "741 mil" [ref=e10381]
+                  - cell "Laddhybrid" [ref=e10382]
+                  - cell "456" [ref=e10383]
+                  - cell "Handlare" [ref=e10384]
+                  - cell "Blocket" [ref=e10385]:
+                    - link "Blocket" [ref=e10386] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/15781782
+                  - cell [ref=e10387]:
+                    - button "Spara i köpkorg" [ref=e10388]:
+                      - img [ref=e10389]
+                - row "Volvo XC60 2026 750 000 kr 1 mil Laddhybrid 355 Handlare Blocket" [ref=e10391]:
+                  - cell "Volvo XC60" [ref=e10392]
+                  - cell "2026" [ref=e10393]
+                  - cell "750 000 kr" [ref=e10394]
+                  - cell [ref=e10395]
+                  - cell "1 mil" [ref=e10396]
+                  - cell "Laddhybrid" [ref=e10397]
+                  - cell "355" [ref=e10398]
+                  - cell "Handlare" [ref=e10399]
+                  - cell "Blocket" [ref=e10400]:
+                    - link "Blocket" [ref=e10401] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20622011
+                  - cell [ref=e10402]:
+                    - button "Spara i köpkorg" [ref=e10403]:
+                      - img [ref=e10404]
+                - row "Volvo XC60 2026 769 000 kr 719 mil Laddhybrid 462 Handlare Blocket" [ref=e10406]:
+                  - cell "Volvo XC60" [ref=e10407]
+                  - cell "2026" [ref=e10408]
+                  - cell "769 000 kr" [ref=e10409]
+                  - cell [ref=e10410]
+                  - cell "719 mil" [ref=e10411]
+                  - cell "Laddhybrid" [ref=e10412]
+                  - cell "462" [ref=e10413]
+                  - cell "Handlare" [ref=e10414]
+                  - cell "Blocket" [ref=e10415]:
+                    - link "Blocket" [ref=e10416] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21390189
+                  - cell [ref=e10417]:
+                    - button "Spara i köpkorg" [ref=e10418]:
+                      - img [ref=e10419]
+                - row "Volvo XC60 2026 769 900 kr 452 mil Laddhybrid 456 Handlare Blocket" [ref=e10421]:
+                  - cell "Volvo XC60" [ref=e10422]
+                  - cell "2026" [ref=e10423]
+                  - cell "769 900 kr" [ref=e10424]
+                  - cell [ref=e10425]
+                  - cell "452 mil" [ref=e10426]
+                  - cell "Laddhybrid" [ref=e10427]
+                  - cell "456" [ref=e10428]
+                  - cell "Handlare" [ref=e10429]
+                  - cell "Blocket" [ref=e10430]:
+                    - link "Blocket" [ref=e10431] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/22036705
+                  - cell [ref=e10432]:
+                    - button "Spara i köpkorg" [ref=e10433]:
+                      - img [ref=e10434]
+                - row "Volvo XC60 2025 775 000 kr 2 237 mil Laddhybrid 350 Privat Blocket" [ref=e10436]:
+                  - cell "Volvo XC60" [ref=e10437]
+                  - cell "2025" [ref=e10438]
+                  - cell "775 000 kr" [ref=e10439]
+                  - cell [ref=e10440]
+                  - cell "2 237 mil" [ref=e10441]
+                  - cell "Laddhybrid" [ref=e10442]
+                  - cell "350" [ref=e10443]
+                  - cell "Privat" [ref=e10444]
+                  - cell "Blocket" [ref=e10445]:
+                    - link "Blocket" [ref=e10446] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/18397530
+                  - cell [ref=e10447]:
+                    - button "Spara i köpkorg" [ref=e10448]:
+                      - img [ref=e10449]
+                - row "Volvo XC60 2025 779 900 kr 1 065 mil Laddhybrid 462 Handlare Blocket" [ref=e10451]:
+                  - cell "Volvo XC60" [ref=e10452]
+                  - cell "2025" [ref=e10453]
+                  - cell "779 900 kr" [ref=e10454]
+                  - cell [ref=e10455]
+                  - cell "1 065 mil" [ref=e10456]
+                  - cell "Laddhybrid" [ref=e10457]
+                  - cell "462" [ref=e10458]
+                  - cell "Handlare" [ref=e10459]
+                  - cell "Blocket" [ref=e10460]:
+                    - link "Blocket" [ref=e10461] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20827255
+                  - cell [ref=e10462]:
+                    - button "Spara i köpkorg" [ref=e10463]:
+                      - img [ref=e10464]
+                - row "Volvo XC60 2026 782 800 kr 450 mil Laddhybrid 456 Handlare Blocket" [ref=e10466]:
+                  - cell "Volvo XC60" [ref=e10467]
+                  - cell "2026" [ref=e10468]
+                  - cell "782 800 kr" [ref=e10469]
+                  - cell [ref=e10470]
+                  - cell "450 mil" [ref=e10471]
+                  - cell "Laddhybrid" [ref=e10472]
+                  - cell "456" [ref=e10473]
+                  - cell "Handlare" [ref=e10474]
+                  - cell "Blocket" [ref=e10475]:
+                    - link "Blocket" [ref=e10476] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/19064872
+                  - cell [ref=e10477]:
+                    - button "Spara i köpkorg" [ref=e10478]:
+                      - img [ref=e10479]
+                - row "Volvo XC60 2026 788 900 kr 1 820 mil Laddhybrid 462 Handlare Blocket" [ref=e10481]:
+                  - cell "Volvo XC60" [ref=e10482]
+                  - cell "2026" [ref=e10483]
+                  - cell "788 900 kr" [ref=e10484]
+                  - cell [ref=e10485]
+                  - cell "1 820 mil" [ref=e10486]
+                  - cell "Laddhybrid" [ref=e10487]
+                  - cell "462" [ref=e10488]
+                  - cell "Handlare" [ref=e10489]
+                  - cell "Blocket" [ref=e10490]:
+                    - link "Blocket" [ref=e10491] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/18793211
+                  - cell [ref=e10492]:
+                    - button "Spara i köpkorg" [ref=e10493]:
+                      - img [ref=e10494]
+                - row "Volvo XC60 2026 789 900 kr 1 301 mil Hybrid 456 Handlare Blocket" [ref=e10496]:
+                  - cell "Volvo XC60" [ref=e10497]
+                  - cell "2026" [ref=e10498]
+                  - cell "789 900 kr" [ref=e10499]
+                  - cell [ref=e10500]
+                  - cell "1 301 mil" [ref=e10501]
+                  - cell "Hybrid" [ref=e10502]
+                  - cell "456" [ref=e10503]
+                  - cell "Handlare" [ref=e10504]
+                  - cell "Blocket" [ref=e10505]:
+                    - link "Blocket" [ref=e10506] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21668860
+                  - cell [ref=e10507]:
+                    - button "Spara i köpkorg" [ref=e10508]:
+                      - img [ref=e10509]
+                - row "Volvo XC60 2025 795 000 kr 1 555 mil Laddhybrid 456 Privat Blocket" [ref=e10511]:
+                  - cell "Volvo XC60" [ref=e10512]
+                  - cell "2025" [ref=e10513]
+                  - cell "795 000 kr" [ref=e10514]
+                  - cell [ref=e10515]
+                  - cell "1 555 mil" [ref=e10516]
+                  - cell "Laddhybrid" [ref=e10517]
+                  - cell "456" [ref=e10518]
+                  - cell "Privat" [ref=e10519]
+                  - cell "Blocket" [ref=e10520]:
+                    - link "Blocket" [ref=e10521] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/18357079
+                  - cell [ref=e10522]:
+                    - button "Spara i köpkorg" [ref=e10523]:
+                      - img [ref=e10524]
+                - row "Volvo XC60 2026 799 000 kr 1 mil Laddhybrid 355 Handlare Blocket" [ref=e10526]:
+                  - cell "Volvo XC60" [ref=e10527]
+                  - cell "2026" [ref=e10528]
+                  - cell "799 000 kr" [ref=e10529]
+                  - cell [ref=e10530]
+                  - cell "1 mil" [ref=e10531]
+                  - cell "Laddhybrid" [ref=e10532]
+                  - cell "355" [ref=e10533]
+                  - cell "Handlare" [ref=e10534]
+                  - cell "Blocket" [ref=e10535]:
+                    - link "Blocket" [ref=e10536] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20430143
+                  - cell [ref=e10537]:
+                    - button "Spara i köpkorg" [ref=e10538]:
+                      - img [ref=e10539]
+                - row "Volvo XC60 2025 825 000 kr 1 200 mil Laddhybrid 456 Privat Blocket" [ref=e10541]:
+                  - cell "Volvo XC60" [ref=e10542]
+                  - cell "2025" [ref=e10543]
+                  - cell "825 000 kr" [ref=e10544]
+                  - cell [ref=e10545]
+                  - cell "1 200 mil" [ref=e10546]
+                  - cell "Laddhybrid" [ref=e10547]
+                  - cell "456" [ref=e10548]
+                  - cell "Privat" [ref=e10549]
+                  - cell "Blocket" [ref=e10550]:
+                    - link "Blocket" [ref=e10551] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/14495067
+                  - cell [ref=e10552]:
+                    - button "Spara i köpkorg" [ref=e10553]:
+                      - img [ref=e10554]
+                - row "Volvo XC60 2026 859 000 kr 55 mil Laddhybrid 462 Handlare Blocket" [ref=e10556]:
+                  - cell "Volvo XC60" [ref=e10557]
+                  - cell "2026" [ref=e10558]
+                  - cell "859 000 kr" [ref=e10559]
+                  - cell [ref=e10560]
+                  - cell "55 mil" [ref=e10561]
+                  - cell "Laddhybrid" [ref=e10562]
+                  - cell "462" [ref=e10563]
+                  - cell "Handlare" [ref=e10564]
+                  - cell "Blocket" [ref=e10565]:
+                    - link "Blocket" [ref=e10566] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/20416346
+                  - cell [ref=e10567]:
+                    - button "Spara i köpkorg" [ref=e10568]:
+                      - img [ref=e10569]
+                - row "Volvo XC60 2026 859 900 kr 669 mil Laddhybrid 462 Handlare Blocket" [ref=e10571]:
+                  - cell "Volvo XC60" [ref=e10572]
+                  - cell "2026" [ref=e10573]
+                  - cell "859 900 kr" [ref=e10574]
+                  - cell [ref=e10575]
+                  - cell "669 mil" [ref=e10576]
+                  - cell "Laddhybrid" [ref=e10577]
+                  - cell "462" [ref=e10578]
+                  - cell "Handlare" [ref=e10579]
+                  - cell "Blocket" [ref=e10580]:
+                    - link "Blocket" [ref=e10581] [cursor=pointer]:
+                      - /url: https://www.blocket.se/mobility/item/21641913
+                  - cell [ref=e10582]:
+                    - button "Spara i köpkorg" [ref=e10583]:
+                      - img [ref=e10584]
+          - generic [ref=e10586]:
+            - button "Föregående" [disabled] [ref=e10587]
+            - generic [ref=e10588]: Sida 1 av 80 (2385 bilar)
+            - button "Nästa" [ref=e10589]
+      - separator [ref=e73]
+      - generic [ref=e74]:
+        - heading "Metod" [level=2] [ref=e75]
+        - paragraph [ref=e76]: Data insamlades från Blocket.se i februari 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderades.
+        - paragraph [ref=e77]: "Värdeminskning modelleras med log-transformerad multivariat regression med 15 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp (Hybrid/Laddhybrid/Diesel/El), säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder/miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=e78]: 95% prediktionsintervall beräknas i log-rummet (±1,96 × SE) och transformeras tillbaka, vilket ger proportionella konfidensband. Ägandekostnadsberäknaren använder förberäknade prediktionskurvor för att fånga den icke-linjära värdeminskningen vid olika åldrar.
+    - button [ref=e79]:
+      - img [ref=e80]
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - heading "Köpkorg (0)" [level=2] [ref=e85]
+        - button [ref=e87]:
+          - img [ref=e88]
+      - generic [ref=e91]:
+        - paragraph [ref=e92]: Din köpkorg är tom.
+        - paragraph [ref=e93]: Klicka på en punkt i grafen eller spara en bil från listan.
+  - contentinfo [ref=e94]:
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - generic [ref=e99]: Hela Notan
+          - paragraph [ref=e100]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=e101]:
+          - link "Hem" [ref=e102] [cursor=pointer]:
+            - /url: /
+          - link "Ägandekostnad" [ref=e103] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=e104] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=e105] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=e106] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Fakta" [ref=e107] [cursor=pointer]:
+            - /url: /fakta
+          - link "Artiklar" [ref=e108] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Nyheter" [ref=e109] [cursor=pointer]:
+            - /url: /nyheter
+      - generic [ref=e110]:
+        - generic [ref=e111]: Data från Blocket.se — Uppdaterad feb 2026
+        - generic [ref=e112]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=e113] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=e114]
+  - generic [ref=e10590]: 15k

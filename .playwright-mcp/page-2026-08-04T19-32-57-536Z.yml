@@ -1,0 +1,225 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Hela Notan" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e6]:
+        - link "Värdeminskning" [ref=e7] [cursor=pointer]:
+          - /url: /#depreciation
+        - link "Ägandekostnad" [ref=e8] [cursor=pointer]:
+          - /url: /tco
+        - link "Toppen" [ref=e9] [cursor=pointer]:
+          - /url: /toppen
+        - link "Köpguide" [ref=e10] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Bevaka" [ref=e11] [cursor=pointer]:
+          - /url: /bevaka
+        - link "Fakta" [ref=e12] [cursor=pointer]:
+          - /url: /fakta
+        - link "Modelldata" [ref=e13] [cursor=pointer]:
+          - /url: /modelldata
+        - link "Artiklar" [ref=e14] [cursor=pointer]:
+          - /url: /artiklar
+        - link "Nyheter" [ref=e15] [cursor=pointer]:
+          - /url: /nyheter
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Hela Notan — vad kostar bilen egentligen?" [level=1] [ref=e19]
+        - paragraph [ref=e20]: Riktig data från Blocket.se. Jämför hur Volvo XC60, Volvo XC40 och Toyota RAV4 tappar i värde över tid, miltal och bränsletyp.
+      - generic [ref=e21]:
+        - heading "Välj modeller att jämföra" [level=2] [ref=e22]
+        - generic [ref=e23]:
+          - generic [ref=e24]:
+            - button "BMW" [ref=e25] [cursor=pointer]
+            - generic [ref=e35]:
+              - button "X3" [ref=e36]
+              - button "X3 M" [ref=e38]
+          - generic [ref=e40]:
+            - button "Land Rover" [ref=e41] [cursor=pointer]:
+              - img [ref=e42]:
+                - generic [ref=e44]: L R
+            - button "Defender" [ref=e50]
+          - generic [ref=e52]:
+            - button "Mercedes" [ref=e53] [cursor=pointer]
+            - button "GLC" [ref=e63]
+          - generic [ref=e65]:
+            - button "Polestar" [ref=e66] [cursor=pointer]
+            - generic [ref=e74]:
+              - button "2" [ref=e75]
+              - button "3" [ref=e77]
+              - button "4" [ref=e79]
+          - generic [ref=e81]:
+            - button "VW" [ref=e82] [cursor=pointer]
+            - generic [ref=e91]:
+              - button "Golf" [ref=e92]
+              - button "Golf R" [ref=e94]
+              - button "Tiguan" [ref=e96]
+              - button "Golf GTI" [ref=e98]
+          - generic [ref=e100]:
+            - button "Kia" [ref=e101] [cursor=pointer]:
+              - img [ref=e102]:
+                - generic [ref=e103]: KIA
+            - button "Niro" [ref=e109]
+          - generic [ref=e111]:
+            - button "Toyota 1 av 4" [ref=e112] [cursor=pointer]:
+              - generic [ref=e117]: Toyota
+              - generic [ref=e118]: 1 av 4
+            - generic [ref=e124]:
+              - button "RAV4" [ref=e125]
+              - button "Yaris" [ref=e127]
+              - button "Yaris Cross" [ref=e129]
+              - button "Land Cruiser" [ref=e131]
+          - generic [ref=e133]:
+            - button "Volvo 2 av 3" [ref=e134] [cursor=pointer]:
+              - generic [ref=e138]: Volvo
+              - generic [ref=e139]: 2 av 3
+            - generic [ref=e145]:
+              - button "XC40" [ref=e146]
+              - button "XC60" [ref=e148]
+              - button "XC40 Recharge" [ref=e150]
+          - generic [ref=e152]:
+            - button "Tesla" [ref=e153] [cursor=pointer]
+            - button "Model Y" [ref=e163]
+      - generic [ref=e166]:
+        - generic [ref=e167]:
+          - heading "Toyota RAV4" [level=2] [ref=e168]
+          - generic [ref=e169]:
+            - generic [ref=e170]: Antal annonser
+            - generic [ref=e171]: "1675"
+            - generic [ref=e172]: Snittpris
+            - generic [ref=e173]: 325 532 kr
+            - generic [ref=e174]: Prisintervall
+            - generic [ref=e175]: 29 900 – 638 800
+            - generic [ref=e176]: Snittålder
+            - generic [ref=e177]: 6.2 år
+            - generic [ref=e178]: Snitt miltal
+            - generic [ref=e179]: 10 567 mil
+            - generic [ref=e180]: Årsmodeller
+            - generic [ref=e181]: 2005–2026
+        - generic [ref=e182]:
+          - heading "Volvo XC40" [level=2] [ref=e183]
+          - generic [ref=e184]:
+            - generic [ref=e185]: Antal annonser
+            - generic [ref=e186]: "1600"
+            - generic [ref=e187]: Snittpris
+            - generic [ref=e188]: 314 103 kr
+            - generic [ref=e189]: Prisintervall
+            - generic [ref=e190]: 155 000 – 499 000
+            - generic [ref=e191]: Snittålder
+            - generic [ref=e192]: 4.6 år
+            - generic [ref=e193]: Snitt miltal
+            - generic [ref=e194]: 8 828 mil
+            - generic [ref=e195]: Årsmodeller
+            - generic [ref=e196]: 2018–2026
+        - generic [ref=e197]:
+          - heading "Volvo XC60" [level=2] [ref=e198]
+          - generic [ref=e199]:
+            - generic [ref=e200]: Antal annonser
+            - generic [ref=e201]: "5476"
+            - generic [ref=e202]: Snittpris
+            - generic [ref=e203]: 339 405 kr
+            - generic [ref=e204]: Prisintervall
+            - generic [ref=e205]: 35 000 – 859 900
+            - generic [ref=e206]: Snittålder
+            - generic [ref=e207]: 6.3 år
+            - generic [ref=e208]: Snitt miltal
+            - generic [ref=e209]: 13 263 mil
+            - generic [ref=e210]: Årsmodeller
+            - generic [ref=e211]: 2009–2027
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - heading "Modellprecision" [level=2] [ref=e214]
+          - paragraph [ref=e215]: Multivariat regression som tar hänsyn till ålder, miltal, bränsletyp, hästkrafter, utrustning, drivlina och säljartyp.
+        - generic [ref=e216]:
+          - generic [ref=e217]:
+            - generic [ref=e218]:
+              - generic [ref=e219]: Toyota RAV4
+              - generic [ref=e220]: Utmärkt
+            - generic [ref=e221]:
+              - generic [ref=e222]: 97.9%
+              - generic [ref=e223]: R²-precision
+            - generic [ref=e224]:
+              - generic [ref=e225]:
+                - text: "RMSE:"
+                - generic [ref=e226]: 21k
+                - text: kr
+              - generic [ref=e227]: n = 1675
+            - paragraph [ref=e228]: "Modellen förklarar 97.9% av prisvariationen. Typiskt prediktionsfel: ±16% (95% KI)."
+          - generic [ref=e229]:
+            - generic [ref=e230]:
+              - generic [ref=e231]: Volvo XC40
+              - generic [ref=e232]: Bra
+            - generic [ref=e233]:
+              - generic [ref=e234]: 86.7%
+              - generic [ref=e235]: R²-precision
+            - generic [ref=e236]:
+              - generic [ref=e237]:
+                - text: "RMSE:"
+                - generic [ref=e238]: 20k
+                - text: kr
+              - generic [ref=e239]: n = 1600
+            - paragraph [ref=e240]: "Modellen förklarar 86.7% av prisvariationen. Typiskt prediktionsfel: ±14% (95% KI)."
+          - generic [ref=e241]:
+            - generic [ref=e242]:
+              - generic [ref=e243]: Volvo XC60
+              - generic [ref=e244]: Utmärkt
+            - generic [ref=e245]:
+              - generic [ref=e246]: 96.9%
+              - generic [ref=e247]: R²-precision
+            - generic [ref=e248]:
+              - generic [ref=e249]:
+                - text: "RMSE:"
+                - generic [ref=e250]: 33k
+                - text: kr
+              - generic [ref=e251]: n = 5476
+            - paragraph [ref=e252]: "Modellen förklarar 96.9% av prisvariationen. Typiskt prediktionsfel: ±22% (95% KI)."
+      - separator [ref=e253]
+      - separator [ref=e264]
+      - generic [ref=e266]:
+        - heading "Annonser" [level=2] [ref=e267]
+        - paragraph [ref=e268]: Visar annonser för valda modeller och bränsletyp.
+      - separator [ref=e278]
+      - generic [ref=e279]:
+        - heading "Metod" [level=2] [ref=e280]
+        - paragraph [ref=e281]: Data insamlades från Blocket.se i februari 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderades.
+        - paragraph [ref=e282]: "Värdeminskning modelleras med log-transformerad multivariat regression med 15 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp (Hybrid/Laddhybrid/Diesel/El), säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder/miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=e283]: 95% prediktionsintervall beräknas i log-rummet (±1,96 × SE) och transformeras tillbaka, vilket ger proportionella konfidensband. Ägandekostnadsberäknaren använder förberäknade prediktionskurvor för att fånga den icke-linjära värdeminskningen vid olika åldrar.
+    - button [ref=e284]
+    - generic [ref=e288]:
+      - generic [ref=e289]:
+        - heading "Köpkorg (0)" [level=2] [ref=e290]
+        - button [ref=e292]
+      - generic [ref=e296]:
+        - paragraph [ref=e297]: Din köpkorg är tom.
+        - paragraph [ref=e298]: Klicka på en punkt i grafen eller spara en bil från listan.
+  - contentinfo [ref=e299]:
+    - generic [ref=e300]:
+      - generic [ref=e301]:
+        - generic [ref=e302]:
+          - generic [ref=e303]: Hela Notan
+          - paragraph [ref=e305]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=e306]:
+          - link "Hem" [ref=e307] [cursor=pointer]:
+            - /url: /
+          - link "Ägandekostnad" [ref=e308] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=e309] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=e310] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=e311] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Fakta" [ref=e312] [cursor=pointer]:
+            - /url: /fakta
+          - link "Artiklar" [ref=e313] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Nyheter" [ref=e314] [cursor=pointer]:
+            - /url: /nyheter
+      - generic [ref=e315]:
+        - generic [ref=e316]: Data från Blocket.se — Uppdaterad feb 2026
+        - generic [ref=e317]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=e318] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=e319]

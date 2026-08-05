@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canonical } from "@/app/lib/canonical";
 import { getDb } from "@/app/lib/db";
 import type { ModelConfigMap } from "@/app/lib/model-config";
 
 export const metadata: Metadata = {
+  alternates: canonical("/toppen"),
   title: "Värdeminskning-ligan — Vilka bilar behåller värdet bäst?",
   description:
     "Ranking av 15 populära bilmodeller efter värdebevarande. Se vilka bilar som tappar minst i värde efter 3 år — och vilka som tappar mest.",
@@ -377,7 +379,7 @@ export default async function ToppenPage() {
       <section className="bg-[var(--card)] p-5 sm:p-6 border border-[var(--border)] rounded-lg text-sm text-[var(--muted)] space-y-2 max-w-2xl">
         <h2 className="text-[var(--foreground)] font-semibold">Så räknar vi</h2>
         <p>
-          Värdebevarande beräknas som andelen av nypriset som kvarstår efter 3 år, baserat på
+          Värdebevarande beräknas mot den yngsta årsmodell där underlaget räcker (oftast men inte alltid en nybil), baserat på
           prediktionskurvor från vår regressionsmodell tränad på verkliga Blocket-annonser.
           Varje modell och drivmedelstyp rankas separat.
         </p>

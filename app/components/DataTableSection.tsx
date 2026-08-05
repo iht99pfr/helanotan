@@ -56,8 +56,14 @@ export default function DataTableSection() {
     if (models) params.set("models", models);
     const fuelKey = FUEL_KEY_MAP[fuelFilter];
     if (fuelKey) params.set("fuel", fuelKey);
-    // Send deal sort to server (server-side sorting by residual)
-    if (sortKey === "deal") params.set("sort", "deal");
+    // All sorting is server-side. Sorting a 30-row page client-side reorders
+    // the wrong 30 rows out of several thousand.
+    if (sortKey === "deal") {
+      params.set("sort", "deal");
+    } else {
+      params.set("sortKey", sortKey);
+      params.set("sortDir", sortDir);
+    }
     if (dealFilter) params.set("deal", dealFilter);
     if (yearMin) params.set("yearMin", String(yearMin));
     if (yearMax) params.set("yearMax", String(yearMax));

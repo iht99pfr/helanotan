@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { getSiteStats, sv } from "@/app/lib/site-stats";
 import { Geist, Geist_Mono } from "next/font/google";
 import Nav from "./components/Nav";
 import "./globals.css";
@@ -46,16 +47,21 @@ export const metadata: Metadata = {
   other: {
     "theme-color": "#f7f3ec",
   },
-  alternates: {
-    canonical: siteUrl,
-  },
+  // NOTE: deliberately no `alternates.canonical` here.
+  //
+  // In the App Router a canonical set on the root layout is inherited by every
+  // descendant route that does not override it — which pointed 35 of the 45
+  // URLs in our own sitemap at the homepage, telling Google not to index them.
+  // The sitemap and the canonicals were in direct contradiction. Each route now
+  // declares its own self-referencing canonical (see app/lib/canonical.ts).
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const stats = await getSiteStats();
   return (
     <html lang="sv">
       <head>
@@ -135,7 +141,10 @@ export default function RootLayout({
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted)]">
-              <span>Data från Blocket.se — Uppdaterad feb 2026</span>
+              <span>
+                Data från Blocket.se — {sv(stats.totalCars)} annonser analyserade,{" "}
+                {sv(stats.activeCars)} till salu. Uppdaterad {stats.lastUpdatedLong}.
+              </span>
               <span>Ett projekt av <a href="https://upnorth.ai" className="underline hover:text-[var(--foreground)] transition" target="_blank" rel="noopener noreferrer">Up North AI</a></span>
             </div>
           </div>

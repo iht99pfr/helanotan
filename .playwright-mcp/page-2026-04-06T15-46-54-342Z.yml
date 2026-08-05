@@ -1,0 +1,80 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Hela Notan" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: Hela Notan
+      - generic [ref=e6]:
+        - link "Värdeminskning" [ref=e7] [cursor=pointer]:
+          - /url: /#depreciation
+        - link "Ägandekostnad" [ref=e8] [cursor=pointer]:
+          - /url: /tco
+        - link "Toppen" [ref=e9] [cursor=pointer]:
+          - /url: /toppen
+        - link "Köpguide" [ref=e10] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Bevaka" [ref=e11] [cursor=pointer]:
+          - /url: /bevaka
+        - link "Fakta" [ref=e12] [cursor=pointer]:
+          - /url: /fakta
+        - link "Artiklar" [ref=e13] [cursor=pointer]:
+          - /url: /artiklar
+        - link "Nyheter" [ref=e14] [cursor=pointer]:
+          - /url: /nyheter
+  - main [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - heading "Hela Notan — vad kostar bilen egentligen?" [level=1] [ref=e18]
+        - paragraph [ref=e19]: Riktig data från Blocket.se. Jämför hur populära bilmodeller tappar i värde över tid, miltal och bränsletyp.
+      - heading "Välj modeller att jämföra" [level=2] [ref=e21]
+      - separator [ref=e48]
+      - separator [ref=e59]
+      - generic [ref=e61]:
+        - heading "Annonser" [level=2] [ref=e62]
+        - paragraph [ref=e63]: Visar annonser för valda modeller och bränsletyp.
+      - separator [ref=e73]
+      - generic [ref=e74]:
+        - heading "Metod" [level=2] [ref=e75]
+        - paragraph [ref=e76]: Data insamlades från Blocket.se i februari 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderades.
+        - paragraph [ref=e77]: "Värdeminskning modelleras med log-transformerad multivariat regression med 15 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp (Hybrid/Laddhybrid/Diesel/El), säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder/miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=e78]: 95% prediktionsintervall beräknas i log-rummet (±1,96 × SE) och transformeras tillbaka, vilket ger proportionella konfidensband. Ägandekostnadsberäknaren använder förberäknade prediktionskurvor för att fånga den icke-linjära värdeminskningen vid olika åldrar.
+    - button [ref=e79]:
+      - img [ref=e80]
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - heading "Köpkorg (0)" [level=2] [ref=e85]
+        - button [ref=e87]:
+          - img [ref=e88]
+      - generic [ref=e91]:
+        - paragraph [ref=e92]: Din köpkorg är tom.
+        - paragraph [ref=e93]: Klicka på en punkt i grafen eller spara en bil från listan.
+  - contentinfo [ref=e94]:
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - generic [ref=e99]: Hela Notan
+          - paragraph [ref=e100]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=e101]:
+          - link "Hem" [ref=e102] [cursor=pointer]:
+            - /url: /
+          - link "Ägandekostnad" [ref=e103] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=e104] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=e105] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=e106] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Fakta" [ref=e107] [cursor=pointer]:
+            - /url: /fakta
+          - link "Artiklar" [ref=e108] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Nyheter" [ref=e109] [cursor=pointer]:
+            - /url: /nyheter
+      - generic [ref=e110]:
+        - generic [ref=e111]: Data från Blocket.se — Uppdaterad feb 2026
+        - generic [ref=e112]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=e113] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=e114]

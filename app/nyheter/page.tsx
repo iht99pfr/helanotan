@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { canonical } from "@/app/lib/canonical";
 import Link from "next/link";
 import { getAllNewsArticles } from "@/app/lib/nyheter";
 
 export const metadata: Metadata = {
+  alternates: canonical("/nyheter"),
   title: "Nyheter — Hela Notan",
   description:
     "Nyheter och analyser om bilkostnader, värdeminskning och bilmarknad i Sverige.",

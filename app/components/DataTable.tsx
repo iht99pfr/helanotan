@@ -89,16 +89,9 @@ function SaveButton({ car }: { car: Car }) {
 }
 
 export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Props) {
-  const sorted = useMemo(() => {
-    const result = [...cars];
-    // "deal" sorting is done server-side, skip client sort for it
-    if (sortKey === "deal") return result;
-    result.sort((a, b) => {
-      const mul = sortDir === "asc" ? 1 : -1;
-      return (a[sortKey] - b[sortKey]) * mul;
-    });
-    return result;
-  }, [cars, sortKey, sortDir]);
+  // Rows arrive already sorted by the database. Re-sorting here would only
+  // reorder the current page — which is what made every column header a lie.
+  const sorted = cars;
 
   const SortIcon = ({ col }: { col: SortKey }) => {
     if (sortKey !== col) return <span className="text-[var(--muted)] ml-1">↕</span>;

@@ -108,6 +108,18 @@ export async function GET(req: NextRequest) {
     const modelsParam = searchParams.get("models");
     const fuelParam = searchParams.get("fuel");
     const sortParam = searchParams.get("sort"); // "deal" for deal sorting
+    // Sorting must happen in SQL. It previously did not: the query was
+    // hardcoded ORDER BY price_sek DESC and the client re-sorted whichever 30
+    // rows came back — so page 1 was always the 30 most expensive cars of
+    // several thousand, under a header reading "Pris ↑", with no deals on it.
+    // All four sortable columns are numeric, so one CASE expression multiplied
+    // by the direction covers every combination without interpolating SQL.
+    const sortKey = ["price", "year", "mileage", "hp"].includes(
+      searchParams.get("sortKey") || "",
+    )
+      ? (searchParams.get("sortKey") as string)
+      : "price";
+    const sortMul = searchParams.get("sortDir") === "desc" ? -1 : 1;
     const dealFilter = searchParams.get("deal"); // "great", "good", or "any" (good+great)
     const yearMin = parseInt(searchParams.get("yearMin") || "0") || 0;
     const yearMax = parseInt(searchParams.get("yearMax") || "0") || 0;
@@ -189,7 +201,14 @@ export async function GET(req: NextRequest) {
           AND (${!hasYearMax} OR model_year <= ${yearMax})
           AND (${!hasSeller} OR LOWER(seller_type) = ${sellerParam || ""})
           AND (${!hasPriceMax} OR price_sek <= ${priceMax})
-        ORDER BY price_sek DESC
+        ORDER BY (CASE ${sortKey}
+                    WHEN 'price'   THEN price_sek
+                    WHEN 'year'    THEN model_year
+                    WHEN 'mileage' THEN mileage_mil
+                    WHEN 'hp'      THEN horsepower
+                    ELSE price_sek
+                  END) * ${sortMul} ASC NULLS LAST,
+                 price_sek ASC
         LIMIT ${limit} OFFSET ${offset}
       `;
     }

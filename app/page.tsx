@@ -1,4 +1,5 @@
 import { ModelSelectionProvider } from "./components/ModelSelectionContext";
+import { getSiteStats, sv } from "@/app/lib/site-stats";
 import { CartProvider } from "./components/CartContext";
 import ModelSelector from "./components/ModelSelector";
 import HeroSection from "./components/HeroSection";
@@ -7,7 +8,8 @@ import ChartSection from "./components/ChartSection";
 import DataTableSection from "./components/DataTableSection";
 import CartButton from "./components/CartButton";
 
-export default function Home() {
+export default async function Home() {
+  const stats = await getSiteStats();
   return (
     <CartProvider>
     <ModelSelectionProvider>
@@ -48,11 +50,13 @@ export default function Home() {
         <section className="bg-[var(--card)] p-5 sm:p-6 border border-[var(--border)] rounded-lg text-sm text-[var(--muted)] space-y-2">
           <h2 className="text-[var(--foreground)] font-semibold">Metod</h2>
           <p>
-            Data insamlades från Blocket.se i februari 2026. Annonser
-            med priser under 20 000 kr eller årsmodeller före 2005 exkluderades.
+            {sv(stats.totalCars)} annonser från Blocket.se analyserade, varav{" "}
+            {sv(stats.activeCars)} till salu just nu. Senast uppdaterad{" "}
+            {stats.lastUpdatedLong}. Annonser med priser under 20 000 kr eller
+            årsmodeller före 2005 exkluderas.
           </p>
           <p>
-            Värdeminskning modelleras med log-transformerad multivariat regression med 15
+            Värdeminskning modelleras med log-transformerad multivariat regression med 20
             variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp
             (Hybrid/Laddhybrid/Diesel/El), säljartyp, drivlina, WLTP-räckvidd samt
             interaktionstermer mellan bränsletyp och ålder/miltal. Log-transformen

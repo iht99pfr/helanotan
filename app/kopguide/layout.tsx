@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { canonical } from "@/app/lib/canonical";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
+  alternates: canonical("/kopguide"),
   title: "Köpguide — Vilken årsmodell ska jag köpa?",
   description:
     "Jämför värdeminskningskostnad per månad för olika årsmodeller. Hitta den sweet spot där du får mest bil för pengarna.",
