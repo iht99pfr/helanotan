@@ -1,18 +1,39 @@
 @import "tailwindcss";
 
+/*
+ * "Hela Notan" means the bill, so the design language is a ledger.
+ *
+ * Four decisions carry the identity:
+ *   1. Body copy is ink, not grey. The old stylesheet set `body { color:
+ *      var(--muted) }`, so every paragraph on the site rendered at reduced
+ *      contrast — a readability defect dressed as a style choice. --muted is
+ *      now for labels and asides only.
+ *   2. Numbers are tabular mono, like a bank statement, so columns of kronor
+ *      line up on the decimal instead of drifting.
+ *   3. Headings are a serif with an optical size axis (Fraunces), which is
+ *      what makes a page read as published rather than as a dashboard.
+ *   4. Green means money you keep. Nothing else is green — not links, not
+ *      success states, not hover.
+ */
 :root {
-  --background: #f7f3ec;
-  --foreground: #1e1c19;
-  --muted: #5c5651;
-  --border: #ddd8ce;
-  --card: #f3efe8;
+  --background: #f8f4ec;   /* paper */
+  --foreground: #171512;   /* ink */
+  --muted: #6b6459;        /* labels and asides — never body copy */
+  --border: #d9d2c4;       /* hairline rule */
+  --card: #f1ebdf;         /* paper, one shade deeper */
+  --money: #1a5c3a;        /* saved kronor, and only that */
+  --money-mid: #3f8a60;    /* the lesser of the two deal grades */
+  --money-soft: #e7f0ea;   /* a great deal's row tint */
+  --money-faint: #f1f6f2;  /* a good deal's row tint */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-money: var(--money);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-display);
 }
 
 html {
@@ -21,12 +42,25 @@ html {
 
 body {
   background: var(--background);
-  color: var(--muted);
+  color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  /* Old-style figures would fight the ledger metaphor; lining is what a
+     statement uses. */
+  font-variant-numeric: lining-nums;
 }
 
 h1, h2, h3, h4 {
   color: var(--foreground);
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.015em;
+}
+
+/* Every number that sits in a column, so digits share a width and the eye can
+   compare two prices without reading them. */
+.font-mono,
+table td,
+table th {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .recharts-tooltip-wrapper {

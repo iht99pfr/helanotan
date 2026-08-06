@@ -14,7 +14,7 @@ export default async function Home() {
     <ModelSelectionProvider>
       <div className="space-y-8 sm:space-y-12">
         {/* Hero */}
-        <HeroSection />
+        <HeroSection totalCars={stats.totalCars} lastUpdated={stats.lastUpdatedLong} />
 
         {/* Model Selector */}
         <section>

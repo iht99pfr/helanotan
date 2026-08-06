@@ -94,7 +94,7 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
             {point.residual != null && point.residual < 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-[var(--muted)]">Under predikterat</span>
-                <span className="font-mono font-semibold text-green-600">
+                <span className="font-mono font-semibold text-[var(--money)]">
                   {Math.abs(point.residual).toLocaleString("sv-SE")} kr
                 </span>
               </div>
@@ -103,8 +103,8 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
               <div className="pt-1">
                 <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                   point.deal === "great"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-green-50 text-green-600"
+                    ? "bg-[var(--money-soft)] text-[var(--money)]"
+                    : "bg-[var(--money-faint)] text-[var(--money-mid)]"
                 }`}>
                   {point.deal === "great" ? "Fyndpris" : "Bra pris"}
                 </span>

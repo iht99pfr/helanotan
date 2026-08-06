@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { getSiteStats, sv } from "@/app/lib/site-stats";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import Nav from "./components/Nav";
 import "./globals.css";
 
@@ -13,6 +13,17 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// The optical-size axis is the point: headings at 36px want tighter, higher
+// contrast letterforms than a 15px table caption does, and Fraunces adapts
+// rather than scaling one drawing up. It is what makes the page read as
+// published rather than as a dashboard.
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
 });
 
 const siteUrl = "https://helanotan.se";
@@ -45,7 +56,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   other: {
-    "theme-color": "#f7f3ec",
+    "theme-color": "#f8f4ec",
   },
   // NOTE: deliberately no `alternates.canonical` here.
   //
@@ -113,7 +124,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
       >
         <Nav />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">{children}</main>
@@ -123,7 +134,7 @@ export default async function RootLayout({
               <div>
                 <div className="flex items-center gap-2">
                   <img src="/logo-cropped.png" alt="" width={22} height={18} />
-                  <span className="text-base font-bold text-[var(--foreground)]">Hela Notan</span>
+                  <span className="font-[family-name:var(--font-display)] text-base font-semibold text-[var(--foreground)]">Hela Notan</span>
                 </div>
                 <p className="text-xs text-[var(--muted)] mt-1 max-w-sm">
                   Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.

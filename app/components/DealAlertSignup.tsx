@@ -42,7 +42,7 @@ export default function DealAlertSignup({ dealFilter }: Props) {
 
   if (status === "success") {
     return (
-      <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+      <div className="flex items-center gap-2 text-sm text-[var(--foreground)] bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-3">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         Tack! Du står i kön — vi hör av oss när fyndbevakningen är igång.
       </div>

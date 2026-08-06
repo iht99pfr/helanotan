@@ -29,8 +29,8 @@ const FUEL_LABELS: Record<string, string> = {
 };
 
 function qualityLabel(r2: number) {
-  if (r2 >= 0.95) return { text: "Utmärkt", cls: "bg-green-100 text-green-700" };
-  if (r2 >= 0.9) return { text: "Mycket bra", cls: "bg-green-50 text-green-600" };
+  if (r2 >= 0.95) return { text: "Utmärkt", cls: "bg-[var(--money-soft)] text-[var(--money)]" };
+  if (r2 >= 0.9) return { text: "Mycket bra", cls: "bg-[var(--money-soft)] text-[var(--money)]" };
   if (r2 >= 0.8) return { text: "Bra", cls: "bg-amber-100 text-amber-700" };
   return { text: "Måttlig", cls: "bg-red-100 text-red-700" };
 }

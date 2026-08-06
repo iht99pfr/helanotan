@@ -65,10 +65,10 @@ function DealDot(props: any) {
   const { cx, cy, payload, fill } = props;
   if (!cx || !cy) return null;
   if (payload?.deal === "great") {
-    return <circle cx={cx} cy={cy} r={6} fill="#16a34a" stroke="#fff" strokeWidth={1.5} style={{ cursor: "pointer" }} />;
+    return <circle cx={cx} cy={cy} r={6} fill="#1a5c3a" stroke="#f8f4ec" strokeWidth={1.5} style={{ cursor: "pointer" }} />;
   }
   if (payload?.deal === "good") {
-    return <circle cx={cx} cy={cy} r={5} fill="#4ade80" opacity={0.85} style={{ cursor: "pointer" }} />;
+    return <circle cx={cx} cy={cy} r={5} fill="#3f8a60" opacity={0.85} style={{ cursor: "pointer" }} />;
   }
   return <circle cx={cx} cy={cy} r={4} fill={fill} opacity={0.6} style={{ cursor: "pointer" }} />;
 }
@@ -89,7 +89,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
             Predikterat: <span className="font-mono">{d.predicted.toLocaleString("sv-SE")} kr</span>
           </p>
           {d.residual != null && d.residual < 0 && (
-            <p className="text-xs font-semibold text-green-600">
+            <p className="text-xs font-semibold text-[var(--money)]">
               {underEstimateLabel(d.price, d.predicted) ?? "Under prisestimat"} ·{" "}
               {Math.abs(d.residual).toLocaleString("sv-SE")} kr
             </p>
@@ -97,8 +97,8 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
           {d.deal && (
             <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
               d.deal === "great"
-                ? "bg-green-100 text-green-700 font-semibold"
-                : "bg-green-50 text-green-600"
+                ? "bg-[var(--money-soft)] text-[var(--money)] font-semibold"
+                : "bg-[var(--money-faint)] text-[var(--money-mid)]"
             }`}>
               {dealName(d.deal)}
             </span>
@@ -302,8 +302,8 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       <div className="flex flex-wrap justify-center gap-2 text-xs">
         {([
           { key: "all", label: "Alla annonser", dot: null, r: 0 },
-          { key: "great", label: "Fyndpris", dot: "#16a34a", r: 6 },
-          { key: "good", label: "Bra pris", dot: "#4ade80", r: 5 },
+          { key: "great", label: "Fyndpris", dot: "#1a5c3a", r: 6 },
+          { key: "good", label: "Bra pris", dot: "#3f8a60", r: 5 },
         ] as const).map(({ key, label, dot, r }) => (
           <button
             key={key}

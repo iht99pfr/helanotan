@@ -367,7 +367,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
                     }}
                     className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       copied
-                        ? "bg-green-600 text-white"
+                        ? "bg-[var(--money)] text-white"
                         : "bg-[var(--foreground)] text-white hover:opacity-90"
                     }`}
                   >

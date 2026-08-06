@@ -297,7 +297,7 @@ export default function KopguidePage() {
                   <tr
                     key={row.age}
                     className={`border-b border-[var(--border)] ${
-                      row.tag === "Bästa värdet" ? "bg-green-50/60" : ""
+                      row.tag === "Bästa värdet" ? "bg-[var(--money-soft)]" : ""
                     }`}
                   >
                     <td className="py-3 pr-3 font-medium text-[var(--foreground)]">
@@ -323,7 +323,7 @@ export default function KopguidePage() {
                         <span
                           className={`inline-block text-xs font-medium px-2.5 py-1 rounded-full ${
                             row.tag === "Bästa värdet"
-                              ? "bg-green-100 text-green-800"
+                              ? "bg-[var(--money-soft)] text-[var(--money)]"
                               : row.tag === "Maximal komfort"
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-amber-100 text-amber-800"

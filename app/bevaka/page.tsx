@@ -275,7 +275,7 @@ export default function BevakaPage() {
             </p>
 
             {status === "success" ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+              <div className="flex items-center gap-2 text-sm text-[var(--foreground)] bg-[var(--card)] border border-[var(--border)] rounded-lg px-4 py-3">
                 <svg
                   width="16"
                   height="16"

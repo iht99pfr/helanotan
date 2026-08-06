@@ -248,13 +248,13 @@ export default async function ToppenPage() {
                 <tr
                   key={`${m.modelKey}-${m.fuel}`}
                   className={`border-b border-[var(--border)] ${
-                    i < 3 ? "bg-green-50/60" : ""
+                    i < 3 ? "bg-[var(--money-soft)]" : ""
                   }`}
                 >
                   <td className="py-3 pr-3 font-mono text-[var(--muted)]">{i + 1}</td>
                   <td className="py-3 pr-3 font-medium text-[var(--foreground)]">{m.label}</td>
                   <td className="py-3 pr-3 text-[var(--muted)]">{m.fuelLabel}</td>
-                  <td className="py-3 pr-3 text-right font-mono font-semibold text-green-700">
+                  <td className="py-3 pr-3 text-right font-mono font-semibold text-[var(--money)]">
                     {m.retention3yr.toFixed(1)}%
                   </td>
                   <td className="py-3 pr-3 text-right font-mono text-[var(--muted)] hidden sm:table-cell">
@@ -351,7 +351,7 @@ export default async function ToppenPage() {
                 <tr
                   key={`${m.modelKey}-${m.fuel}`}
                   className={`border-b border-[var(--border)] ${
-                    i < 3 ? "bg-green-50/60" : ""
+                    i < 3 ? "bg-[var(--money-soft)]" : ""
                   }`}
                 >
                   <td className="py-3 pr-3 font-mono text-[var(--muted)]">{i + 1}</td>

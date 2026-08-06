@@ -36,8 +36,8 @@ export default function DealList({ deals, modelKey, label }: {
             }
             className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 p-3 rounded-lg border transition hover:border-[var(--muted)] ${
               d.deal === "great"
-                ? "border-green-300 bg-green-50/60"
-                : "border-[var(--border)] bg-green-50/20"
+                ? "border-[var(--money)]/30 bg-[var(--money-soft)]"
+                : "border-[var(--border)] bg-[var(--money-faint)]"
             }`}
           >
             <span className="font-medium text-[var(--foreground)]">
@@ -58,7 +58,7 @@ export default function DealList({ deals, modelKey, label }: {
                 .filter(Boolean)
                 .join(" · ")}
             </span>
-            <span className="ml-auto text-sm font-mono font-semibold text-green-700">
+            <span className="ml-auto text-sm font-mono font-semibold text-[var(--money)]">
               {kr(Math.abs(d.residual))} kr under estimat
             </span>
           </a>

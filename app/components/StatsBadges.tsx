@@ -42,7 +42,9 @@ function intervalPct(stats: RegressionStats): number {
 }
 
 function precisionColor(pct: number) {
-  if (pct <= 15) return "text-green-800";
+  // Not green: precision is a quality scale, and green on this site
+  // means kronor you keep. Ink for good, warm tones for worse.
+  if (pct <= 15) return "text-[var(--foreground)]";
   if (pct <= 25) return "text-amber-800";
   return "text-red-700";
 }

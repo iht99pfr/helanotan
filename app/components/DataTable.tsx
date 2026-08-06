@@ -78,7 +78,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
           <div
             key={car.id}
             className={`relative p-3 border border-[var(--border)] rounded-lg transition ${
-              car.deal === "great" ? "bg-green-50/60" : car.deal === "good" ? "bg-green-50/30" : ""
+              car.deal === "great" ? "bg-[var(--money-soft)]" : car.deal === "good" ? "bg-[var(--money-faint)]" : ""
             }`}
           >
             <a
@@ -103,7 +103,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
               <span
                 className={`px-1.5 py-0.5 rounded-full ${
                   car.fuel === "Hybrid"
-                    ? "bg-green-100 text-green-700"
+                    ? "bg-teal-100 text-teal-800"
                     : car.fuel === "PHEV"
                     ? "bg-blue-100 text-blue-700"
                     : car.fuel === "Diesel"
@@ -123,8 +123,8 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                 <div className="mt-1.5">
                   <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
                     car.deal === "great"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-green-50 text-green-800"
+                      ? "bg-[var(--money-soft)] text-[var(--money)]"
+                      : "bg-[var(--money-faint)] text-[var(--money-mid)]"
                   }`}>
                     {badge.headline}
                     {badge.detail && <span className="font-normal"> · −{badge.detail}</span>}
@@ -184,7 +184,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
               <tr
                 key={car.id}
                 className={`border-t border-[var(--border)] hover:bg-[var(--card)]/50 transition ${
-                  car.deal === "great" ? "bg-green-50/60" : car.deal === "good" ? "bg-green-50/30" : ""
+                  car.deal === "great" ? "bg-[var(--money-soft)]" : car.deal === "good" ? "bg-[var(--money-faint)]" : ""
                 }`}
               >
                 <td className="px-3 py-2 font-medium text-[var(--foreground)]">
@@ -203,8 +203,8 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                         title={badge.detail ? `${badge.detail} under prisestimatet` : undefined}
                         className={`inline-block text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${
                           car.deal === "great"
-                            ? "bg-green-100 text-green-700 font-semibold"
-                            : "bg-green-50 text-green-800"
+                            ? "bg-[var(--money-soft)] text-[var(--money)] font-semibold"
+                            : "bg-[var(--money-soft)] text-[var(--money)]"
                         }`}
                       >
                         {badge.headline}
@@ -219,7 +219,7 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full ${
                       car.fuel === "Hybrid"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-[var(--money-soft)] text-[var(--money)]"
                         : car.fuel === "PHEV"
                         ? "bg-blue-100 text-blue-700"
                         : car.fuel === "Diesel"

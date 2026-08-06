@@ -33,23 +33,23 @@ export default function Nav() {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-md shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">
+    <nav className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-md">
       {/* Desktop: single row */}
       <div className="hidden sm:flex items-center gap-4 max-w-7xl mx-auto px-6 py-4 border-b border-[var(--border)]">
         <a href="/" className="flex items-center gap-2 shrink-0">
           <Image src="/logo-cropped.png" alt="" width={35} height={28} className="shrink-0" />
-          <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">Hela Notan</span>
+          <span className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-tight text-[var(--foreground)]">Hela Notan</span>
         </a>
-        <div className="flex gap-5 text-sm text-[var(--muted)]">
+        <div className="flex gap-6 text-sm text-[var(--muted)]">
           {NAV_ITEMS.map(({ label, href }) => (
             <a
               key={href}
               href={href}
               onClick={() => track("nav_click", { to: href, from: pathname })}
-              className={`transition ${
+              className={`transition pb-1 -mb-1 border-b-2 ${
                 isActive(href)
-                  ? "text-[var(--foreground)] font-medium"
-                  : "hover:text-[var(--foreground)]"
+                  ? "text-[var(--foreground)] font-medium border-[var(--foreground)]"
+                  : "border-transparent hover:text-[var(--foreground)]"
               }`}
             >
               {label}
@@ -63,7 +63,7 @@ export default function Nav() {
         <div className="px-4 pt-3 pb-2">
           <a href="/" className="flex items-center gap-2">
             <Image src="/logo-cropped.png" alt="" width={30} height={24} className="shrink-0" />
-            <span className="text-lg font-bold tracking-tight text-[var(--foreground)]">Hela Notan</span>
+            <span className="font-[family-name:var(--font-display)] text-lg font-semibold tracking-tight text-[var(--foreground)]">Hela Notan</span>
           </a>
         </div>
         <div className="relative">

@@ -98,9 +98,9 @@ export default function DataTableSection() {
 
   const dealButtons: { key: string; label: string; color: string; activeColor: string }[] = [
     { key: "", label: "Alla", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-[var(--foreground)] text-white" },
-    { key: "any", label: "Alla fynd", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-green-600 text-white" },
-    { key: "great", label: "Fyndpris", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-green-700 text-white" },
-    { key: "good", label: "Bra pris", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-green-500 text-white" },
+    { key: "any", label: "Alla fynd", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-[var(--money)] text-white" },
+    { key: "great", label: "Fyndpris", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-[var(--money)] text-white" },
+    { key: "good", label: "Bra pris", color: "bg-[var(--card)] text-[var(--muted)]", activeColor: "bg-[var(--money)]/80 text-white" },
   ];
 
   const activeFilterCount = [yearMin, yearMax, seller, priceMax].filter(Boolean).length;
