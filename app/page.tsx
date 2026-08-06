@@ -2,18 +2,15 @@ import Link from "next/link";
 import { ModelSelectionProvider } from "./components/ModelSelectionContext";
 import { getSiteStats, sv } from "@/app/lib/site-stats";
 import { getModelIndex } from "@/app/lib/model-page";
-import { CartProvider } from "./components/CartContext";
 import ModelSelector from "./components/ModelSelector";
 import HeroSection from "./components/HeroSection";
 import StatsSection from "./components/StatsSection";
 import ChartSection from "./components/ChartSection";
 import DataTableSection from "./components/DataTableSection";
-import CartButton from "./components/CartButton";
 
 export default async function Home() {
   const [stats, models] = await Promise.all([getSiteStats(), getModelIndex()]);
   return (
-    <CartProvider>
     <ModelSelectionProvider>
       <div className="space-y-8 sm:space-y-12">
         {/* Hero */}
@@ -105,8 +102,6 @@ export default async function Home() {
           </p>
         </section>
       </div>
-      <CartButton />
     </ModelSelectionProvider>
-    </CartProvider>
   );
 }

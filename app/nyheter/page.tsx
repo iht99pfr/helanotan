@@ -5,6 +5,9 @@ import { getAllNewsArticles } from "@/app/lib/nyheter";
 
 export const metadata: Metadata = {
   alternates: canonical("/nyheter"),
+  // See the note in nyheter/[slug]/page.tsx — the whole section is noindex
+  // until it earns its crawl budget back.
+  robots: { index: false, follow: true },
   title: "Nyheter — Hela Notan",
   description:
     "Nyheter och analyser om bilkostnader, värdeminskning och bilmarknad i Sverige.",

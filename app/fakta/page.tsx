@@ -3,6 +3,11 @@ import { getDb } from "@/app/lib/db";
 import ShareBar from "@/app/components/ShareBar";
 
 export const metadata: Metadata = {
+  // De-navigated and out of the index. Six independent reviewers recommended
+  // deleting this page, but 8 pageviews cannot settle that either way — so
+  // keep the URL, which costs nothing and is reversible, and stop spending
+  // crawl budget on it, which is the resource actually in short supply.
+  robots: { index: false, follow: true },
   title: "Kostar mer än du tror — Hela Notan",
   description:
     "Insikter och fakta om bilkostnader i Sverige baserat på analys av tusentals Blocket-annonser.",

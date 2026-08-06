@@ -5,33 +5,24 @@ import { useCallback } from "react";
 import Image from "next/image";
 import { track } from "@/app/lib/track";
 
+// Ten links produced 1.0 pages per session — nobody was navigating, and a
+// menu that offers everything ranks nothing. These five are the questions a
+// buyer actually arrives with. /fakta, /modelldata, /nyheter and /bevaka keep
+// their URLs and stay linked from the footer and from in-page context.
 const NAV_ITEMS = [
-  { label: "Värdeminskning", href: "/#depreciation" },
   { label: "Modeller", href: "/bilar" },
   { label: "Ägandekostnad", href: "/tco" },
-  { label: "Toppen", href: "/toppen" },
   { label: "Köpguide", href: "/kopguide" },
-  { label: "Bevaka", href: "/bevaka" },
-  { label: "Fakta", href: "/fakta" },
-  { label: "Modelldata", href: "/modelldata" },
+  { label: "Toppen", href: "/toppen" },
   { label: "Artiklar", href: "/artiklar" },
-  { label: "Nyheter", href: "/nyheter" },
 ];
 
 export default function Nav() {
   const pathname = usePathname();
 
   function isActive(href: string) {
-    if (href === "/bilar") return pathname.startsWith("/bilar");
-    if (href === "/tco") return pathname === "/tco";
-    if (href === "/toppen") return pathname === "/toppen";
-    if (href === "/kopguide") return pathname.startsWith("/kopguide");
-    if (href === "/bevaka") return pathname === "/bevaka";
-    if (href === "/fakta") return pathname === "/fakta";
-    if (href === "/modelldata") return pathname === "/modelldata";
-    if (href === "/artiklar") return pathname.startsWith("/artiklar");
-    if (href === "/nyheter") return pathname.startsWith("/nyheter");
-    return false;
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
   }
 
   // Auto-scroll active pill into view on mobile

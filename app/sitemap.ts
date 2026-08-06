@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
 import { articles } from "./artiklar/data/articles";
-import { getAllNewsSlugs, getNewsArticle } from "./lib/nyheter";
 import { getModelIndex } from "./lib/model-page";
 
 const baseUrl = "https://helanotan.se";
@@ -22,16 +21,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const newsSlugs = getAllNewsSlugs();
-  const newsPages = newsSlugs.map((slug) => {
-    const article = getNewsArticle(slug);
-    return {
-      url: `${baseUrl}/nyheter/${slug}`,
-      lastModified: new Date(article.date),
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    };
-  });
+  // The 27 auto-generated news posts are deliberately absent: they were 44% of
+  // this sitemap and returned nothing, while pages that matter went uncrawled.
+  // They carry noindex too — see app/nyheter/[slug]/page.tsx.
 
   return [
     {
@@ -72,24 +64,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/fakta`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/artiklar`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/nyheter`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
     ...articlePages,
-    ...newsPages,
   ];
 }

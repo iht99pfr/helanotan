@@ -27,13 +27,14 @@ export default function StatsSection() {
       </section>
       <section className="space-y-3">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Modellprecision</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Hur säkert är prisestimatet?</h2>
           <p className="text-[var(--muted)] text-sm mt-1">
-            Multivariat regression som tar hänsyn till ålder, miltal, bränsletyp,
-            hästkrafter, utrustning, drivlina och säljartyp.
+            Hur nära modellen brukar hamna, i procent och i kronor. Bygger på
+            ålder, miltal, bränsletyp, hästkrafter, utrustning, drivlina och
+            säljartyp.
           </p>
         </div>
-        <StatsBadges regression={data.regression} modelConfig={modelConfig} selectedModels={selectedModels} />
+        <StatsBadges regression={data.regression} summary={data.summary} modelConfig={modelConfig} selectedModels={selectedModels} />
       </section>
     </>
   );

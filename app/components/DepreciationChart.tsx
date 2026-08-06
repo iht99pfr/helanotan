@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { track } from "@/app/lib/track";
+import { dealName, underEstimateLabel } from "@/app/lib/deal-format";
 import {
   ScatterChart,
   Scatter,
@@ -89,14 +90,18 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
           </p>
           {d.residual != null && d.residual < 0 && (
             <p className="text-xs font-semibold text-green-600">
-              {Math.abs(d.residual).toLocaleString("sv-SE")} kr under predikterat
+              {underEstimateLabel(d.price, d.predicted) ?? "Under prisestimat"} ·{" "}
+              {Math.abs(d.residual).toLocaleString("sv-SE")} kr
             </p>
           )}
-          {d.deal === "great" && (
-            <span className="inline-block mt-1 text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-semibold">Fyndpris</span>
-          )}
-          {d.deal === "good" && (
-            <span className="inline-block mt-1 text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-600">Bra pris</span>
+          {d.deal && (
+            <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
+              d.deal === "great"
+                ? "bg-green-100 text-green-700 font-semibold"
+                : "bg-green-50 text-green-600"
+            }`}>
+              {dealName(d.deal)}
+            </span>
           )}
         </>
       )}

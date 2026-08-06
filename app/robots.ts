@@ -13,6 +13,13 @@ export default function robots(): MetadataRoute.Robots {
         // so the site's entire dataset was invisible to search.
         "/api/bevaka",
         "/api/deal-alerts",
+        "/api/cron",
+        "/api/unsubscribe",
+        // NOTE: /nyheter and /fakta are deliberately NOT listed here. They
+        // carry `noindex` in their metadata, and a Disallow would stop Google
+        // fetching the page at all — so the noindex would never be read and
+        // the URLs could linger in the index as bare links. Blocking and
+        // de-indexing are opposites; pick de-indexing.
         // Internal working documents.
         "/version2",
       ],

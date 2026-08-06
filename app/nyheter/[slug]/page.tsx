@@ -21,6 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: `${article.title} — Hela Notan`,
       description: article.description,
+      // 27 auto-generated posts made up nearly half the sitemap and returned
+      // 24 impressions in 90 days, all of them from a single hand-written
+      // article elsewhere. Meanwhile /toppen has never been crawled at all.
+      // Crawl budget is the scarce resource here, and thin pages are judged
+      // partly site-wide, so these stay reachable but out of the index.
+      robots: { index: false, follow: true },
       openGraph: {
         title: article.title,
         description: article.description,

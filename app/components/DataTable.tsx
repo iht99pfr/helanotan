@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useCart, tableItemId, type CartItemFromTable } from "./CartContext";
 import { track, priceBucket } from "@/app/lib/track";
+import { dealBadge, type Deal } from "@/app/lib/deal-format";
 
 interface Car {
   id: string;
@@ -54,52 +54,6 @@ const FUEL_LABELS: Record<string, string> = {
   Electric: "El",
 };
 
-function SaveButton({ car }: { car: Car }) {
-  const { addItem, removeItem, isInCart } = useCart();
-  const cartId = tableItemId(car.id);
-  const inCart = isInCart(cartId);
-
-  function toggle() {
-    if (inCart) {
-      removeItem(cartId);
-    } else {
-      const item: CartItemFromTable = {
-        cartId,
-        source: "table",
-        modelKey: car.modelKey || "",
-        modelLabel: `${car.make} ${car.model}`,
-        blocketId: car.id,
-        url: car.url,
-        make: car.make,
-        model: car.model,
-        year: car.year,
-        price: car.price,
-        mileage: car.mileage,
-        fuel: car.fuel,
-        hp: car.hp,
-        seller: car.seller,
-        predicted: car.predicted ?? undefined,
-        residual: car.residual ?? undefined,
-        deal: car.deal,
-        addedAt: Date.now(),
-      };
-      addItem(item);
-    }
-  }
-
-  return (
-    <button
-      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(); }}
-      className={`p-1 rounded transition ${inCart ? "text-amber-500" : "text-[var(--muted)] hover:text-amber-400"}`}
-      title={inCart ? "Ta bort ur köpkorg" : "Spara i köpkorg"}
-    >
-      <svg width={18} height={18} viewBox="0 0 24 24" fill={inCart ? "currentColor" : "none"} stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-      </svg>
-    </button>
-  );
-}
-
 export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Props) {
   // Rows arrive already sorted by the database. Re-sorting here would only
   // reorder the current page — which is what made every column header a lie.
@@ -127,9 +81,6 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
               car.deal === "great" ? "bg-green-50/60" : car.deal === "good" ? "bg-green-50/30" : ""
             }`}
           >
-            <div className="absolute top-2 right-2 z-10">
-              <SaveButton car={car} />
-            </div>
             <a
               href={car.url}
               target="_blank"
@@ -165,17 +116,22 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                 {FUEL_LABELS[car.fuel] || car.fuel}
               </span>
             </div>
-            {car.deal && (
-              <div className="mt-1.5">
-                <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                  car.deal === "great"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-green-50 text-green-800"
-                }`}>
-                  {car.deal === "great" ? "Fyndpris" : "Bra pris"} −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
-                </span>
-              </div>
-            )}
+            {(() => {
+              const badge = dealBadge(car.price, car.predicted, car.residual, car.deal as Deal);
+              if (!badge) return null;
+              return (
+                <div className="mt-1.5">
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                    car.deal === "great"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-green-50 text-green-800"
+                  }`}>
+                    {badge.headline}
+                    {badge.detail && <span className="font-normal"> · −{badge.detail}</span>}
+                  </span>
+                </div>
+              );
+            })()}
             </a>
           </div>
         ))}
@@ -239,16 +195,22 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                   {car.price.toLocaleString("sv-SE")} kr
                 </td>
                 <td className="px-3 py-2 text-right">
-                  {car.deal === "great" && (
-                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-semibold whitespace-nowrap">
-                      −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
-                    </span>
-                  )}
-                  {car.deal === "good" && (
-                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-800 whitespace-nowrap">
-                      −{Math.abs(car.residual!).toLocaleString("sv-SE")} kr
-                    </span>
-                  )}
+                  {(() => {
+                    const badge = dealBadge(car.price, car.predicted, car.residual, car.deal as Deal);
+                    if (!badge) return null;
+                    return (
+                      <span
+                        title={badge.detail ? `${badge.detail} under prisestimatet` : undefined}
+                        className={`inline-block text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${
+                          car.deal === "great"
+                            ? "bg-green-100 text-green-700 font-semibold"
+                            : "bg-green-50 text-green-800"
+                        }`}
+                      >
+                        {badge.headline}
+                      </span>
+                    );
+                  })()}
                 </td>
                 <td className="px-3 py-2 text-right font-mono text-[var(--foreground)]">
                   {car.mileage.toLocaleString("sv-SE")} mil
@@ -284,9 +246,6 @@ export default function DataTable({ cars, total, sortKey, sortDir, onSort }: Pro
                   >
                     Blocket
                   </a>
-                </td>
-                <td className="px-3 py-2 text-center">
-                  <SaveButton car={car} />
                 </td>
               </tr>
             ))}

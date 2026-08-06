@@ -1,6 +1,5 @@
 "use client";
 
-import { useCart, scatterPointId, type CartItemFromScatter } from "./CartContext";
 import { track, priceBucket } from "@/app/lib/track";
 
 interface ScatterPoint {
@@ -36,37 +35,7 @@ interface Props {
 }
 
 export default function CarDetailModal({ point, modelKey, modelLabel, onClose }: Props) {
-  const { addItem, removeItem, isInCart } = useCart();
-
   if (!point) return null;
-
-  const cartId = scatterPointId(modelKey, point);
-  const inCart = isInCart(cartId);
-
-  function handleToggle() {
-    if (inCart) {
-      removeItem(cartId);
-    } else {
-      const item: CartItemFromScatter = {
-        cartId,
-        source: "scatter",
-        modelKey,
-        modelLabel,
-        age: point!.age,
-        year: point!.year,
-        price: point!.price,
-        mileage: point!.mileage,
-        fuel: point!.fuel,
-        hp: point!.hp,
-        seller: point!.seller,
-        predicted: point!.predicted,
-        residual: point!.residual,
-        deal: point!.deal,
-        addedAt: Date.now(),
-      };
-      addItem(item);
-    }
-  }
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
@@ -144,19 +113,10 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
           </div>
         )}
 
-        {/* Action buttons. When the ad is reachable it is the primary action —
-            saving to a cart is not why anyone opened this. */}
-        <div className={`space-y-2 ${point.id ? "flex flex-col-reverse space-y-reverse" : ""}`}>
-          <button
-            onClick={handleToggle}
-            className={`w-full py-2.5 rounded-lg text-sm font-medium transition ${
-              inCart || point.id
-                ? "bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-                : "bg-[var(--foreground)] text-white hover:opacity-90"
-            }`}
-          >
-            {inCart ? "Ta bort ur köpkorg" : "Spara i köpkorg"}
-          </button>
+        {/* One action. The cart that used to sit above this was localStorage
+            with no reminder and no way back — it competed for attention with
+            the only thing that matters here, which is reaching the car. */}
+        <div>
           {/* A dot that says "171 504 kr under predikterat" used to lead only
               to a Blocket search for the model and year — the strongest moment
               in the product dead-ended, and outbound clicks fired in 2 of 121

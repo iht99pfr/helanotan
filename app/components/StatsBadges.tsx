@@ -11,30 +11,59 @@ interface RegressionStats {
   n_samples: number;
 }
 
+interface Summary {
+  avgPrice?: number;
+  count?: number;
+}
+
 interface Props {
   regression: Record<string, RegressionStats>;
+  summary?: Record<string, Summary>;
   modelConfig: ModelConfigMap;
   selectedModels: Set<string>;
 }
 
-function qualityColor(r2: number) {
-  if (r2 >= 0.9) return "text-green-800";
-  if (r2 >= 0.8) return "text-amber-800";
+/**
+ * These cards used to lead with R² and colour themselves by it, which inverted
+ * the message they were trying to send. R² is the share of price variation the
+ * model explains — a property of how varied the model's listings are, not of
+ * how well it predicts one car. A VW Golf scored "Utmärkt" in green at 93% R²
+ * while carrying a ±39% prediction interval; a Polestar 4 was flagged red at
+ * 75% R² with a ±10% interval, i.e. four times more precise. The badge was
+ * telling buyers the opposite of the truth.
+ *
+ * The number that answers "how much should I trust this?" is the prediction
+ * interval, which the log fit gives directly as a proportion — so it converts
+ * into kronor on an actual car. That is what leads now, and what the colour
+ * follows.
+ */
+function intervalPct(stats: RegressionStats): number {
+  return (Math.exp(1.96 * stats.residual_se_log) - 1) * 100;
+}
+
+function precisionColor(pct: number) {
+  if (pct <= 15) return "text-green-800";
+  if (pct <= 25) return "text-amber-800";
   return "text-red-700";
 }
 
-function qualityLabel(r2: number) {
-  if (r2 >= 0.9) return "Utmärkt";
-  if (r2 >= 0.8) return "Bra";
-  return "Måttlig";
+function precisionLabel(pct: number) {
+  if (pct <= 15) return "Hög precision";
+  if (pct <= 25) return "Medel";
+  return "Låg precision";
 }
 
-export default function StatsBadges({ regression, modelConfig, selectedModels }: Props) {
+const kr = (n: number) => Math.round(n).toLocaleString("sv-SE");
+
+export default function StatsBadges({ regression, summary, modelConfig, selectedModels }: Props) {
   const filtered = Object.entries(regression).filter(([model]) => selectedModels.has(model));
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {filtered.map(([model, stats]) => {
         const meta = getModelMeta(modelConfig, model);
+        const pct = intervalPct(stats);
+        const color = precisionColor(pct);
+        const typical = summary?.[model]?.avgPrice;
         return (
           <div
             key={model}
@@ -42,23 +71,25 @@ export default function StatsBadges({ regression, modelConfig, selectedModels }:
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-[var(--muted)]">{meta.label}</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full bg-white/60 ${qualityColor(stats.r2)}`}>
-                {qualityLabel(stats.r2)}
+              <span className={`text-xs px-2 py-0.5 rounded-full bg-white/60 ${color}`}>
+                {precisionLabel(pct)}
               </span>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className={`text-2xl font-bold font-mono ${qualityColor(stats.r2)}`}>
-                {(stats.r2 * 100).toFixed(1)}%
+              <span className={`text-2xl font-bold font-mono ${color}`}>
+                ±{pct.toFixed(0)}%
               </span>
-              <span className="text-xs text-[var(--muted)]">R²-precision</span>
+              <span className="text-xs text-[var(--muted)]">prisosäkerhet</span>
             </div>
-            <div className="mt-2 flex gap-4 text-xs text-[var(--muted)]">
-              <span>RMSE: <span className="font-mono text-[var(--foreground)]">{(stats.rmse / 1000).toFixed(0)}k</span> kr</span>
-              <span>n = <span className="font-mono text-[var(--foreground)]">{stats.n_samples}</span></span>
-            </div>
+            {typical ? (
+              <p className="mt-1.5 text-sm text-[var(--foreground)]">
+                På en bil för {kr(typical)} kr:{" "}
+                <span className="font-mono font-semibold">±{kr((typical * pct) / 100)} kr</span>
+              </p>
+            ) : null}
             <p className="mt-1.5 text-xs text-[var(--muted)]">
-              Modellen förklarar {(stats.r2 * 100).toFixed(1)}% av prisvariationen.
-              Typiskt prediktionsfel: ±{((Math.exp(1.96 * stats.residual_se_log) - 1) * 100).toFixed(0)}% (95% KI).
+              Byggd på {stats.n_samples.toLocaleString("sv-SE")} annonser. Enskilda
+              bilar avviker mer — skick och servicehistorik syns inte i annonsen.
             </p>
           </div>
         );
