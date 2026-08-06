@@ -1,0 +1,902 @@
+- generic [active] [ref=f5e1]:
+  - navigation [ref=f5e2]:
+    - generic [ref=f5e3]:
+      - link "Hela Notan" [ref=f5e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f5e8]:
+        - link "Modeller" [ref=f5e9] [cursor=pointer]:
+          - /url: /bilar
+        - link "Ägandekostnad" [ref=f5e10] [cursor=pointer]:
+          - /url: /tco
+        - link "Köpguide" [ref=f5e11] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Toppen" [ref=f5e12] [cursor=pointer]:
+          - /url: /toppen
+        - link "Artiklar" [ref=f5e13] [cursor=pointer]:
+          - /url: /artiklar
+  - main [ref=f5e14]:
+    - generic [ref=f5e15]:
+      - generic [ref=f5e16]:
+        - paragraph [ref=f5e17]: Begagnatpriser · Sverige · 29 486 annonser · 6 augusti 2026
+        - heading "Vad kostar bilen egentligen?" [level=1] [ref=f5e18]
+        - paragraph [ref=f5e19]: Riktiga priser från Blocket. Se hur Volvo XC60, Volvo XC40 och Toyota RAV4 tappar i värde över tid, miltal och bränsletyp — och vilka annonser som ligger under vad modellen säger att de borde kosta.
+      - generic [ref=f5e20]:
+        - generic [ref=f5e21]:
+          - heading "Under prisestimat just nu" [level=2] [ref=f5e22]
+          - paragraph [ref=f5e23]: Annonser vars begärda pris ligger tydligt under vad modellen förutsäger för den åldern, det miltalet och den utrustningen. Ett lågt pris kan ha en bra förklaring — läs annonsen.
+        - generic [ref=f5e24]:
+          - generic [ref=f5e25]:
+            - generic [ref=f5e26]:
+              - generic [ref=f5e27]: Mercedes GLC 2026
+              - generic [ref=f5e28]: 23% under
+            - generic [ref=f5e29]: 600 000 kr
+            - generic [ref=f5e30]: 150 mil · Bensin · 258 hk · Privat
+            - generic [ref=f5e31]:
+              - text: Prisestimat
+              - generic [ref=f5e32]: 779 910 kr
+              - text: · 179 910 kr lägre
+            - generic [ref=f5e33]:
+              - link "Visa annonsen" [ref=f5e34] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/22226356
+              - link "Om modellen" [ref=f5e35] [cursor=pointer]:
+                - /url: /bilar/mercedes-glc
+          - generic [ref=f5e36]:
+            - generic [ref=f5e37]:
+              - generic [ref=f5e38]: Toyota Land Cruiser 2008
+              - generic [ref=f5e39]: 44% under
+            - generic [ref=f5e40]: 139 900 kr
+            - generic [ref=f5e41]: 32 000 mil · Diesel · 173 hk · Handlare
+            - generic [ref=f5e42]:
+              - text: Prisestimat
+              - generic [ref=f5e43]: 251 032 kr
+              - text: · 111 132 kr lägre
+            - generic [ref=f5e44]:
+              - link "Visa annonsen" [ref=f5e45] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23650419
+              - link "Om modellen" [ref=f5e46] [cursor=pointer]:
+                - /url: /bilar/toyota-land-cruiser
+          - generic [ref=f5e47]:
+            - generic [ref=f5e48]:
+              - generic [ref=f5e49]: Mercedes GLC 2023
+              - generic [ref=f5e50]: 17% under
+            - generic [ref=f5e51]: 449 000 kr
+            - generic [ref=f5e52]: 4 541 mil · Laddhybrid · 320 hk · Handlare
+            - generic [ref=f5e53]:
+              - text: Prisestimat
+              - generic [ref=f5e54]: 544 213 kr
+              - text: · 95 213 kr lägre
+            - generic [ref=f5e55]:
+              - link "Visa annonsen" [ref=f5e56] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/20617544
+              - link "Om modellen" [ref=f5e57] [cursor=pointer]:
+                - /url: /bilar/mercedes-glc
+          - generic [ref=f5e58]:
+            - generic [ref=f5e59]:
+              - generic [ref=f5e60]: Volvo XC60 2024
+              - generic [ref=f5e61]: 19% under
+            - generic [ref=f5e62]: 394 800 kr
+            - generic [ref=f5e63]: 5 962 mil · 250 hk · Handlare
+            - generic [ref=f5e64]:
+              - text: Prisestimat
+              - generic [ref=f5e65]: 487 551 kr
+              - text: · 92 751 kr lägre
+            - generic [ref=f5e66]:
+              - link "Visa annonsen" [ref=f5e67] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23592940
+              - link "Om modellen" [ref=f5e68] [cursor=pointer]:
+                - /url: /bilar/volvo-xc60
+          - generic [ref=f5e69]:
+            - generic [ref=f5e70]:
+              - generic [ref=f5e71]: Tesla Model Y 2025
+              - generic [ref=f5e72]: 13% under
+            - generic [ref=f5e73]: 475 000 kr
+            - generic [ref=f5e74]: 3 000 mil · El · 514 hk · Handlare
+            - generic [ref=f5e75]:
+              - text: Prisestimat
+              - generic [ref=f5e76]: 547 577 kr
+              - text: · 72 577 kr lägre
+            - generic [ref=f5e77]:
+              - link "Visa annonsen" [ref=f5e78] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/22976166
+              - link "Om modellen" [ref=f5e79] [cursor=pointer]:
+                - /url: /bilar/tesla-model-y
+          - generic [ref=f5e80]:
+            - generic [ref=f5e81]:
+              - generic [ref=f5e82]: Kia Niro 2026
+              - generic [ref=f5e83]: 15% under
+            - generic [ref=f5e84]: 363 426 kr
+            - generic [ref=f5e85]: 1 mil · Laddhybrid · 184 hk · Handlare
+            - generic [ref=f5e86]:
+              - text: Prisestimat
+              - generic [ref=f5e87]: 427 081 kr
+              - text: · 63 655 kr lägre
+            - generic [ref=f5e88]:
+              - link "Visa annonsen" [ref=f5e89] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/21284675
+              - link "Om modellen" [ref=f5e90] [cursor=pointer]:
+                - /url: /bilar/kia-niro
+        - paragraph [ref=f5e91]:
+          - link "Se alla 13 063 annonser" [ref=f5e92] [cursor=pointer]:
+            - /url: /#explorer
+      - generic [ref=f5e93]:
+        - generic [ref=f5e94]:
+          - heading "Värdeminskning per modell" [level=2] [ref=f5e95]
+          - paragraph [ref=f5e96]: Priser per årsmodell, vad första året kostar och aktuella fynd — en sida per modell.
+        - generic [ref=f5e97]:
+          - link "BMW X3" [ref=f5e98] [cursor=pointer]:
+            - /url: /bilar/bmw-x3
+          - link "BMW X3 M" [ref=f5e100] [cursor=pointer]:
+            - /url: /bilar/bmw-x3-m
+          - link "Kia Niro" [ref=f5e102] [cursor=pointer]:
+            - /url: /bilar/kia-niro
+          - link "Land Rover Defender" [ref=f5e104] [cursor=pointer]:
+            - /url: /bilar/land-rover-defender
+          - link "Mercedes GLC" [ref=f5e106] [cursor=pointer]:
+            - /url: /bilar/mercedes-glc
+          - link "Polestar 2" [ref=f5e108] [cursor=pointer]:
+            - /url: /bilar/polestar-2
+          - link "Polestar 3" [ref=f5e110] [cursor=pointer]:
+            - /url: /bilar/polestar-3
+          - link "Polestar 4" [ref=f5e112] [cursor=pointer]:
+            - /url: /bilar/polestar-4
+          - link "Tesla Model Y" [ref=f5e114] [cursor=pointer]:
+            - /url: /bilar/tesla-model-y
+          - link "Toyota Land Cruiser" [ref=f5e116] [cursor=pointer]:
+            - /url: /bilar/toyota-land-cruiser
+          - link "Toyota RAV4" [ref=f5e118] [cursor=pointer]:
+            - /url: /bilar/toyota-rav4
+          - link "Toyota Yaris" [ref=f5e120] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris
+          - link "Toyota Yaris Cross" [ref=f5e122] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris-cross
+          - link "Volvo XC40" [ref=f5e124] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40
+          - link "Volvo XC40 Recharge" [ref=f5e126] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40-recharge
+          - link "Volvo XC60" [ref=f5e128] [cursor=pointer]:
+            - /url: /bilar/volvo-xc60
+          - link "VW Golf" [ref=f5e130] [cursor=pointer]:
+            - /url: /bilar/vw-golf
+          - link "VW Tiguan" [ref=f5e132] [cursor=pointer]:
+            - /url: /bilar/vw-tiguan
+      - separator [ref=f5e134]
+      - generic [ref=f5e135]:
+        - generic [ref=f5e136]:
+          - heading "Jämför modeller" [level=2] [ref=f5e137]
+          - paragraph [ref=f5e138]: Välj vilka modeller du funderar på, så ritas kurvorna och annonserna om efter dem.
+        - generic [ref=f5e139]:
+          - generic [ref=f5e140]:
+            - button "BMW" [ref=f5e141] [cursor=pointer]
+            - generic [ref=f5e151]:
+              - button "X3" [ref=f5e152]
+              - button "X3 M" [ref=f5e154]
+          - generic [ref=f5e156]:
+            - button "Land Rover" [ref=f5e157] [cursor=pointer]:
+              - img [ref=f5e158]:
+                - generic [ref=f5e160]: L R
+            - button "Defender" [ref=f5e166]
+          - generic [ref=f5e168]:
+            - button "Mercedes" [ref=f5e169] [cursor=pointer]
+            - button "GLC" [ref=f5e179]
+          - generic [ref=f5e181]:
+            - button "Polestar" [ref=f5e182] [cursor=pointer]
+            - generic [ref=f5e190]:
+              - button "2" [ref=f5e191]
+              - button "3" [ref=f5e193]
+              - button "4" [ref=f5e195]
+          - generic [ref=f5e197]:
+            - button "VW" [ref=f5e198] [cursor=pointer]
+            - generic [ref=f5e207]:
+              - button "Golf" [ref=f5e208]
+              - button "Golf R" [ref=f5e210]
+              - button "Tiguan" [ref=f5e212]
+              - button "Golf GTI" [ref=f5e214]
+          - generic [ref=f5e216]:
+            - button "Kia" [ref=f5e217] [cursor=pointer]:
+              - img [ref=f5e218]:
+                - generic [ref=f5e219]: KIA
+            - button "Niro" [ref=f5e225]
+          - generic [ref=f5e227]:
+            - button "Toyota 1 av 4" [ref=f5e228] [cursor=pointer]:
+              - generic [ref=f5e233]: Toyota
+              - generic [ref=f5e234]: 1 av 4
+            - generic [ref=f5e240]:
+              - button "RAV4" [ref=f5e241]
+              - button "Yaris" [ref=f5e243]
+              - button "Yaris Cross" [ref=f5e245]
+              - button "Land Cruiser" [ref=f5e247]
+          - generic [ref=f5e249]:
+            - button "Volvo 2 av 3" [ref=f5e250] [cursor=pointer]:
+              - generic [ref=f5e254]: Volvo
+              - generic [ref=f5e255]: 2 av 3
+            - generic [ref=f5e261]:
+              - button "XC40" [ref=f5e262]
+              - button "XC60" [ref=f5e264]
+              - button "XC40 Recharge" [ref=f5e266]
+          - generic [ref=f5e268]:
+            - button "Tesla" [ref=f5e269] [cursor=pointer]
+            - button "Model Y" [ref=f5e279]
+      - generic [ref=f5e282]:
+        - generic [ref=f5e283]:
+          - heading "Toyota RAV4" [level=2] [ref=f5e284]
+          - generic [ref=f5e285]:
+            - generic [ref=f5e286]: Antal annonser
+            - generic [ref=f5e287]: "1675"
+            - generic [ref=f5e288]: Snittpris
+            - generic [ref=f5e289]: 325 532 kr
+            - generic [ref=f5e290]: Prisintervall
+            - generic [ref=f5e291]: 29 900 – 638 800
+            - generic [ref=f5e292]: Snittålder
+            - generic [ref=f5e293]: 6.2 år
+            - generic [ref=f5e294]: Snitt miltal
+            - generic [ref=f5e295]: 10 567 mil
+            - generic [ref=f5e296]: Årsmodeller
+            - generic [ref=f5e297]: 2005–2026
+        - generic [ref=f5e298]:
+          - heading "Volvo XC40" [level=2] [ref=f5e299]
+          - generic [ref=f5e300]:
+            - generic [ref=f5e301]: Antal annonser
+            - generic [ref=f5e302]: "1600"
+            - generic [ref=f5e303]: Snittpris
+            - generic [ref=f5e304]: 314 103 kr
+            - generic [ref=f5e305]: Prisintervall
+            - generic [ref=f5e306]: 155 000 – 499 000
+            - generic [ref=f5e307]: Snittålder
+            - generic [ref=f5e308]: 4.6 år
+            - generic [ref=f5e309]: Snitt miltal
+            - generic [ref=f5e310]: 8 828 mil
+            - generic [ref=f5e311]: Årsmodeller
+            - generic [ref=f5e312]: 2018–2026
+        - generic [ref=f5e313]:
+          - heading "Volvo XC60" [level=2] [ref=f5e314]
+          - generic [ref=f5e315]:
+            - generic [ref=f5e316]: Antal annonser
+            - generic [ref=f5e317]: "5476"
+            - generic [ref=f5e318]: Snittpris
+            - generic [ref=f5e319]: 339 405 kr
+            - generic [ref=f5e320]: Prisintervall
+            - generic [ref=f5e321]: 35 000 – 859 900
+            - generic [ref=f5e322]: Snittålder
+            - generic [ref=f5e323]: 6.3 år
+            - generic [ref=f5e324]: Snitt miltal
+            - generic [ref=f5e325]: 13 263 mil
+            - generic [ref=f5e326]: Årsmodeller
+            - generic [ref=f5e327]: 2009–2027
+      - generic [ref=f5e328]:
+        - generic [ref=f5e329]:
+          - heading "Hur säkert är prisestimatet?" [level=2] [ref=f5e330]
+          - paragraph [ref=f5e331]: Hur nära modellen brukar hamna, i procent och i kronor. Bygger på ålder, miltal, bränsletyp, hästkrafter, utrustning, drivlina och säljartyp.
+        - generic [ref=f5e332]:
+          - generic [ref=f5e333]:
+            - generic [ref=f5e334]:
+              - generic [ref=f5e335]: Toyota RAV4
+              - generic [ref=f5e336]: Medel
+            - generic [ref=f5e337]:
+              - generic [ref=f5e338]: ±16%
+              - generic [ref=f5e339]: prisosäkerhet
+            - paragraph [ref=f5e340]:
+              - text: "På en bil för 325 532 kr:"
+              - generic [ref=f5e341]: ±52 389 kr
+            - paragraph [ref=f5e342]: Byggd på 1 675 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+          - generic [ref=f5e343]:
+            - generic [ref=f5e344]:
+              - generic [ref=f5e345]: Volvo XC40
+              - generic [ref=f5e346]: Hög precision
+            - generic [ref=f5e347]:
+              - generic [ref=f5e348]: ±14%
+              - generic [ref=f5e349]: prisosäkerhet
+            - paragraph [ref=f5e350]:
+              - text: "På en bil för 314 103 kr:"
+              - generic [ref=f5e351]: ±44 586 kr
+            - paragraph [ref=f5e352]: Byggd på 1 600 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+          - generic [ref=f5e353]:
+            - generic [ref=f5e354]:
+              - generic [ref=f5e355]: Volvo XC60
+              - generic [ref=f5e356]: Medel
+            - generic [ref=f5e357]:
+              - generic [ref=f5e358]: ±22%
+              - generic [ref=f5e359]: prisosäkerhet
+            - paragraph [ref=f5e360]:
+              - text: "På en bil för 339 405 kr:"
+              - generic [ref=f5e361]: ±75 365 kr
+            - paragraph [ref=f5e362]: Byggd på 5 476 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+      - separator [ref=f5e363]
+      - generic [ref=f5e364]:
+        - button "Alla bränslen" [ref=f5e365]
+        - button "Hybrid" [ref=f5e366]
+        - button "Laddhybrid" [ref=f5e367]
+        - button "Diesel" [ref=f5e368]
+        - button "Bensin" [ref=f5e369]
+      - generic [ref=f5e371]:
+        - heading "Pris per ålder" [level=2] [ref=f5e372]
+        - paragraph [ref=f5e373]: Varje punkt är en verklig annons. Trendlinjer visar predikterat pris med 95% konfidensband.
+      - generic [ref=f5e375]:
+        - heading "Restvärde" [level=2] [ref=f5e376]
+        - paragraph [ref=f5e377]: Andel av priset för den yngsta årsmodell vi har tillräckligt underlag för. För de flesta modeller är det en nybil, men inte för alla — se Metod. Det skuggade bandet visar var hälften av annonserna ligger — inte osäkerhet i kurvan, utan spridning mellan enskilda bilar.
+      - generic [ref=f5e378]:
+        - generic [ref=f5e379]:
+          - heading "Miltalseffekt" [level=2] [ref=f5e380]
+          - paragraph [ref=f5e381]: Hur miltal korrelerar med begärt pris för respektive modell.
+        - generic [ref=f5e382]:
+          - button "RAV4 −1.62% / 1 000 mil" [pressed] [ref=f5e383]:
+            - generic [ref=f5e385]: RAV4
+            - generic [ref=f5e386]: −1.62%
+            - generic [ref=f5e387]: / 1 000 mil
+          - button "XC40 −2.16% / 1 000 mil" [pressed] [ref=f5e388]:
+            - generic [ref=f5e390]: XC40
+            - generic [ref=f5e391]: −2.16%
+            - generic [ref=f5e392]: / 1 000 mil
+          - button "XC60 −2.25% / 1 000 mil" [pressed] [ref=f5e393]:
+            - generic [ref=f5e395]: XC60
+            - generic [ref=f5e396]: −2.25%
+            - generic [ref=f5e397]: / 1 000 mil
+        - generic [ref=f5e398]:
+          - generic [ref=f5e399]: "Årsmodell:"
+          - combobox [ref=f5e400]:
+            - option "Från" [selected]
+            - option "2026"
+            - option "2025"
+            - option "2024"
+            - option "2023"
+            - option "2022"
+            - option "2021"
+            - option "2020"
+            - option "2019"
+            - option "2018"
+            - option "2017"
+            - option "2016"
+            - option "2015"
+            - option "2014"
+            - option "2013"
+            - option "2012"
+            - option "2011"
+            - option "2010"
+            - option "2009"
+            - option "2008"
+            - option "2007"
+            - option "2006"
+            - option "2005"
+          - generic [ref=f5e401]: –
+          - combobox [ref=f5e402]:
+            - option "Till" [selected]
+            - option "2026"
+            - option "2025"
+            - option "2024"
+            - option "2023"
+            - option "2022"
+            - option "2021"
+            - option "2020"
+            - option "2019"
+            - option "2018"
+            - option "2017"
+            - option "2016"
+            - option "2015"
+            - option "2014"
+            - option "2013"
+            - option "2012"
+            - option "2011"
+            - option "2010"
+            - option "2009"
+            - option "2008"
+            - option "2007"
+            - option "2006"
+            - option "2005"
+      - separator [ref=f5e403]
+      - generic [ref=f5e404]:
+        - generic [ref=f5e405]:
+          - heading "Annonser" [level=2] [ref=f5e406]
+          - paragraph [ref=f5e407]: Alla annonser för valda modeller och bränsletyp.
+        - generic [ref=f5e408]:
+          - generic [ref=f5e409]:
+            - button "Alla" [ref=f5e410]
+            - button "Alla fynd" [ref=f5e411]
+            - button "Fyndpris" [ref=f5e412]
+            - button "Bra pris" [ref=f5e413]
+            - button "Filtrera" [ref=f5e414]
+          - combobox "Sortera efter" [ref=f5e416]:
+            - option "Pris (lägst först)" [selected]
+            - option "Pris (högst först)"
+            - option "Årsmodell (nyast)"
+            - option "Årsmodell (äldst)"
+            - option "Miltal (lägst)"
+            - option "Bästa fynd"
+          - generic [ref=f5e417]:
+            - generic [ref=f5e418]: 4 406 bilar
+            - generic [ref=f5e420]:
+              - link "Volvo XC60 35 000 kr 2010 · 22 000 mil · 163 hk Diesel 63% under estimat · −58 541 kr" [ref=f5e422] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24381105
+                - generic [ref=f5e423]:
+                  - generic [ref=f5e424]: Volvo XC60
+                  - generic [ref=f5e425]: 35 000 kr
+                - generic [ref=f5e426]:
+                  - generic [ref=f5e427]: "2010"
+                  - generic [ref=f5e428]: ·
+                  - generic [ref=f5e429]: 22 000 mil
+                  - generic [ref=f5e430]: ·
+                  - generic [ref=f5e431]: 163 hk
+                  - generic [ref=f5e432]: Diesel
+                - generic [ref=f5e434]:
+                  - text: 63% under estimat
+                  - generic [ref=f5e435]: · −58 541 kr
+              - link "Toyota RAV4 35 000 kr 2007 · 40 000 mil · 136 hk Diesel 39% under estimat · −22 622 kr" [ref=f5e437] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/20991270
+                - generic [ref=f5e438]:
+                  - generic [ref=f5e439]: Toyota RAV4
+                  - generic [ref=f5e440]: 35 000 kr
+                - generic [ref=f5e441]:
+                  - generic [ref=f5e442]: "2007"
+                  - generic [ref=f5e443]: ·
+                  - generic [ref=f5e444]: 40 000 mil
+                  - generic [ref=f5e445]: ·
+                  - generic [ref=f5e446]: 136 hk
+                  - generic [ref=f5e447]: Diesel
+                - generic [ref=f5e449]:
+                  - text: 39% under estimat
+                  - generic [ref=f5e450]: · −22 622 kr
+              - link "Volvo XC60 39 000 kr 2010 · 35 093 mil · 175 hk Diesel 42% under estimat · −28 483 kr" [ref=f5e452] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24878211
+                - generic [ref=f5e453]:
+                  - generic [ref=f5e454]: Volvo XC60
+                  - generic [ref=f5e455]: 39 000 kr
+                - generic [ref=f5e456]:
+                  - generic [ref=f5e457]: "2010"
+                  - generic [ref=f5e458]: ·
+                  - generic [ref=f5e459]: 35 093 mil
+                  - generic [ref=f5e460]: ·
+                  - generic [ref=f5e461]: 175 hk
+                  - generic [ref=f5e462]: Diesel
+                - generic [ref=f5e464]:
+                  - text: 42% under estimat
+                  - generic [ref=f5e465]: · −28 483 kr
+              - link "Toyota RAV4 39 900 kr 2006 · 29 698 mil · 177 hk Diesel 38% under estimat · −24 133 kr" [ref=f5e467] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/21078759
+                - generic [ref=f5e468]:
+                  - generic [ref=f5e469]: Toyota RAV4
+                  - generic [ref=f5e470]: 39 900 kr
+                - generic [ref=f5e471]:
+                  - generic [ref=f5e472]: "2006"
+                  - generic [ref=f5e473]: ·
+                  - generic [ref=f5e474]: 29 698 mil
+                  - generic [ref=f5e475]: ·
+                  - generic [ref=f5e476]: 177 hk
+                  - generic [ref=f5e477]: Diesel
+                - generic [ref=f5e479]:
+                  - text: 38% under estimat
+                  - generic [ref=f5e480]: · −24 133 kr
+              - link "Toyota RAV4 40 000 kr 2005 · 29 311 mil · 150 hk Bensin 35% under estimat · −21 743 kr" [ref=f5e482] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24415378
+                - generic [ref=f5e483]:
+                  - generic [ref=f5e484]: Toyota RAV4
+                  - generic [ref=f5e485]: 40 000 kr
+                - generic [ref=f5e486]:
+                  - generic [ref=f5e487]: "2005"
+                  - generic [ref=f5e488]: ·
+                  - generic [ref=f5e489]: 29 311 mil
+                  - generic [ref=f5e490]: ·
+                  - generic [ref=f5e491]: 150 hk
+                  - generic [ref=f5e492]: Bensin
+                - generic [ref=f5e494]:
+                  - text: 35% under estimat
+                  - generic [ref=f5e495]: · −21 743 kr
+              - link "Volvo XC60 43 000 kr 2009 · 33 384 mil · 163 hk Diesel 35% under estimat · −22 809 kr" [ref=f5e497] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25028672
+                - generic [ref=f5e498]:
+                  - generic [ref=f5e499]: Volvo XC60
+                  - generic [ref=f5e500]: 43 000 kr
+                - generic [ref=f5e501]:
+                  - generic [ref=f5e502]: "2009"
+                  - generic [ref=f5e503]: ·
+                  - generic [ref=f5e504]: 33 384 mil
+                  - generic [ref=f5e505]: ·
+                  - generic [ref=f5e506]: 163 hk
+                  - generic [ref=f5e507]: Diesel
+                - generic [ref=f5e509]:
+                  - text: 35% under estimat
+                  - generic [ref=f5e510]: · −22 809 kr
+              - link "Toyota RAV4 44 900 kr 2005 · 23 007 mil · 116 hk Diesel 28% under estimat · −17 388 kr" [ref=f5e512] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/19433569
+                - generic [ref=f5e513]:
+                  - generic [ref=f5e514]: Toyota RAV4
+                  - generic [ref=f5e515]: 44 900 kr
+                - generic [ref=f5e516]:
+                  - generic [ref=f5e517]: "2005"
+                  - generic [ref=f5e518]: ·
+                  - generic [ref=f5e519]: 23 007 mil
+                  - generic [ref=f5e520]: ·
+                  - generic [ref=f5e521]: 116 hk
+                  - generic [ref=f5e522]: Diesel
+                - generic [ref=f5e524]:
+                  - text: 28% under estimat
+                  - generic [ref=f5e525]: · −17 388 kr
+              - link "Volvo XC60 45 000 kr 2009 · 30 000 mil · 163 hk Diesel 36% under estimat · −25 202 kr" [ref=f5e527] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25321847
+                - generic [ref=f5e528]:
+                  - generic [ref=f5e529]: Volvo XC60
+                  - generic [ref=f5e530]: 45 000 kr
+                - generic [ref=f5e531]:
+                  - generic [ref=f5e532]: "2009"
+                  - generic [ref=f5e533]: ·
+                  - generic [ref=f5e534]: 30 000 mil
+                  - generic [ref=f5e535]: ·
+                  - generic [ref=f5e536]: 163 hk
+                  - generic [ref=f5e537]: Diesel
+                - generic [ref=f5e539]:
+                  - text: 36% under estimat
+                  - generic [ref=f5e540]: · −25 202 kr
+              - link "Toyota RAV4 47 000 kr 2006 · 21 443 mil · 152 hk Bensin 37% under estimat · −27 997 kr" [ref=f5e542] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24637177
+                - generic [ref=f5e543]:
+                  - generic [ref=f5e544]: Toyota RAV4
+                  - generic [ref=f5e545]: 47 000 kr
+                - generic [ref=f5e546]:
+                  - generic [ref=f5e547]: "2006"
+                  - generic [ref=f5e548]: ·
+                  - generic [ref=f5e549]: 21 443 mil
+                  - generic [ref=f5e550]: ·
+                  - generic [ref=f5e551]: 152 hk
+                  - generic [ref=f5e552]: Bensin
+                - generic [ref=f5e554]:
+                  - text: 37% under estimat
+                  - generic [ref=f5e555]: · −27 997 kr
+              - link "Volvo XC60 47 000 kr 2011 · 37 900 mil · 205 hk Diesel 37% under estimat · −27 728 kr" [ref=f5e557] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23212514
+                - generic [ref=f5e558]:
+                  - generic [ref=f5e559]: Volvo XC60
+                  - generic [ref=f5e560]: 47 000 kr
+                - generic [ref=f5e561]:
+                  - generic [ref=f5e562]: "2011"
+                  - generic [ref=f5e563]: ·
+                  - generic [ref=f5e564]: 37 900 mil
+                  - generic [ref=f5e565]: ·
+                  - generic [ref=f5e566]: 205 hk
+                  - generic [ref=f5e567]: Diesel
+                - generic [ref=f5e569]:
+                  - text: 37% under estimat
+                  - generic [ref=f5e570]: · −27 728 kr
+              - link "Toyota RAV4 49 000 kr 2006 · 20 040 mil · 0 hk Diesel 36% under estimat · −27 120 kr" [ref=f5e572] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25295597
+                - generic [ref=f5e573]:
+                  - generic [ref=f5e574]: Toyota RAV4
+                  - generic [ref=f5e575]: 49 000 kr
+                - generic [ref=f5e576]:
+                  - generic [ref=f5e577]: "2006"
+                  - generic [ref=f5e578]: ·
+                  - generic [ref=f5e579]: 20 040 mil
+                  - generic [ref=f5e580]: ·
+                  - generic [ref=f5e581]: 0 hk
+                  - generic [ref=f5e582]: Diesel
+                - generic [ref=f5e584]:
+                  - text: 36% under estimat
+                  - generic [ref=f5e585]: · −27 120 kr
+              - link "Toyota RAV4 49 500 kr 2005 · 25 000 mil · 150 hk Bensin 26% under estimat · −17 261 kr" [ref=f5e587] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24704380
+                - generic [ref=f5e588]:
+                  - generic [ref=f5e589]: Toyota RAV4
+                  - generic [ref=f5e590]: 49 500 kr
+                - generic [ref=f5e591]:
+                  - generic [ref=f5e592]: "2005"
+                  - generic [ref=f5e593]: ·
+                  - generic [ref=f5e594]: 25 000 mil
+                  - generic [ref=f5e595]: ·
+                  - generic [ref=f5e596]: 150 hk
+                  - generic [ref=f5e597]: Bensin
+                - generic [ref=f5e599]:
+                  - text: 26% under estimat
+                  - generic [ref=f5e600]: · −17 261 kr
+              - link "Toyota RAV4 49 900 kr 2007 · 22 396 mil · 177 hk Diesel 35% under estimat · −26 336 kr" [ref=f5e602] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25357371
+                - generic [ref=f5e603]:
+                  - generic [ref=f5e604]: Toyota RAV4
+                  - generic [ref=f5e605]: 49 900 kr
+                - generic [ref=f5e606]:
+                  - generic [ref=f5e607]: "2007"
+                  - generic [ref=f5e608]: ·
+                  - generic [ref=f5e609]: 22 396 mil
+                  - generic [ref=f5e610]: ·
+                  - generic [ref=f5e611]: 177 hk
+                  - generic [ref=f5e612]: Diesel
+                - generic [ref=f5e614]:
+                  - text: 35% under estimat
+                  - generic [ref=f5e615]: · −26 336 kr
+              - link "Toyota RAV4 49 900 kr 2006 · 24 900 mil · 136 hk Diesel 26% under estimat · −17 373 kr" [ref=f5e617] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24175355
+                - generic [ref=f5e618]:
+                  - generic [ref=f5e619]: Toyota RAV4
+                  - generic [ref=f5e620]: 49 900 kr
+                - generic [ref=f5e621]:
+                  - generic [ref=f5e622]: "2006"
+                  - generic [ref=f5e623]: ·
+                  - generic [ref=f5e624]: 24 900 mil
+                  - generic [ref=f5e625]: ·
+                  - generic [ref=f5e626]: 136 hk
+                  - generic [ref=f5e627]: Diesel
+                - generic [ref=f5e629]:
+                  - text: 26% under estimat
+                  - generic [ref=f5e630]: · −17 373 kr
+              - link "Toyota RAV4 49 900 kr 2008 · 33 300 mil · 152 hk Bensin 33% under estimat · −25 087 kr" [ref=f5e632] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24653451
+                - generic [ref=f5e633]:
+                  - generic [ref=f5e634]: Toyota RAV4
+                  - generic [ref=f5e635]: 49 900 kr
+                - generic [ref=f5e636]:
+                  - generic [ref=f5e637]: "2008"
+                  - generic [ref=f5e638]: ·
+                  - generic [ref=f5e639]: 33 300 mil
+                  - generic [ref=f5e640]: ·
+                  - generic [ref=f5e641]: 152 hk
+                  - generic [ref=f5e642]: Bensin
+                - generic [ref=f5e644]:
+                  - text: 33% under estimat
+                  - generic [ref=f5e645]: · −25 087 kr
+              - link "Volvo XC60 50 200 kr 2010 · 37 050 mil · 163 hk Diesel 25% under estimat · −17 136 kr" [ref=f5e647] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23581153
+                - generic [ref=f5e648]:
+                  - generic [ref=f5e649]: Volvo XC60
+                  - generic [ref=f5e650]: 50 200 kr
+                - generic [ref=f5e651]:
+                  - generic [ref=f5e652]: "2010"
+                  - generic [ref=f5e653]: ·
+                  - generic [ref=f5e654]: 37 050 mil
+                  - generic [ref=f5e655]: ·
+                  - generic [ref=f5e656]: 163 hk
+                  - generic [ref=f5e657]: Diesel
+                - generic [ref=f5e659]:
+                  - text: 25% under estimat
+                  - generic [ref=f5e660]: · −17 136 kr
+              - link "Toyota RAV4 53 000 kr 2007 · 19 000 mil · 177 hk Diesel 34% under estimat · −27 338 kr" [ref=f5e662] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25292377
+                - generic [ref=f5e663]:
+                  - generic [ref=f5e664]: Toyota RAV4
+                  - generic [ref=f5e665]: 53 000 kr
+                - generic [ref=f5e666]:
+                  - generic [ref=f5e667]: "2007"
+                  - generic [ref=f5e668]: ·
+                  - generic [ref=f5e669]: 19 000 mil
+                  - generic [ref=f5e670]: ·
+                  - generic [ref=f5e671]: 177 hk
+                  - generic [ref=f5e672]: Diesel
+                - generic [ref=f5e674]:
+                  - text: 34% under estimat
+                  - generic [ref=f5e675]: · −27 338 kr
+              - link "Toyota RAV4 54 900 kr 2006 · 25 502 mil · 152 hk Bensin 25% under estimat · −17 942 kr" [ref=f5e677] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23850702
+                - generic [ref=f5e678]:
+                  - generic [ref=f5e679]: Toyota RAV4
+                  - generic [ref=f5e680]: 54 900 kr
+                - generic [ref=f5e681]:
+                  - generic [ref=f5e682]: "2006"
+                  - generic [ref=f5e683]: ·
+                  - generic [ref=f5e684]: 25 502 mil
+                  - generic [ref=f5e685]: ·
+                  - generic [ref=f5e686]: 152 hk
+                  - generic [ref=f5e687]: Bensin
+                - generic [ref=f5e689]:
+                  - text: 25% under estimat
+                  - generic [ref=f5e690]: · −17 942 kr
+              - link "Volvo XC60 55 000 kr 2009 · 36 000 mil · 185 hk Diesel 11% under estimat · −7 038 kr" [ref=f5e692] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25317608
+                - generic [ref=f5e693]:
+                  - generic [ref=f5e694]: Volvo XC60
+                  - generic [ref=f5e695]: 55 000 kr
+                - generic [ref=f5e696]:
+                  - generic [ref=f5e697]: "2009"
+                  - generic [ref=f5e698]: ·
+                  - generic [ref=f5e699]: 36 000 mil
+                  - generic [ref=f5e700]: ·
+                  - generic [ref=f5e701]: 185 hk
+                  - generic [ref=f5e702]: Diesel
+                - generic [ref=f5e704]:
+                  - text: 11% under estimat
+                  - generic [ref=f5e705]: · −7 038 kr
+              - link "Volvo XC60 58 000 kr 2011 · 30 750 mil · 163 hk Diesel 24% under estimat · −18 788 kr" [ref=f5e707] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/22841599
+                - generic [ref=f5e708]:
+                  - generic [ref=f5e709]: Volvo XC60
+                  - generic [ref=f5e710]: 58 000 kr
+                - generic [ref=f5e711]:
+                  - generic [ref=f5e712]: "2011"
+                  - generic [ref=f5e713]: ·
+                  - generic [ref=f5e714]: 30 750 mil
+                  - generic [ref=f5e715]: ·
+                  - generic [ref=f5e716]: 163 hk
+                  - generic [ref=f5e717]: Diesel
+                - generic [ref=f5e719]:
+                  - text: 24% under estimat
+                  - generic [ref=f5e720]: · −18 788 kr
+              - link "Volvo XC60 58 500 kr 2009 · 27 000 mil · 185 hk Diesel 24% under estimat · −18 425 kr" [ref=f5e722] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25367618
+                - generic [ref=f5e723]:
+                  - generic [ref=f5e724]: Volvo XC60
+                  - generic [ref=f5e725]: 58 500 kr
+                - generic [ref=f5e726]:
+                  - generic [ref=f5e727]: "2009"
+                  - generic [ref=f5e728]: ·
+                  - generic [ref=f5e729]: 27 000 mil
+                  - generic [ref=f5e730]: ·
+                  - generic [ref=f5e731]: 185 hk
+                  - generic [ref=f5e732]: Diesel
+                - generic [ref=f5e734]:
+                  - text: 24% under estimat
+                  - generic [ref=f5e735]: · −18 425 kr
+              - link "Volvo XC60 59 000 kr 2013 · 42 000 mil · 163 hk Diesel 19% under estimat · −13 480 kr" [ref=f5e737] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24793135
+                - generic [ref=f5e738]:
+                  - generic [ref=f5e739]: Volvo XC60
+                  - generic [ref=f5e740]: 59 000 kr
+                - generic [ref=f5e741]:
+                  - generic [ref=f5e742]: "2013"
+                  - generic [ref=f5e743]: ·
+                  - generic [ref=f5e744]: 42 000 mil
+                  - generic [ref=f5e745]: ·
+                  - generic [ref=f5e746]: 163 hk
+                  - generic [ref=f5e747]: Diesel
+                - generic [ref=f5e749]:
+                  - text: 19% under estimat
+                  - generic [ref=f5e750]: · −13 480 kr
+              - link "Volvo XC60 59 000 kr 2010 · 36 000 mil · 175 hk Diesel 9% under estimat · −5 623 kr" [ref=f5e752] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23453290
+                - generic [ref=f5e753]:
+                  - generic [ref=f5e754]: Volvo XC60
+                  - generic [ref=f5e755]: 59 000 kr
+                - generic [ref=f5e756]:
+                  - generic [ref=f5e757]: "2010"
+                  - generic [ref=f5e758]: ·
+                  - generic [ref=f5e759]: 36 000 mil
+                  - generic [ref=f5e760]: ·
+                  - generic [ref=f5e761]: 175 hk
+                  - generic [ref=f5e762]: Diesel
+                - generic [ref=f5e764]:
+                  - text: 9% under estimat
+                  - generic [ref=f5e765]: · −5 623 kr
+              - link "Volvo XC60 59 000 kr 2010 · 31 500 mil · 175 hk Diesel 15% under estimat · −10 241 kr" [ref=f5e767] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24156449
+                - generic [ref=f5e768]:
+                  - generic [ref=f5e769]: Volvo XC60
+                  - generic [ref=f5e770]: 59 000 kr
+                - generic [ref=f5e771]:
+                  - generic [ref=f5e772]: "2010"
+                  - generic [ref=f5e773]: ·
+                  - generic [ref=f5e774]: 31 500 mil
+                  - generic [ref=f5e775]: ·
+                  - generic [ref=f5e776]: 175 hk
+                  - generic [ref=f5e777]: Diesel
+                - generic [ref=f5e779]:
+                  - text: 15% under estimat
+                  - generic [ref=f5e780]: · −10 241 kr
+              - link "Toyota RAV4 59 000 kr 2007 · 28 833 mil · 177 hk Diesel 17% under estimat · −12 297 kr" [ref=f5e782] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/18077844
+                - generic [ref=f5e783]:
+                  - generic [ref=f5e784]: Toyota RAV4
+                  - generic [ref=f5e785]: 59 000 kr
+                - generic [ref=f5e786]:
+                  - generic [ref=f5e787]: "2007"
+                  - generic [ref=f5e788]: ·
+                  - generic [ref=f5e789]: 28 833 mil
+                  - generic [ref=f5e790]: ·
+                  - generic [ref=f5e791]: 177 hk
+                  - generic [ref=f5e792]: Diesel
+                - generic [ref=f5e794]:
+                  - text: 17% under estimat
+                  - generic [ref=f5e795]: · −12 297 kr
+              - link "Volvo XC60 59 900 kr 2011 · 36 800 mil · 163 hk Diesel 21% under estimat · −16 046 kr" [ref=f5e797] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24468446
+                - generic [ref=f5e798]:
+                  - generic [ref=f5e799]: Volvo XC60
+                  - generic [ref=f5e800]: 59 900 kr
+                - generic [ref=f5e801]:
+                  - generic [ref=f5e802]: "2011"
+                  - generic [ref=f5e803]: ·
+                  - generic [ref=f5e804]: 36 800 mil
+                  - generic [ref=f5e805]: ·
+                  - generic [ref=f5e806]: 163 hk
+                  - generic [ref=f5e807]: Diesel
+                - generic [ref=f5e809]:
+                  - text: 21% under estimat
+                  - generic [ref=f5e810]: · −16 046 kr
+              - link "Volvo XC60 59 900 kr 2009 · 32 000 mil · 163 hk Diesel 13% under estimat · −9 030 kr" [ref=f5e812] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25031800
+                - generic [ref=f5e813]:
+                  - generic [ref=f5e814]: Volvo XC60
+                  - generic [ref=f5e815]: 59 900 kr
+                - generic [ref=f5e816]:
+                  - generic [ref=f5e817]: "2009"
+                  - generic [ref=f5e818]: ·
+                  - generic [ref=f5e819]: 32 000 mil
+                  - generic [ref=f5e820]: ·
+                  - generic [ref=f5e821]: 163 hk
+                  - generic [ref=f5e822]: Diesel
+                - generic [ref=f5e824]:
+                  - text: 13% under estimat
+                  - generic [ref=f5e825]: · −9 030 kr
+              - link "Toyota RAV4 59 900 kr 2006 · 28 500 mil · 152 hk Bensin 14% under estimat · −9 530 kr" [ref=f5e827] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/18037712
+                - generic [ref=f5e828]:
+                  - generic [ref=f5e829]: Toyota RAV4
+                  - generic [ref=f5e830]: 59 900 kr
+                - generic [ref=f5e831]:
+                  - generic [ref=f5e832]: "2006"
+                  - generic [ref=f5e833]: ·
+                  - generic [ref=f5e834]: 28 500 mil
+                  - generic [ref=f5e835]: ·
+                  - generic [ref=f5e836]: 152 hk
+                  - generic [ref=f5e837]: Bensin
+                - generic [ref=f5e839]:
+                  - text: 14% under estimat
+                  - generic [ref=f5e840]: · −9 530 kr
+              - link "Volvo XC60 59 900 kr 2011 · 37 000 mil · 163 hk Diesel 21% under estimat · −16 349 kr" [ref=f5e842] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/20930272
+                - generic [ref=f5e843]:
+                  - generic [ref=f5e844]: Volvo XC60
+                  - generic [ref=f5e845]: 59 900 kr
+                - generic [ref=f5e846]:
+                  - generic [ref=f5e847]: "2011"
+                  - generic [ref=f5e848]: ·
+                  - generic [ref=f5e849]: 37 000 mil
+                  - generic [ref=f5e850]: ·
+                  - generic [ref=f5e851]: 163 hk
+                  - generic [ref=f5e852]: Diesel
+                - generic [ref=f5e854]:
+                  - text: 21% under estimat
+                  - generic [ref=f5e855]: · −16 349 kr
+              - link "Volvo XC60 60 000 kr 2010 · 26 988 mil · 175 hk Diesel 22% under estimat · −16 627 kr" [ref=f5e857] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24651885
+                - generic [ref=f5e858]:
+                  - generic [ref=f5e859]: Volvo XC60
+                  - generic [ref=f5e860]: 60 000 kr
+                - generic [ref=f5e861]:
+                  - generic [ref=f5e862]: "2010"
+                  - generic [ref=f5e863]: ·
+                  - generic [ref=f5e864]: 26 988 mil
+                  - generic [ref=f5e865]: ·
+                  - generic [ref=f5e866]: 175 hk
+                  - generic [ref=f5e867]: Diesel
+                - generic [ref=f5e869]:
+                  - text: 22% under estimat
+                  - generic [ref=f5e870]: · −16 627 kr
+          - generic [ref=f5e871]:
+            - button "Föregående" [disabled] [ref=f5e872]
+            - generic [ref=f5e873]: Sida 1 av 147 (4406 bilar)
+            - button "Nästa" [ref=f5e874]
+      - separator [ref=f5e875]
+      - generic [ref=f5e876]:
+        - heading "Metod" [level=2] [ref=f5e877]
+        - paragraph [ref=f5e878]: 29 486 annonser från Blocket.se analyserade, varav 13 063 till salu just nu. Senast uppdaterad 6 augusti 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderas.
+        - paragraph [ref=f5e879]: "Värdeminskning modelleras med log-transformerad multivariat regression med 20 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp, säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder eller miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=f5e880]:
+          - text: Osäkerhetsbanden räknas från faktiska avvikelser i materialet, inte från en antagen normalfördelning.
+          - link "Se underlaget per modell" [ref=f5e881] [cursor=pointer]:
+            - /url: /metod
+          - text: eller
+          - link "hur snabbt underprissatta bilar försvinner" [ref=f5e882] [cursor=pointer]:
+            - /url: /saljtid
+          - text: .
+  - contentinfo [ref=f5e883]:
+    - generic [ref=f5e884]:
+      - generic [ref=f5e885]:
+        - generic [ref=f5e886]:
+          - generic [ref=f5e887]: Hela Notan
+          - paragraph [ref=f5e889]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=f5e890]:
+          - link "Hem" [ref=f5e891] [cursor=pointer]:
+            - /url: /
+          - link "Modeller" [ref=f5e892] [cursor=pointer]:
+            - /url: /bilar
+          - link "Ägandekostnad" [ref=f5e893] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=f5e894] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=f5e895] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=f5e896] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Artiklar" [ref=f5e897] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Metod" [ref=f5e898] [cursor=pointer]:
+            - /url: /metod
+      - generic [ref=f5e899]:
+        - generic [ref=f5e900]: Data från Blocket.se — 29 486 annonser analyserade, 13 063 till salu. Uppdaterad 6 augusti 2026.
+        - generic [ref=f5e901]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=f5e902] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=f5e903]

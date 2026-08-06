@@ -77,38 +77,103 @@ function DealDot(props: any) {
   return <circle cx={cx} cy={cy} r={4} fill={fill} opacity={0.6} style={{ cursor: "pointer" }} />;
 }
 
-function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<{ payload: ScatterPoint }> }) {
+/**
+ * Since the scatter and the curve share one chart, this receives two very
+ * different shapes: a listing, and a point on a trend line. It used to assume
+ * the first and read `d.price.toLocaleString()` unconditionally — so moving
+ * the mouse over the curve threw "Cannot read properties of undefined" and
+ * took the whole page down with it. Hovering a curve is now worth something
+ * rather than fatal: it reports the estimate at that age.
+ */
+interface TooltipEntry {
+  payload?: Partial<ScatterPoint> & Record<string, unknown>;
+  dataKey?: string | number;
+  name?: string | number;
+  value?: unknown;
+  color?: string;
+}
+
+function isListing(p: unknown): p is ScatterPoint {
+  return !!p && typeof (p as ScatterPoint).price === "number"
+    && typeof (p as ScatterPoint).year === "number";
+}
+
+const sek = (n: number) => Math.round(n).toLocaleString("sv-SE");
+
+function CustomTooltip({ active, payload, label, modelConfig }: {
+  active?: boolean;
+  payload?: TooltipEntry[];
+  label?: number | string;
+  modelConfig?: ModelConfigMap;
+}) {
   if (!active || !payload?.length) return null;
-  const d = payload[0].payload;
+
+  const listing = payload.map((e) => e.payload as unknown).find(isListing);
+  if (listing) {
+    return (
+      <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm shadow-lg">
+        <p className="font-semibold text-[var(--foreground)]">
+          {listing.year} — {listing.fuel}
+        </p>
+        <p className="font-mono font-semibold">{sek(listing.price)} kr</p>
+        <p className="text-[var(--muted)]">
+          {sek(listing.mileage ?? 0)} mil{listing.hp ? ` · ${listing.hp} hk` : ""}
+        </p>
+        <p className="text-[var(--muted)] text-xs">
+          {listing.seller === "dealer" ? "Handlare" : "Privat"}
+        </p>
+        {listing.predicted != null && (
+          <>
+            <hr className="my-1.5 border-[var(--border)]" />
+            <p className="text-xs text-[var(--muted)]">
+              Prisestimat: <span className="font-mono">{sek(listing.predicted)} kr</span>
+            </p>
+            {listing.residual != null && listing.residual < 0 && (
+              <p className="text-xs font-semibold text-[var(--money)]">
+                {underEstimateLabel(listing.price, listing.predicted) ?? "Under prisestimat"}
+                {" · "}{sek(Math.abs(listing.residual))} kr
+              </p>
+            )}
+            {listing.deal && (
+              <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
+                listing.deal === "great"
+                  ? "bg-[var(--money-soft)] text-[var(--money)] font-semibold"
+                  : "bg-[var(--money-faint)] text-[var(--money-mid)]"
+              }`}>
+                {dealName(listing.deal)}
+              </span>
+            )}
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // A point on the curve: report each visible model's estimate at this age.
+  const lines = payload.filter(
+    (e) => typeof e.dataKey === "string"
+      && !e.dataKey.includes("_range")
+      && !e.dataKey.includes("_inner")
+      && typeof e.value === "number",
+  );
+  if (!lines.length) return null;
+
   return (
     <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm shadow-lg">
-      <p className="font-semibold text-[var(--foreground)]">{d.year} — {d.fuel}</p>
-      <p className="font-mono font-semibold">{d.price.toLocaleString("sv-SE")} kr</p>
-      <p className="text-[var(--muted)]">{d.mileage.toLocaleString("sv-SE")} mil · {d.hp} hk</p>
-      <p className="text-[var(--muted)] text-xs">{d.seller === "dealer" ? "Handlare" : "Privat"}</p>
-      {d.predicted != null && (
-        <>
-          <hr className="my-1.5 border-[var(--border)]" />
-          <p className="text-xs text-[var(--muted)]">
-            Predikterat: <span className="font-mono">{d.predicted.toLocaleString("sv-SE")} kr</span>
-          </p>
-          {d.residual != null && d.residual < 0 && (
-            <p className="text-xs font-semibold text-[var(--money)]">
-              {underEstimateLabel(d.price, d.predicted) ?? "Under prisestimat"} ·{" "}
-              {Math.abs(d.residual).toLocaleString("sv-SE")} kr
-            </p>
-          )}
-          {d.deal && (
-            <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full ${
-              d.deal === "great"
-                ? "bg-[var(--money-soft)] text-[var(--money)] font-semibold"
-                : "bg-[var(--money-faint)] text-[var(--money-mid)]"
-            }`}>
-              {dealName(d.deal)}
+      <p className="font-semibold text-[var(--foreground)]">Ålder: {label} år</p>
+      {lines.map((e) => {
+        const key = String(e.dataKey);
+        return (
+          <p key={key} className="text-[var(--muted)]">
+            <span style={{ color: e.color }}>■</span>{" "}
+            {modelConfig?.[key]?.label ?? displayName(key)}:{" "}
+            <span className="font-mono text-[var(--foreground)]">
+              {sek(e.value as number)} kr
             </span>
-          )}
-        </>
-      )}
+          </p>
+        );
+      })}
+      <p className="text-[var(--muted)] text-xs mt-1">Prisestimat vid den åldern</p>
     </div>
   );
 }
@@ -307,7 +372,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
             label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
           <YAxis dataKey="price" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
             tickFormatter={formatPriceK} domain={[0, chartYMax]} allowDataOverflow width={38} />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip modelConfig={modelConfig} />} />
           <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
 
           {/* Outer band: the 95% range, from percentiles of real residuals. */}
