@@ -1,7 +1,7 @@
 import { getDb } from "@/app/lib/db";
 import {
-  cleanFuel, dealOf, isAwdDrivetrain, predictPrice, premiumEquipCount,
-  type RegressionModel,
+  cleanFuel, dealOf, isAwdDrivetrain, isCredibleDeal, predictPrice,
+  premiumEquipCount, type RegressionModel,
 } from "@/app/lib/predict";
 
 /**
@@ -203,7 +203,7 @@ async function liveDeals(
       reg.generations || [],
     );
     const grade = dealOf(price, predicted, reg);
-    if (!grade) continue;
+    if (!grade || !isCredibleDeal(price, predicted, reg)) continue;
     const cohort = medianByAge.get(Math.round(Number(r.car_age_years) || 0));
     if (cohort && predicted > cohortCeiling(reg, cohort)) continue;
     scored.push({
@@ -223,6 +223,120 @@ async function liveDeals(
   // Biggest saving first — the reason anyone would scroll this far.
   scored.sort((a, b) => a.residual - b.residual);
   return scored.slice(0, 8);
+}
+
+export interface TopDeal extends DealRow {
+  modelKey: string;
+  label: string;
+  slug: string;
+  pctUnder: number;
+}
+
+/**
+ * The best-priced live listings across every model, for the homepage.
+ *
+ * The homepage used to server-render nothing a buyer could act on: the charts
+ * are client-only, and the first clickable car sat 4 530 px down on mobile
+ * against an average scroll depth that reaches 5 005 px. Outbound clicks fired
+ * in 2 of 121 sessions. This puts real cars, with real links, in the HTML near
+ * the top — which serves the reader and the crawler with the same markup.
+ */
+export async function getTopDeals(limit = 6): Promise<TopDeal[]> {
+  const agg = await loadAggregates();
+  if (!agg?.regression) return [];
+
+  const sql = getDb();
+  const rows = await sql`
+    SELECT listing_id, url, model_key, model_year, price_sek, mileage_mil,
+           fuel_type, horsepower, drivetrain, seller_type, equipment_count,
+           car_age_years, wltp_range_km, ai_generation, ai_notable_equipment
+    FROM cars_enriched
+    WHERE is_active AND model_key IS NOT NULL
+      AND (exclusion_tags = '[]'::jsonb OR exclusion_tags IS NULL)
+      AND model_year >= 2005 AND price_sek > 0 AND mileage_mil >= 0
+      AND car_age_years IS NOT NULL`;
+
+  // Cohort medians per model and age, so a prediction that has wandered
+  // outside its own data cannot masquerade as a bargain — same guard the
+  // model pages use.
+  const cohorts = new Map<string, number>();
+  // A model too thin to earn an indexable page is also too thin to tell a
+  // seller they have underpriced. Polestar 3 fits 76 listings at R² 0.47 —
+  // its estimate is not evidence, so it does not get to make the claim.
+  const trusted = new Set<string>();
+  for (const [key, points] of Object.entries(agg.priceByAge ?? {})) {
+    let rows = 0;
+    for (const p of points as { age: number; count: number; median: number }[]) {
+      if (p.count >= MIN_YEAR_COUNT) {
+        cohorts.set(`${key}:${p.age}`, p.median);
+        if (p.age >= 0) rows++;
+      }
+    }
+    if (rows >= MIN_YEAR_ROWS_TO_INDEX) trusted.add(key);
+  }
+
+  const out: TopDeal[] = [];
+  for (const r of rows) {
+    const reg: RegressionModel | undefined = agg.regression[r.model_key];
+    const cfg = agg.modelConfig?.[r.model_key];
+    if (!reg || !cfg || !trusted.has(r.model_key)) continue;
+    const price = Number(r.price_sek);
+    const age = Number(r.car_age_years) || 0;
+    const predicted = predictPrice(
+      reg, age, r.mileage_mil || 0, cleanFuel(r.fuel_type), r.horsepower || 0,
+      r.equipment_count || 0, (r.seller_type || "").toLowerCase() === "dealer",
+      isAwdDrivetrain(r.drivetrain || ""), r.wltp_range_km || 0,
+      r.ai_generation || "", premiumEquipCount(r.ai_notable_equipment),
+      reg.generations || [],
+    );
+    if (dealOf(price, predicted, reg) !== "great") continue;
+    if (!isCredibleDeal(price, predicted, reg)) continue;
+    const cohort = cohorts.get(`${r.model_key}:${Math.round(age)}`);
+    if (cohort && predicted > cohortCeiling(reg, cohort)) continue;
+    const pct = Math.round((1 - price / predicted) * 100);
+    if (pct <= 0) continue;
+    out.push({
+      id: r.listing_id,
+      url: r.url || `https://www.blocket.se/mobility/item/${r.listing_id}`,
+      modelKey: r.model_key,
+      label: cfg.label,
+      slug: slugify(cfg.label),
+      year: r.model_year,
+      price,
+      mileage: r.mileage_mil || 0,
+      fuel: cleanFuel(r.fuel_type),
+      hp: r.horsepower || 0,
+      seller: r.seller_type || "",
+      predicted,
+      residual: price - predicted,
+      pctUnder: pct,
+      deal: "great",
+    });
+  }
+
+  // Rank by kronor saved, not by proportion.
+  //
+  // Percentage looks like the fairer measure and is the wrong one here: it
+  // systematically surfaces the oldest, cheapest cars, which is exactly where
+  // the model is weakest. Condition is unobserved and dominates at 300 000 km,
+  // and the proportional mileage term stops discounting hard enough. Ranking
+  // by percentage put a 2008 Land Cruiser and three cars from 2010 on the
+  // homepage; ranking by kronor puts cars from the middle of the data, where
+  // the estimate is worth something. The two-per-model cap below is what stops
+  // the expensive models taking every slot.
+  out.sort((a, b) => a.residual - b.residual);
+
+  // At most two per model, so six cards describe six situations.
+  const perModel = new Map<string, number>();
+  const picked: TopDeal[] = [];
+  for (const d of out) {
+    const n = perModel.get(d.modelKey) ?? 0;
+    if (n >= 2) continue;
+    perModel.set(d.modelKey, n + 1);
+    picked.push(d);
+    if (picked.length >= limit) break;
+  }
+  return picked;
 }
 
 export async function getModelPage(slug: string): Promise<ModelPage | null> {

@@ -101,6 +101,31 @@ export function dealOf(
   return null;
 }
 
+/**
+ * Past this far below the estimate, the price is not a bargain — it is a fact
+ * about the car that the listing did not mention.
+ *
+ * A 2010 Golf at 20 000 kr against a 60 714 kr estimate sits 6.6 residual
+ * standard errors below the model. Nobody sells a sound car at a third of its
+ * value; that is damage, a failed inspection, or a project. Showing it as
+ * "67% under estimat" costs more credibility than the listing could ever
+ * repay, and it is exactly what ranking by percentage surfaces first, because
+ * proportional error is largest at the cheap end.
+ *
+ * Three standard errors is roughly one listing in a thousand under a normal
+ * distribution, and the residuals here are heavier-tailed than that — so this
+ * removes a handful of cars per model, not a category.
+ */
+export const IMPLAUSIBLE_SE = 3.0;
+
+export function isCredibleDeal(
+  price: number, predicted: number, reg: RegressionModel,
+): boolean {
+  if (!reg.log_transform || predicted <= 0 || price <= 0) return false;
+  const logScore = (Math.log(price) - Math.log(predicted)) / reg.residual_se_log;
+  return logScore > -IMPLAUSIBLE_SE;
+}
+
 /** Premium-equipment count from the AI-extracted list on a listing row. */
 export function premiumEquipCount(raw: unknown): number {
   if (!Array.isArray(raw)) return 0;

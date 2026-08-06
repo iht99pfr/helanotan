@@ -20,8 +20,6 @@ export default function robots(): MetadataRoute.Robots {
         // fetching the page at all — so the noindex would never be read and
         // the URLs could linger in the index as bare links. Blocking and
         // de-indexing are opposites; pick de-indexing.
-        // Internal working documents.
-        "/version2",
       ],
     },
     sitemap: "https://helanotan.se/sitemap.xml",

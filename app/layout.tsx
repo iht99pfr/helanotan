@@ -148,7 +148,7 @@ export default async function RootLayout({
                 <a href="/kopguide" className="hover:text-[var(--foreground)] transition">Köpguide</a>
                 <a href="/bevaka" className="hover:text-[var(--foreground)] transition">Bevaka</a>
                 <a href="/artiklar" className="hover:text-[var(--foreground)] transition">Artiklar</a>
-                <a href="/modelldata" className="hover:text-[var(--foreground)] transition">Metod</a>
+                <a href="/metod" className="hover:text-[var(--foreground)] transition">Metod</a>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted)]">

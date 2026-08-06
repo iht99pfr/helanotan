@@ -179,7 +179,7 @@ export default async function SaljtidPage() {
           Blocket-annonser, som tar hänsyn till ålder, miltal, bränsletyp,
           hästkrafter, utrustning, drivlina och säljartyp. {mt.modelsUsed} modeller
           hade tillräckligt underlag. Uppdaterad {stats.lastUpdatedLong}.{" "}
-          <Link href="/modelldata" className="underline">Se underlaget</Link>.
+          <Link href="/metod" className="underline">Se underlaget</Link>.
         </p>
       </section>
 

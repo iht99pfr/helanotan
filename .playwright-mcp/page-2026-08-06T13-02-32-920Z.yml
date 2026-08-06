@@ -1,0 +1,106 @@
+- generic [active] [ref=f3e1]:
+  - navigation [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "Hela Notan" [ref=f3e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f3e8]:
+        - link "Modeller" [ref=f3e9] [cursor=pointer]:
+          - /url: /bilar
+        - link "Ägandekostnad" [ref=f3e10] [cursor=pointer]:
+          - /url: /tco
+        - link "Köpguide" [ref=f3e11] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Toppen" [ref=f3e12] [cursor=pointer]:
+          - /url: /toppen
+        - link "Artiklar" [ref=f3e13] [cursor=pointer]:
+          - /url: /artiklar
+  - main [ref=f3e14]:
+    - generic [ref=f3e15]:
+      - generic [ref=f3e16]:
+        - paragraph [ref=f3e17]: Begagnatpriser · Sverige · 29 486 annonser · 6 augusti 2026
+        - heading "Vad kostar bilen egentligen?" [level=1] [ref=f3e18]
+        - paragraph [ref=f3e19]: Riktiga priser från Blocket. Se hur populära bilmodeller tappar i värde över tid, miltal och bränsletyp — och vilka annonser som ligger under vad modellen säger att de borde kosta.
+      - heading "Välj modeller att jämföra" [level=2] [ref=f3e21]
+      - separator [ref=f3e48]
+      - separator [ref=f3e59]
+      - generic [ref=f3e61]:
+        - heading "Annonser" [level=2] [ref=f3e62]
+        - paragraph [ref=f3e63]: Visar annonser för valda modeller och bränsletyp.
+      - separator [ref=f3e73]
+      - generic [ref=f3e74]:
+        - generic [ref=f3e75]:
+          - heading "Värdeminskning per modell" [level=2] [ref=f3e76]
+          - paragraph [ref=f3e77]: Priser per årsmodell, tapp första året och aktuella annonser under prisestimat — en sida per modell.
+        - generic [ref=f3e78]:
+          - link "BMW X3" [ref=f3e79] [cursor=pointer]:
+            - /url: /bilar/bmw-x3
+          - link "BMW X3 M" [ref=f3e81] [cursor=pointer]:
+            - /url: /bilar/bmw-x3-m
+          - link "Kia Niro" [ref=f3e83] [cursor=pointer]:
+            - /url: /bilar/kia-niro
+          - link "Land Rover Defender" [ref=f3e85] [cursor=pointer]:
+            - /url: /bilar/land-rover-defender
+          - link "Mercedes GLC" [ref=f3e87] [cursor=pointer]:
+            - /url: /bilar/mercedes-glc
+          - link "Polestar 2" [ref=f3e89] [cursor=pointer]:
+            - /url: /bilar/polestar-2
+          - link "Polestar 3" [ref=f3e91] [cursor=pointer]:
+            - /url: /bilar/polestar-3
+          - link "Polestar 4" [ref=f3e93] [cursor=pointer]:
+            - /url: /bilar/polestar-4
+          - link "Tesla Model Y" [ref=f3e95] [cursor=pointer]:
+            - /url: /bilar/tesla-model-y
+          - link "Toyota Land Cruiser" [ref=f3e97] [cursor=pointer]:
+            - /url: /bilar/toyota-land-cruiser
+          - link "Toyota RAV4" [ref=f3e99] [cursor=pointer]:
+            - /url: /bilar/toyota-rav4
+          - link "Toyota Yaris" [ref=f3e101] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris
+          - link "Toyota Yaris Cross" [ref=f3e103] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris-cross
+          - link "Volvo XC40" [ref=f3e105] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40
+          - link "Volvo XC40 Recharge" [ref=f3e107] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40-recharge
+          - link "Volvo XC60" [ref=f3e109] [cursor=pointer]:
+            - /url: /bilar/volvo-xc60
+          - link "VW Golf" [ref=f3e111] [cursor=pointer]:
+            - /url: /bilar/vw-golf
+          - link "VW Tiguan" [ref=f3e113] [cursor=pointer]:
+            - /url: /bilar/vw-tiguan
+      - separator [ref=f3e115]
+      - generic [ref=f3e116]:
+        - heading "Metod" [level=2] [ref=f3e117]
+        - paragraph [ref=f3e118]: 29 486 annonser från Blocket.se analyserade, varav 13 063 till salu just nu. Senast uppdaterad 6 augusti 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderas.
+        - paragraph [ref=f3e119]: "Värdeminskning modelleras med log-transformerad multivariat regression med 20 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp (Hybrid/Laddhybrid/Diesel/El), säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder/miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=f3e120]: 95% prediktionsintervall beräknas i log-rummet (±1,96 × SE) och transformeras tillbaka, vilket ger proportionella konfidensband. Ägandekostnadsberäknaren använder förberäknade prediktionskurvor för att fånga den icke-linjära värdeminskningen vid olika åldrar.
+  - contentinfo [ref=f3e121]:
+    - generic [ref=f3e122]:
+      - generic [ref=f3e123]:
+        - generic [ref=f3e124]:
+          - generic [ref=f3e125]: Hela Notan
+          - paragraph [ref=f3e127]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=f3e128]:
+          - link "Hem" [ref=f3e129] [cursor=pointer]:
+            - /url: /
+          - link "Modeller" [ref=f3e130] [cursor=pointer]:
+            - /url: /bilar
+          - link "Ägandekostnad" [ref=f3e131] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=f3e132] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=f3e133] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=f3e134] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Artiklar" [ref=f3e135] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Metod" [ref=f3e136] [cursor=pointer]:
+            - /url: /modelldata
+      - generic [ref=f3e137]:
+        - generic [ref=f3e138]: Data från Blocket.se — 29 486 annonser analyserade, 13 063 till salu. Uppdaterad 6 augusti 2026.
+        - generic [ref=f3e139]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=f3e140] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=f3e141]

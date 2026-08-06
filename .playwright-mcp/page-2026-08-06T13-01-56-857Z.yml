@@ -1,0 +1,166 @@
+- generic [active] [ref=f2e1]:
+  - navigation [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - link "Hela Notan" [ref=f2e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f2e8]:
+        - link "Modeller" [ref=f2e9] [cursor=pointer]:
+          - /url: /bilar
+        - link "Ägandekostnad" [ref=f2e10] [cursor=pointer]:
+          - /url: /tco
+        - link "Köpguide" [ref=f2e11] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Toppen" [ref=f2e12] [cursor=pointer]:
+          - /url: /toppen
+        - link "Artiklar" [ref=f2e13] [cursor=pointer]:
+          - /url: /artiklar
+  - main [ref=f2e14]:
+    - generic [ref=f2e15]:
+      - generic [ref=f2e16]:
+        - heading "Ägandekostnadsberäknare" [level=1] [ref=f2e17]
+        - paragraph [ref=f2e18]: Beräkna den totala ägandekostnaden för en bil. Prediktioner baseras på vår regressionsmodell tränad på verkliga Blocket-annonser.
+      - generic [ref=f2e20]:
+        - generic [ref=f2e21]:
+          - generic [ref=f2e22]:
+            - generic [ref=f2e23]: Modell
+            - combobox [ref=f2e24]:
+              - option "BMW X3" [selected]
+              - option "Mercedes GLC"
+              - option "VW Golf"
+              - option "Kia Niro"
+              - option "Toyota RAV4"
+              - option "Volvo XC40"
+              - option "Volvo XC60"
+              - option "Toyota Yaris"
+              - option "Tesla Model Y"
+              - option "VW Tiguan"
+              - option "Land Rover Defender"
+              - option "Polestar 2"
+              - option "Polestar 3"
+              - option "Polestar 4"
+              - option "Toyota Yaris Cross"
+              - option "Toyota Land Cruiser"
+              - option "Volvo XC40 Recharge"
+          - generic [ref=f2e25]:
+            - generic [ref=f2e26]: Bränsle
+            - combobox [ref=f2e27]:
+              - option "Laddhybrid" [selected]
+              - option "Diesel"
+              - option "Bensin"
+          - generic [ref=f2e28]:
+            - generic [ref=f2e29]: Årsmodell
+            - combobox [ref=f2e30]:
+              - option "2025"
+              - option "2024"
+              - option "2023"
+              - option "2022" [selected]
+              - option "2021"
+              - option "2020"
+              - option "2019"
+              - option "2018"
+              - option "2017"
+              - option "2016"
+              - option "2015"
+              - option "2014"
+          - generic [ref=f2e31]:
+            - generic [ref=f2e32]: Nuvarande miltal
+            - textbox [ref=f2e33]: "7900"
+            - paragraph [ref=f2e34]: Median från 61 annonser
+          - generic [ref=f2e35]:
+            - generic [ref=f2e36]: Behålla i (år)
+            - combobox [ref=f2e37]:
+              - option "1 år"
+              - option "2 år"
+              - option "3 år" [selected]
+              - option "4 år"
+              - option "5 år"
+              - option "6 år"
+              - option "7 år"
+              - option "8 år"
+          - generic [ref=f2e38]:
+            - generic [ref=f2e39]: Årlig körning (mil/år)
+            - textbox [ref=f2e40]: "1500"
+        - generic [ref=f2e41]:
+          - generic [ref=f2e42]: Andel eldrift — 50% el / 50% bensin
+          - slider [ref=f2e43]: "50"
+          - generic [ref=f2e44]:
+            - generic [ref=f2e45]: 100% bensin
+            - generic [ref=f2e46]: 100% el
+        - button "▸ Avancerat" [ref=f2e48]
+        - generic [ref=f2e49]:
+          - generic [ref=f2e50]:
+            - generic [ref=f2e51]: Uppskattat köppris
+            - generic [ref=f2e52]: 352 664 kr
+            - generic [ref=f2e53]: Uppskattat säljpris
+            - generic [ref=f2e54]: 249 042 kr
+            - generic [ref=f2e55]: Värdeförlust
+            - generic [ref=f2e56]: −103 622 kr
+          - generic [ref=f2e57]:
+            - generic [ref=f2e58]:
+              - generic [ref=f2e59]: Försäkring (3 år)
+              - generic [ref=f2e60]: 33 000 kr
+            - generic [ref=f2e61]:
+              - generic [ref=f2e62]: Service
+              - generic [ref=f2e63]: 21 000 kr
+            - generic [ref=f2e64]:
+              - generic [ref=f2e65]: Reparation & underhåll
+              - generic [ref=f2e66]: 12 000 kr
+            - generic [ref=f2e67]:
+              - generic [ref=f2e68]: Fordonsskatt
+              - generic [ref=f2e69]: 4 500 kr
+            - generic [ref=f2e70]:
+              - generic [ref=f2e71]: Drivmedel (50% el / 50% bensin)
+              - generic [ref=f2e72]: 44 382 kr
+            - generic [ref=f2e73]:
+              - generic [ref=f2e74]: Kapitalkostnad (4.5%)
+              - generic [ref=f2e75]: 40 615 kr
+            - paragraph [ref=f2e76]: Bensin 18.5 kr/l, diesel 19.5 kr/l, el 2 kr/kWh
+          - generic [ref=f2e77]:
+            - generic [ref=f2e78]:
+              - generic [ref=f2e79]: Månadskostnad (värdeförlust)
+              - generic [ref=f2e80]: 2 878 kr/mån
+            - generic [ref=f2e81]:
+              - generic [ref=f2e82]: Månadskostnad (totalt)
+              - generic [ref=f2e83]: 7 198 kr/mån
+            - generic [ref=f2e84]:
+              - generic [ref=f2e85]: Kostnad per mil
+              - generic [ref=f2e86]: 58 kr/mil
+          - paragraph [ref=f2e87]: ±27% prediktionsosäkerhet (95% KI)
+        - generic [ref=f2e90]:
+          - paragraph [ref=f2e91]: Dela beräkningen
+          - paragraph [ref=f2e92]: Skicka till din partner, kompis eller spara för senare. Länken öppnar exakt samma beräkning.
+          - button "Dela" [ref=f2e94]
+      - generic [ref=f2e98]:
+        - heading "Så fungerar beräkningen" [level=2] [ref=f2e99]
+        - paragraph [ref=f2e100]: Köp- och säljpris predikteras med multivariat regression baserad på bilålder, miltal, bränsle, hästkrafter, utrustning, drivlina och säljartyp. Miltalet föreslås automatiskt baserat på medianen bland verkliga annonser för vald modell och årsmodell.
+        - paragraph [ref=f2e101]: Driftskostnader (försäkring, service, reparation, skatt) varierar med bilens ålder och modell. Service är normalt inkluderat de första 3 åren, och reparationskostnader ökar med bilens ålder — mer för premiumbilar. 95% konfidensintervall beräknas från regressionens residualfel.
+  - contentinfo [ref=f2e102]:
+    - generic [ref=f2e103]:
+      - generic [ref=f2e104]:
+        - generic [ref=f2e105]:
+          - generic [ref=f2e106]: Hela Notan
+          - paragraph [ref=f2e108]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=f2e109]:
+          - link "Hem" [ref=f2e110] [cursor=pointer]:
+            - /url: /
+          - link "Modeller" [ref=f2e111] [cursor=pointer]:
+            - /url: /bilar
+          - link "Ägandekostnad" [ref=f2e112] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=f2e113] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=f2e114] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=f2e115] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Artiklar" [ref=f2e116] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Metod" [ref=f2e117] [cursor=pointer]:
+            - /url: /modelldata
+      - generic [ref=f2e118]:
+        - generic [ref=f2e119]: Data från Blocket.se — 29 486 annonser analyserade, 13 063 till salu. Uppdaterad 6 augusti 2026.
+        - generic [ref=f2e120]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=f2e121] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=f2e122]

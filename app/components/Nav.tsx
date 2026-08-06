@@ -7,7 +7,7 @@ import { track } from "@/app/lib/track";
 
 // Ten links produced 1.0 pages per session — nobody was navigating, and a
 // menu that offers everything ranks nothing. These five are the questions a
-// buyer actually arrives with. /fakta, /modelldata, /nyheter and /bevaka keep
+// buyer actually arrives with. /fakta, /metod, /nyheter and /bevaka keep
 // their URLs and stay linked from the footer and from in-page context.
 const NAV_ITEMS = [
   { label: "Modeller", href: "/bilar" },

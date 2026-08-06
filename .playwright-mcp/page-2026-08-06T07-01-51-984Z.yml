@@ -1,0 +1,273 @@
+- generic [active] [ref=f1e1]:
+  - navigation [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "Hela Notan" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f1e6]:
+        - link "Modeller" [ref=f1e7] [cursor=pointer]:
+          - /url: /bilar
+        - link "Ägandekostnad" [ref=f1e8] [cursor=pointer]:
+          - /url: /tco
+        - link "Köpguide" [ref=f1e9] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Toppen" [ref=f1e10] [cursor=pointer]:
+          - /url: /toppen
+        - link "Artiklar" [ref=f1e11] [cursor=pointer]:
+          - /url: /artiklar
+  - main [ref=f1e12]:
+    - article [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - paragraph [ref=f1e15]:
+          - link "Alla modeller" [ref=f1e16] [cursor=pointer]:
+            - /url: /bilar
+        - heading "Volvo XC60 — värdeminskning och priser" [level=1] [ref=f1e17]
+        - paragraph [ref=f1e18]: Baserat på 5 476 annonser för Volvo XC60 från Blocket.se, varav 3 022 till salu just nu. Årsmodell 2009–2027. Uppdaterad 5 augusti 2026.
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]:
+          - generic [ref=f1e21]: 619 900 kr
+          - generic [ref=f1e22]: Medianpris 2026
+          - generic [ref=f1e23]: Yngsta årsmodell med tillräckligt underlag
+        - generic [ref=f1e24]:
+          - generic [ref=f1e25]: 71 699 kr
+          - generic [ref=f1e26]: Tapp första året
+          - generic [ref=f1e27]: ≈ 5 975 kr/mån
+        - generic [ref=f1e28]:
+          - generic [ref=f1e29]: 69%
+          - generic [ref=f1e30]: Kvar efter 3 år
+          - generic [ref=f1e31]: 58% efter 5 år
+        - generic [ref=f1e32]:
+          - generic [ref=f1e33]: −2.25%
+          - generic [ref=f1e34]: Per 1 000 mil
+          - generic [ref=f1e35]: Av bilens aktuella värde
+      - generic [ref=f1e36]:
+        - heading "Pris per årsmodell" [level=2] [ref=f1e37]
+        - paragraph [ref=f1e38]: Medianpris för utannonserade Volvo XC60 per årsmodell. Kolumnen till höger är skillnaden mot ett år yngre bil — alltså vad det året kostade.
+        - table [ref=f1e40]:
+          - rowgroup [ref=f1e41]:
+            - row [ref=f1e42]:
+              - columnheader "Årsmodell" [ref=f1e43]
+              - columnheader "Medianpris" [ref=f1e44]
+              - columnheader "Ett år äldre kostar" [ref=f1e45]
+              - columnheader "Annonser" [ref=f1e46]
+          - rowgroup [ref=f1e47]:
+            - row [ref=f1e48]:
+              - cell "2026ny" [ref=f1e49]
+              - cell "619 900 kr" [ref=f1e50]
+              - cell "—" [ref=f1e51]
+              - cell "320" [ref=f1e52]
+            - row [ref=f1e53]:
+              - cell "20251 år" [ref=f1e54]
+              - cell "557 000 kr" [ref=f1e55]
+              - cell "−62 900 kr" [ref=f1e56]
+              - cell "532" [ref=f1e57]
+            - row [ref=f1e58]:
+              - cell "20242 år" [ref=f1e59]
+              - cell "479 500 kr" [ref=f1e60]
+              - cell "−77 500 kr" [ref=f1e61]
+              - cell "417" [ref=f1e62]
+            - row [ref=f1e63]:
+              - cell "20233 år" [ref=f1e64]
+              - cell "429 900 kr" [ref=f1e65]
+              - cell "−49 600 kr" [ref=f1e66]
+              - cell "665" [ref=f1e67]
+            - row [ref=f1e68]:
+              - cell "20224 år" [ref=f1e69]
+              - cell "409 900 kr" [ref=f1e70]
+              - cell "−20 000 kr" [ref=f1e71]
+              - cell "316" [ref=f1e72]
+            - row [ref=f1e73]:
+              - cell "20215 år" [ref=f1e74]
+              - cell "358 900 kr" [ref=f1e75]
+              - cell "−51 000 kr" [ref=f1e76]
+              - cell "353" [ref=f1e77]
+            - row [ref=f1e78]:
+              - cell "20206 år" [ref=f1e79]
+              - cell "339 250 kr" [ref=f1e80]
+              - cell "−19 650 kr" [ref=f1e81]
+              - cell "372" [ref=f1e82]
+            - row [ref=f1e83]:
+              - cell "20197 år" [ref=f1e84]
+              - cell "299 900 kr" [ref=f1e85]
+              - cell "−39 350 kr" [ref=f1e86]
+              - cell "321" [ref=f1e87]
+            - row [ref=f1e88]:
+              - cell "20188 år" [ref=f1e89]
+              - cell "299 900 kr" [ref=f1e90]
+              - cell "0 kr" [ref=f1e91]
+              - cell "321" [ref=f1e92]
+            - row [ref=f1e93]:
+              - cell "20179 år" [ref=f1e94]
+              - cell "199 900 kr" [ref=f1e95]
+              - cell "−100 000 kr" [ref=f1e96]
+              - cell "522" [ref=f1e97]
+            - row [ref=f1e98]:
+              - cell "201610 år" [ref=f1e99]
+              - cell "179 900 kr" [ref=f1e100]
+              - cell "−20 000 kr" [ref=f1e101]
+              - cell "273" [ref=f1e102]
+            - row [ref=f1e103]:
+              - cell "201511 år" [ref=f1e104]
+              - cell "164 900 kr" [ref=f1e105]
+              - cell "−15 000 kr" [ref=f1e106]
+              - cell "285" [ref=f1e107]
+            - row [ref=f1e108]:
+              - cell "201412 år" [ref=f1e109]
+              - cell "146 000 kr" [ref=f1e110]
+              - cell "−18 900 kr" [ref=f1e111]
+              - cell "259" [ref=f1e112]
+            - row [ref=f1e113]:
+              - cell "201313 år" [ref=f1e114]
+              - cell "115 000 kr" [ref=f1e115]
+              - cell "−31 000 kr" [ref=f1e116]
+              - cell "149" [ref=f1e117]
+            - row [ref=f1e118]:
+              - cell "201214 år" [ref=f1e119]
+              - cell "104 900 kr" [ref=f1e120]
+              - cell "−10 100 kr" [ref=f1e121]
+              - cell "120" [ref=f1e122]
+            - row [ref=f1e123]:
+              - cell "201115 år" [ref=f1e124]
+              - cell "89 950 kr" [ref=f1e125]
+              - cell "−14 950 kr" [ref=f1e126]
+              - cell "122" [ref=f1e127]
+            - row [ref=f1e128]:
+              - cell "201016 år" [ref=f1e129]
+              - cell "84 900 kr" [ref=f1e130]
+              - cell "−5 050 kr" [ref=f1e131]
+              - cell "76" [ref=f1e132]
+            - row [ref=f1e133]:
+              - cell "200917 år" [ref=f1e134]
+              - cell "76 700 kr" [ref=f1e135]
+              - cell "−8 200 kr" [ref=f1e136]
+              - cell "44" [ref=f1e137]
+      - generic [ref=f1e138]:
+        - heading "Volvo XC60 under prisestimat just nu" [level=2] [ref=f1e139]
+        - paragraph [ref=f1e140]: Annonser vars begärda pris ligger under vad modellen förutsäger för den åldern, det miltalet, den bränsletypen och den utrustningen. Ett lågt pris kan ha en bra förklaring — läs annonsen.
+        - list [ref=f1e141]:
+          - listitem [ref=f1e142]:
+            - link "Volvo XC60 2014 99 999 kr 5 000 mil · Hybrid · Handlare 103 684 kr under estimat" [ref=f1e143] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/18633037
+              - generic [ref=f1e144]: Volvo XC60 2014
+              - generic [ref=f1e145]: 99 999 kr
+              - generic [ref=f1e146]: 5 000 mil · Hybrid · Handlare
+              - generic [ref=f1e147]: 103 684 kr under estimat
+          - listitem [ref=f1e148]:
+            - link "Volvo XC60 2024 394 800 kr 5 962 mil · 250 hk · Handlare 92 751 kr under estimat" [ref=f1e149] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/23592940
+              - generic [ref=f1e150]: Volvo XC60 2024
+              - generic [ref=f1e151]: 394 800 kr
+              - generic [ref=f1e152]: 5 962 mil · 250 hk · Handlare
+              - generic [ref=f1e153]: 92 751 kr under estimat
+          - listitem [ref=f1e154]:
+            - link "Volvo XC60 2019 171 000 kr 17 499 mil · Diesel · 190 hk · Handlare 86 262 kr under estimat" [ref=f1e155] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/24879387
+              - generic [ref=f1e156]: Volvo XC60 2019
+              - generic [ref=f1e157]: 171 000 kr
+              - generic [ref=f1e158]: 17 499 mil · Diesel · 190 hk · Handlare
+              - generic [ref=f1e159]: 86 262 kr under estimat
+          - listitem [ref=f1e160]:
+            - link "Volvo XC60 2013 127 500 kr 2 928 mil · Diesel · 215 hk · Privat 76 589 kr under estimat" [ref=f1e161] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/18227652
+              - generic [ref=f1e162]: Volvo XC60 2013
+              - generic [ref=f1e163]: 127 500 kr
+              - generic [ref=f1e164]: 2 928 mil · Diesel · 215 hk · Privat
+              - generic [ref=f1e165]: 76 589 kr under estimat
+          - listitem [ref=f1e166]:
+            - link "Volvo XC60 2023 419 900 kr 7 213 mil · Bensin · 350 hk · Handlare 69 580 kr under estimat" [ref=f1e167] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/24886264
+              - generic [ref=f1e168]: Volvo XC60 2023
+              - generic [ref=f1e169]: 419 900 kr
+              - generic [ref=f1e170]: 7 213 mil · Bensin · 350 hk · Handlare
+              - generic [ref=f1e171]: 69 580 kr under estimat
+          - listitem [ref=f1e172]:
+            - link "Volvo XC60 2024 409 000 kr 5 112 mil · Bensin · 250 hk · Handlare 67 734 kr under estimat" [ref=f1e173] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/25146293
+              - generic [ref=f1e174]: Volvo XC60 2024
+              - generic [ref=f1e175]: 409 000 kr
+              - generic [ref=f1e176]: 5 112 mil · Bensin · 250 hk · Handlare
+              - generic [ref=f1e177]: 67 734 kr under estimat
+          - listitem [ref=f1e178]:
+            - link "Volvo XC60 2024 399 900 kr 6 240 mil · Bensin · 250 hk · Handlare 64 023 kr under estimat" [ref=f1e179] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/25078304
+              - generic [ref=f1e180]: Volvo XC60 2024
+              - generic [ref=f1e181]: 399 900 kr
+              - generic [ref=f1e182]: 6 240 mil · Bensin · 250 hk · Handlare
+              - generic [ref=f1e183]: 64 023 kr under estimat
+          - listitem [ref=f1e184]:
+            - link "Volvo XC60 2010 35 000 kr 22 000 mil · Diesel · 163 hk · Privat 58 541 kr under estimat" [ref=f1e185] [cursor=pointer]:
+              - /url: https://www.blocket.se/mobility/item/24381105
+              - generic [ref=f1e186]: Volvo XC60 2010
+              - generic [ref=f1e187]: 35 000 kr
+              - generic [ref=f1e188]: 22 000 mil · Diesel · 163 hk · Privat
+              - generic [ref=f1e189]: 58 541 kr under estimat
+      - generic [ref=f1e190]:
+        - heading "Så säkert är estimatet" [level=2] [ref=f1e191]
+        - paragraph [ref=f1e192]:
+          - text: Prisestimatet för en Volvo XC60 träffar typiskt inom
+          - strong [ref=f1e193]: ±11%
+          - text: "av det begärda priset — på en bil för 619 900 kr betyder det ungefär ±68 189 kr. Enskilda bilar avviker mer: skick, servicehistorik och utrustning som inte står i annonsen syns inte i modellen."
+        - paragraph [ref=f1e194]:
+          - text: Alla siffror kommer från 29 486 Blocket-annonser som samlats in och analyserats. Annonser under 20 000 kr och årsmodeller före 2005 exkluderas.
+          - link "Se underlaget per modell" [ref=f1e195] [cursor=pointer]:
+            - /url: /modelldata
+          - text: .
+      - generic [ref=f1e196]:
+        - heading "Gå vidare" [level=2] [ref=f1e197]
+        - generic [ref=f1e198]:
+          - link "Räkna ut ägandekostnad för Volvo XC60" [ref=f1e199] [cursor=pointer]:
+            - /url: /tco
+          - link "Vilken årsmodell ska jag köpa?" [ref=f1e200] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Jämför med andra modeller" [ref=f1e201] [cursor=pointer]:
+            - /url: /toppen
+      - generic [ref=f1e202]:
+        - heading "Andra modeller" [level=2] [ref=f1e203]
+        - generic [ref=f1e204]:
+          - link "BMW X3" [ref=f1e205] [cursor=pointer]:
+            - /url: /bilar/bmw-x3
+          - link "BMW X3 M" [ref=f1e206] [cursor=pointer]:
+            - /url: /bilar/bmw-x3-m
+          - link "Kia Niro" [ref=f1e207] [cursor=pointer]:
+            - /url: /bilar/kia-niro
+          - link "Land Rover Defender" [ref=f1e208] [cursor=pointer]:
+            - /url: /bilar/land-rover-defender
+          - link "Mercedes GLC" [ref=f1e209] [cursor=pointer]:
+            - /url: /bilar/mercedes-glc
+          - link "Polestar 2" [ref=f1e210] [cursor=pointer]:
+            - /url: /bilar/polestar-2
+          - link "Polestar 3" [ref=f1e211] [cursor=pointer]:
+            - /url: /bilar/polestar-3
+          - link "Polestar 4" [ref=f1e212] [cursor=pointer]:
+            - /url: /bilar/polestar-4
+          - link "Alla modeller →" [ref=f1e213] [cursor=pointer]:
+            - /url: /bilar
+  - contentinfo [ref=f1e214]:
+    - generic [ref=f1e215]:
+      - generic [ref=f1e216]:
+        - generic [ref=f1e217]:
+          - generic [ref=f1e218]: Hela Notan
+          - paragraph [ref=f1e220]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=f1e221]:
+          - link "Hem" [ref=f1e222] [cursor=pointer]:
+            - /url: /
+          - link "Modeller" [ref=f1e223] [cursor=pointer]:
+            - /url: /bilar
+          - link "Ägandekostnad" [ref=f1e224] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=f1e225] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=f1e226] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=f1e227] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Artiklar" [ref=f1e228] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Metod" [ref=f1e229] [cursor=pointer]:
+            - /url: /modelldata
+      - generic [ref=f1e230]:
+        - generic [ref=f1e231]: Data från Blocket.se — 29 486 annonser analyserade, 13 063 till salu. Uppdaterad 5 augusti 2026.
+        - generic [ref=f1e232]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=f1e233] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=f1e234]

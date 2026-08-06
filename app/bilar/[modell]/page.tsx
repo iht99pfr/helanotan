@@ -216,7 +216,7 @@ export default async function ModelPage(
         <p>
           Alla siffror kommer från {sv(stats.totalCars)} Blocket-annonser som
           samlats in och analyserats. Annonser under 20 000 kr och årsmodeller
-          före 2005 exkluderas. <Link href="/modelldata" className="underline">
+          före 2005 exkluderas. <Link href="/metod" className="underline">
             Se underlaget per modell
           </Link>.
         </p>

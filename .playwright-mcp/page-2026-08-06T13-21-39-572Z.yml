@@ -1,0 +1,350 @@
+- generic [active] [ref=f4e1]:
+  - navigation [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link "Hela Notan" [ref=f4e5] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f4e8]:
+        - link "Modeller" [ref=f4e9] [cursor=pointer]:
+          - /url: /bilar
+        - link "Ägandekostnad" [ref=f4e10] [cursor=pointer]:
+          - /url: /tco
+        - link "Köpguide" [ref=f4e11] [cursor=pointer]:
+          - /url: /kopguide
+        - link "Toppen" [ref=f4e12] [cursor=pointer]:
+          - /url: /toppen
+        - link "Artiklar" [ref=f4e13] [cursor=pointer]:
+          - /url: /artiklar
+  - main [ref=f4e14]:
+    - generic [ref=f4e15]:
+      - generic [ref=f4e16]:
+        - paragraph [ref=f4e17]: Begagnatpriser · Sverige · 29 486 annonser · 6 augusti 2026
+        - heading "Vad kostar bilen egentligen?" [level=1] [ref=f4e18]
+        - paragraph [ref=f4e19]: Riktiga priser från Blocket. Se hur Volvo XC60, Volvo XC40 och Toyota RAV4 tappar i värde över tid, miltal och bränsletyp — och vilka annonser som ligger under vad modellen säger att de borde kosta.
+      - generic [ref=f4e20]:
+        - generic [ref=f4e21]:
+          - heading "Under prisestimat just nu" [level=2] [ref=f4e22]
+          - paragraph [ref=f4e23]: Annonser vars begärda pris ligger tydligt under vad modellen förutsäger för den åldern, det miltalet och den utrustningen. Ett lågt pris kan ha en bra förklaring — läs annonsen.
+        - generic [ref=f4e24]:
+          - generic [ref=f4e25]:
+            - generic [ref=f4e26]:
+              - generic [ref=f4e27]: VW Golf 2010
+              - generic [ref=f4e28]: 67% under
+            - generic [ref=f4e29]: 20 000 kr
+            - generic [ref=f4e30]: 15 600 mil · Bensin · 122 hk · Privat
+            - generic [ref=f4e31]:
+              - text: Prisestimat
+              - generic [ref=f4e32]: 60 714 kr
+              - text: · 40 714 kr lägre
+            - generic [ref=f4e33]:
+              - link "Visa annonsen" [ref=f4e34] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25266015
+              - link "Om modellen" [ref=f4e35] [cursor=pointer]:
+                - /url: /bilar/vw-golf
+          - generic [ref=f4e36]:
+            - generic [ref=f4e37]:
+              - generic [ref=f4e38]: Volvo XC60 2010
+              - generic [ref=f4e39]: 63% under
+            - generic [ref=f4e40]: 35 000 kr
+            - generic [ref=f4e41]: 22 000 mil · Diesel · 163 hk · Privat
+            - generic [ref=f4e42]:
+              - text: Prisestimat
+              - generic [ref=f4e43]: 93 541 kr
+              - text: · 58 541 kr lägre
+            - generic [ref=f4e44]:
+              - link "Visa annonsen" [ref=f4e45] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24381105
+              - link "Om modellen" [ref=f4e46] [cursor=pointer]:
+                - /url: /bilar/volvo-xc60
+          - generic [ref=f4e47]:
+            - generic [ref=f4e48]:
+              - generic [ref=f4e49]: VW Golf 2011
+              - generic [ref=f4e50]: 61% under
+            - generic [ref=f4e51]: 22 000 kr
+            - generic [ref=f4e52]: 24 000 mil · Diesel · 105 hk · Privat
+            - generic [ref=f4e53]:
+              - text: Prisestimat
+              - generic [ref=f4e54]: 55 773 kr
+              - text: · 33 773 kr lägre
+            - generic [ref=f4e55]:
+              - link "Visa annonsen" [ref=f4e56] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/25184905
+              - link "Om modellen" [ref=f4e57] [cursor=pointer]:
+                - /url: /bilar/vw-golf
+          - generic [ref=f4e58]:
+            - generic [ref=f4e59]:
+              - generic [ref=f4e60]: VW Tiguan 2009
+              - generic [ref=f4e61]: 55% under
+            - generic [ref=f4e62]: 25 000 kr
+            - generic [ref=f4e63]: 26 150 mil · Diesel · 140 hk · Privat
+            - generic [ref=f4e64]:
+              - text: Prisestimat
+              - generic [ref=f4e65]: 55 045 kr
+              - text: · 30 045 kr lägre
+            - generic [ref=f4e66]:
+              - link "Visa annonsen" [ref=f4e67] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24861880
+              - link "Om modellen" [ref=f4e68] [cursor=pointer]:
+                - /url: /bilar/vw-tiguan
+          - generic [ref=f4e69]:
+            - generic [ref=f4e70]:
+              - generic [ref=f4e71]: VW Tiguan 2011
+              - generic [ref=f4e72]: 54% under
+            - generic [ref=f4e73]: 30 000 kr
+            - generic [ref=f4e74]: 23 000 mil · Bensin · 150 hk · Privat
+            - generic [ref=f4e75]:
+              - text: Prisestimat
+              - generic [ref=f4e76]: 65 117 kr
+              - text: · 35 117 kr lägre
+            - generic [ref=f4e77]:
+              - link "Visa annonsen" [ref=f4e78] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/24747132
+              - link "Om modellen" [ref=f4e79] [cursor=pointer]:
+                - /url: /bilar/vw-tiguan
+          - generic [ref=f4e80]:
+            - generic [ref=f4e81]:
+              - generic [ref=f4e82]: Toyota Yaris 2017
+              - generic [ref=f4e83]: 51% under
+            - generic [ref=f4e84]: 39 900 kr
+            - generic [ref=f4e85]: 21 450 mil · Bensin · 112 hk · Handlare
+            - generic [ref=f4e86]:
+              - text: Prisestimat
+              - generic [ref=f4e87]: 80 828 kr
+              - text: · 40 928 kr lägre
+            - generic [ref=f4e88]:
+              - link "Visa annonsen" [ref=f4e89] [cursor=pointer]:
+                - /url: https://www.blocket.se/mobility/item/23431018
+              - link "Om modellen" [ref=f4e90] [cursor=pointer]:
+                - /url: /bilar/toyota-yaris
+        - paragraph [ref=f4e91]:
+          - link "Se alla 13 063 annonser" [ref=f4e92] [cursor=pointer]:
+            - /url: /#explorer
+      - generic [ref=f4e93]:
+        - generic [ref=f4e94]:
+          - heading "Värdeminskning per modell" [level=2] [ref=f4e95]
+          - paragraph [ref=f4e96]: Priser per årsmodell, vad första året kostar och aktuella fynd — en sida per modell.
+        - generic [ref=f4e97]:
+          - link "BMW X3" [ref=f4e98] [cursor=pointer]:
+            - /url: /bilar/bmw-x3
+          - link "BMW X3 M" [ref=f4e100] [cursor=pointer]:
+            - /url: /bilar/bmw-x3-m
+          - link "Kia Niro" [ref=f4e102] [cursor=pointer]:
+            - /url: /bilar/kia-niro
+          - link "Land Rover Defender" [ref=f4e104] [cursor=pointer]:
+            - /url: /bilar/land-rover-defender
+          - link "Mercedes GLC" [ref=f4e106] [cursor=pointer]:
+            - /url: /bilar/mercedes-glc
+          - link "Polestar 2" [ref=f4e108] [cursor=pointer]:
+            - /url: /bilar/polestar-2
+          - link "Polestar 3" [ref=f4e110] [cursor=pointer]:
+            - /url: /bilar/polestar-3
+          - link "Polestar 4" [ref=f4e112] [cursor=pointer]:
+            - /url: /bilar/polestar-4
+          - link "Tesla Model Y" [ref=f4e114] [cursor=pointer]:
+            - /url: /bilar/tesla-model-y
+          - link "Toyota Land Cruiser" [ref=f4e116] [cursor=pointer]:
+            - /url: /bilar/toyota-land-cruiser
+          - link "Toyota RAV4" [ref=f4e118] [cursor=pointer]:
+            - /url: /bilar/toyota-rav4
+          - link "Toyota Yaris" [ref=f4e120] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris
+          - link "Toyota Yaris Cross" [ref=f4e122] [cursor=pointer]:
+            - /url: /bilar/toyota-yaris-cross
+          - link "Volvo XC40" [ref=f4e124] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40
+          - link "Volvo XC40 Recharge" [ref=f4e126] [cursor=pointer]:
+            - /url: /bilar/volvo-xc40-recharge
+          - link "Volvo XC60" [ref=f4e128] [cursor=pointer]:
+            - /url: /bilar/volvo-xc60
+          - link "VW Golf" [ref=f4e130] [cursor=pointer]:
+            - /url: /bilar/vw-golf
+          - link "VW Tiguan" [ref=f4e132] [cursor=pointer]:
+            - /url: /bilar/vw-tiguan
+      - separator [ref=f4e134]
+      - generic [ref=f4e135]:
+        - generic [ref=f4e136]:
+          - heading "Jämför modeller" [level=2] [ref=f4e137]
+          - paragraph [ref=f4e138]: Välj vilka modeller du funderar på, så ritas kurvorna och annonserna om efter dem.
+        - generic [ref=f4e139]:
+          - generic [ref=f4e140]:
+            - button "BMW" [ref=f4e141] [cursor=pointer]
+            - generic [ref=f4e151]:
+              - button "X3" [ref=f4e152]
+              - button "X3 M" [ref=f4e154]
+          - generic [ref=f4e156]:
+            - button "Land Rover" [ref=f4e157] [cursor=pointer]:
+              - img [ref=f4e158]:
+                - generic [ref=f4e160]: L R
+            - button "Defender" [ref=f4e166]
+          - generic [ref=f4e168]:
+            - button "Mercedes" [ref=f4e169] [cursor=pointer]
+            - button "GLC" [ref=f4e179]
+          - generic [ref=f4e181]:
+            - button "Polestar" [ref=f4e182] [cursor=pointer]
+            - generic [ref=f4e190]:
+              - button "2" [ref=f4e191]
+              - button "3" [ref=f4e193]
+              - button "4" [ref=f4e195]
+          - generic [ref=f4e197]:
+            - button "VW" [ref=f4e198] [cursor=pointer]
+            - generic [ref=f4e207]:
+              - button "Golf" [ref=f4e208]
+              - button "Golf R" [ref=f4e210]
+              - button "Tiguan" [ref=f4e212]
+              - button "Golf GTI" [ref=f4e214]
+          - generic [ref=f4e216]:
+            - button "Kia" [ref=f4e217] [cursor=pointer]:
+              - img [ref=f4e218]:
+                - generic [ref=f4e219]: KIA
+            - button "Niro" [ref=f4e225]
+          - generic [ref=f4e227]:
+            - button "Toyota 1 av 4" [ref=f4e228] [cursor=pointer]:
+              - generic [ref=f4e233]: Toyota
+              - generic [ref=f4e234]: 1 av 4
+            - generic [ref=f4e240]:
+              - button "RAV4" [ref=f4e241]
+              - button "Yaris" [ref=f4e243]
+              - button "Yaris Cross" [ref=f4e245]
+              - button "Land Cruiser" [ref=f4e247]
+          - generic [ref=f4e249]:
+            - button "Volvo 2 av 3" [ref=f4e250] [cursor=pointer]:
+              - generic [ref=f4e254]: Volvo
+              - generic [ref=f4e255]: 2 av 3
+            - generic [ref=f4e261]:
+              - button "XC40" [ref=f4e262]
+              - button "XC60" [ref=f4e264]
+              - button "XC40 Recharge" [ref=f4e266]
+          - generic [ref=f4e268]:
+            - button "Tesla" [ref=f4e269] [cursor=pointer]
+            - button "Model Y" [ref=f4e279]
+      - generic [ref=f4e282]:
+        - generic [ref=f4e283]:
+          - heading "Toyota RAV4" [level=2] [ref=f4e284]
+          - generic [ref=f4e285]:
+            - generic [ref=f4e286]: Antal annonser
+            - generic [ref=f4e287]: "1675"
+            - generic [ref=f4e288]: Snittpris
+            - generic [ref=f4e289]: 325 532 kr
+            - generic [ref=f4e290]: Prisintervall
+            - generic [ref=f4e291]: 29 900 – 638 800
+            - generic [ref=f4e292]: Snittålder
+            - generic [ref=f4e293]: 6.2 år
+            - generic [ref=f4e294]: Snitt miltal
+            - generic [ref=f4e295]: 10 567 mil
+            - generic [ref=f4e296]: Årsmodeller
+            - generic [ref=f4e297]: 2005–2026
+        - generic [ref=f4e298]:
+          - heading "Volvo XC40" [level=2] [ref=f4e299]
+          - generic [ref=f4e300]:
+            - generic [ref=f4e301]: Antal annonser
+            - generic [ref=f4e302]: "1600"
+            - generic [ref=f4e303]: Snittpris
+            - generic [ref=f4e304]: 314 103 kr
+            - generic [ref=f4e305]: Prisintervall
+            - generic [ref=f4e306]: 155 000 – 499 000
+            - generic [ref=f4e307]: Snittålder
+            - generic [ref=f4e308]: 4.6 år
+            - generic [ref=f4e309]: Snitt miltal
+            - generic [ref=f4e310]: 8 828 mil
+            - generic [ref=f4e311]: Årsmodeller
+            - generic [ref=f4e312]: 2018–2026
+        - generic [ref=f4e313]:
+          - heading "Volvo XC60" [level=2] [ref=f4e314]
+          - generic [ref=f4e315]:
+            - generic [ref=f4e316]: Antal annonser
+            - generic [ref=f4e317]: "5476"
+            - generic [ref=f4e318]: Snittpris
+            - generic [ref=f4e319]: 339 405 kr
+            - generic [ref=f4e320]: Prisintervall
+            - generic [ref=f4e321]: 35 000 – 859 900
+            - generic [ref=f4e322]: Snittålder
+            - generic [ref=f4e323]: 6.3 år
+            - generic [ref=f4e324]: Snitt miltal
+            - generic [ref=f4e325]: 13 263 mil
+            - generic [ref=f4e326]: Årsmodeller
+            - generic [ref=f4e327]: 2009–2027
+      - generic [ref=f4e328]:
+        - generic [ref=f4e329]:
+          - heading "Hur säkert är prisestimatet?" [level=2] [ref=f4e330]
+          - paragraph [ref=f4e331]: Hur nära modellen brukar hamna, i procent och i kronor. Bygger på ålder, miltal, bränsletyp, hästkrafter, utrustning, drivlina och säljartyp.
+        - generic [ref=f4e332]:
+          - generic [ref=f4e333]:
+            - generic [ref=f4e334]:
+              - generic [ref=f4e335]: Toyota RAV4
+              - generic [ref=f4e336]: Medel
+            - generic [ref=f4e337]:
+              - generic [ref=f4e338]: ±16%
+              - generic [ref=f4e339]: prisosäkerhet
+            - paragraph [ref=f4e340]:
+              - text: "På en bil för 325 532 kr:"
+              - generic [ref=f4e341]: ±52 389 kr
+            - paragraph [ref=f4e342]: Byggd på 1 675 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+          - generic [ref=f4e343]:
+            - generic [ref=f4e344]:
+              - generic [ref=f4e345]: Volvo XC40
+              - generic [ref=f4e346]: Hög precision
+            - generic [ref=f4e347]:
+              - generic [ref=f4e348]: ±14%
+              - generic [ref=f4e349]: prisosäkerhet
+            - paragraph [ref=f4e350]:
+              - text: "På en bil för 314 103 kr:"
+              - generic [ref=f4e351]: ±44 586 kr
+            - paragraph [ref=f4e352]: Byggd på 1 600 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+          - generic [ref=f4e353]:
+            - generic [ref=f4e354]:
+              - generic [ref=f4e355]: Volvo XC60
+              - generic [ref=f4e356]: Medel
+            - generic [ref=f4e357]:
+              - generic [ref=f4e358]: ±22%
+              - generic [ref=f4e359]: prisosäkerhet
+            - paragraph [ref=f4e360]:
+              - text: "På en bil för 339 405 kr:"
+              - generic [ref=f4e361]: ±75 365 kr
+            - paragraph [ref=f4e362]: Byggd på 5 476 annonser. Enskilda bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+      - separator [ref=f4e363]
+      - separator [ref=f4e374]
+      - generic [ref=f4e376]:
+        - heading "Annonser" [level=2] [ref=f4e377]
+        - paragraph [ref=f4e378]: Alla annonser för valda modeller och bränsletyp.
+      - separator [ref=f4e388]
+      - generic [ref=f4e389]:
+        - heading "Metod" [level=2] [ref=f4e390]
+        - paragraph [ref=f4e391]: 29 486 annonser från Blocket.se analyserade, varav 13 063 till salu just nu. Senast uppdaterad 6 augusti 2026. Annonser med priser under 20 000 kr eller årsmodeller före 2005 exkluderas.
+        - paragraph [ref=f4e392]: "Värdeminskning modelleras med log-transformerad multivariat regression med 20 variabler: bilålder, miltal, hästkrafter, utrustningsantal, bränsletyp, säljartyp, drivlina, WLTP-räckvidd samt interaktionstermer mellan bränsletyp och ålder eller miltal. Log-transformen ger en naturlig exponentiell avskrivningskurva där nya bilar tappar mer i värde än äldre."
+        - paragraph [ref=f4e393]:
+          - text: Osäkerhetsbanden räknas från faktiska avvikelser i materialet, inte från en antagen normalfördelning.
+          - link "Se underlaget per modell" [ref=f4e394] [cursor=pointer]:
+            - /url: /metod
+          - text: eller
+          - link "hur snabbt underprissatta bilar försvinner" [ref=f4e395] [cursor=pointer]:
+            - /url: /saljtid
+          - text: .
+  - contentinfo [ref=f4e396]:
+    - generic [ref=f4e397]:
+      - generic [ref=f4e398]:
+        - generic [ref=f4e399]:
+          - generic [ref=f4e400]: Hela Notan
+          - paragraph [ref=f4e402]: Se hela kostnaden för att äga en bil. Baserat på riktiga priser från Blocket.se.
+        - generic [ref=f4e403]:
+          - link "Hem" [ref=f4e404] [cursor=pointer]:
+            - /url: /
+          - link "Modeller" [ref=f4e405] [cursor=pointer]:
+            - /url: /bilar
+          - link "Ägandekostnad" [ref=f4e406] [cursor=pointer]:
+            - /url: /tco
+          - link "Toppen" [ref=f4e407] [cursor=pointer]:
+            - /url: /toppen
+          - link "Köpguide" [ref=f4e408] [cursor=pointer]:
+            - /url: /kopguide
+          - link "Bevaka" [ref=f4e409] [cursor=pointer]:
+            - /url: /bevaka
+          - link "Artiklar" [ref=f4e410] [cursor=pointer]:
+            - /url: /artiklar
+          - link "Metod" [ref=f4e411] [cursor=pointer]:
+            - /url: /metod
+      - generic [ref=f4e412]:
+        - generic [ref=f4e413]: Data från Blocket.se — 29 486 annonser analyserade, 13 063 till salu. Uppdaterad 6 augusti 2026.
+        - generic [ref=f4e414]:
+          - text: Ett projekt av
+          - link "Up North AI" [ref=f4e415] [cursor=pointer]:
+            - /url: https://upnorth.ai
+  - alert [ref=f4e416]
