@@ -17,7 +17,7 @@ import { getColorsMap } from "@/app/lib/model-config";
 import type { ModelConfigMap } from "@/app/lib/model-config";
 
 interface RetentionPoint { age: number; retention: number; }
-interface PredictionPoint { age: number; predicted: number; lower: number; upper: number; }
+interface PredictionPoint { age: number; predicted: number; lower: number; upper: number; p25?: number; p75?: number; }
 
 interface Props {
   retention: Record<string, { newPrice: number; points: RetentionPoint[] }>;
@@ -112,9 +112,11 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
           if (basePoint && agePoint && basePoint.predicted > 0) {
             const retPct = Math.min(100, (agePoint.predicted / basePoint.predicted) * 100);
             point[model] = Math.round(retPct * 10) / 10;
+            const lo = agePoint.p25 ?? agePoint.lower;
+            const hi = agePoint.p75 ?? agePoint.upper;
             point[`${model}_range`] = [
-              Math.round(Math.max(0, (agePoint.lower / basePoint.predicted) * 100) * 10) / 10,
-              Math.round(Math.min(100, (agePoint.upper / basePoint.predicted) * 100) * 10) / 10,
+              Math.round(Math.max(0, (lo / basePoint.predicted) * 100) * 10) / 10,
+              Math.round(Math.max(0, (hi / basePoint.predicted) * 100) * 10) / 10,
             ];
           }
         }
@@ -125,9 +127,11 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
           const curve = predictionCurves![model]?.["all"];
           const predMatch = curve?.find((p) => p.age === age);
           if (predMatch && r.newPrice > 0) {
+            const lo = predMatch.p25 ?? predMatch.lower;
+            const hi = predMatch.p75 ?? predMatch.upper;
             point[`${model}_range`] = [
-              Math.round(Math.max(0, (predMatch.lower / r.newPrice) * 100) * 10) / 10,
-              Math.round(Math.min(100, (predMatch.upper / r.newPrice) * 100) * 10) / 10,
+              Math.round(Math.max(0, (lo / r.newPrice) * 100) * 10) / 10,
+              Math.round(Math.max(0, (hi / r.newPrice) * 100) * 10) / 10,
             ];
           }
         }

@@ -146,7 +146,32 @@ export async function getModelIndex(): Promise<ModelIndexEntry[]> {
   return entries.sort((a, b) => a.label.localeCompare(b.label, "sv"));
 }
 
-async function liveDeals(modelKey: string, reg: RegressionModel | undefined): Promise<DealRow[]> {
+/**
+ * The prediction has to be plausible against the cars it is being compared
+ * with, or the "deal" is the model failing rather than the market slipping.
+ *
+ * A 2014 XC60 mislabelled Hybrid was predicted at 204 000 kr against a cohort
+ * median of 146 000 and shown at the top of the page as "103 684 kr under
+ * estimat"; a 16-year-old car with 22 000 mil at 35 000 kr was called a
+ * bargain for the same reason. Both are the log model extrapolating at the
+ * cheap, old end of its data.
+ *
+ * The bound is the model's own 95% band rather than a number picked to make
+ * one bad case disappear: if the estimate for a single car sits further above
+ * what that model year actually sells for than the model's stated uncertainty
+ * allows, the estimate is outside its own competence and says nothing about
+ * the listing. It calibrates itself per model — tight for a Polestar 4 at
+ * ±10%, looser for a Golf at ±39%.
+ */
+function cohortCeiling(reg: RegressionModel, cohortMedian: number): number {
+  return cohortMedian * Math.exp(1.96 * reg.residual_se_log);
+}
+
+async function liveDeals(
+  modelKey: string,
+  reg: RegressionModel | undefined,
+  medianByAge: Map<number, number>,
+): Promise<DealRow[]> {
   if (!reg) return [];
   const sql = getDb();
   const rows = await sql`
@@ -179,6 +204,8 @@ async function liveDeals(modelKey: string, reg: RegressionModel | undefined): Pr
     );
     const grade = dealOf(price, predicted, reg);
     if (!grade) continue;
+    const cohort = medianByAge.get(Math.round(Number(r.car_age_years) || 0));
+    if (cohort && predicted > cohortCeiling(reg, cohort)) continue;
     scored.push({
       id: r.listing_id,
       url: r.url || `https://www.blocket.se/mobility/item/${r.listing_id}`,
@@ -259,7 +286,12 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
     ? Math.round((Math.exp(reg.residual_se_log) - 1) * 100)
     : null;
 
-  const [active, deals] = await Promise.all([activeCounts(), liveDeals(key, reg)]);
+  const medianByAge = new Map<number, number>(
+    byAge.filter((p) => p.count >= MIN_YEAR_COUNT).map((p) => [p.age, p.median]),
+  );
+  const [active, deals] = await Promise.all([
+    activeCounts(), liveDeals(key, reg, medianByAge),
+  ]);
 
   return {
     key,

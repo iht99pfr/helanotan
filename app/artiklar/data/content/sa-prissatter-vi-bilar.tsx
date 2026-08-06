@@ -265,11 +265,15 @@ export default function SaPrissatterViBilar() {
         under? &rdquo;Fyndpris&rdquo;.
       </p>
       <p>
-        Det ger stabila proportioner: ungefär 23&nbsp;% av alla annonser
-        klassas som &rdquo;Bra pris&rdquo; och cirka 7&nbsp;% som
-        &rdquo;Fyndpris&rdquo;. Siffrorna följer naturligt av
-        normalfördelningen &mdash; vi har inte valt dem godtyckligt utan
-        de faller ut ur statistiken.
+        Under en normalfördelning skulle det ge 20&nbsp;% &rdquo;Bra pris&rdquo;
+        och 6,7&nbsp;% &rdquo;Fyndpris&rdquo;, och det är de siffrorna vi
+        tidigare angav här. När vi mätte efter blev utfallet ett annat:{" "}
+        <strong>14,1&nbsp;% respektive 5,0&nbsp;%</strong> av 28&nbsp;708
+        annonser. Anledningen är att prisernas avvikelser inte är
+        normalfördelade &mdash; de har tyngre svansar och en spetsigare topp, så
+        fler bilar ligger nära estimatet än kurvan förutsäger. Trösklarna är
+        oförändrade; det är antagandet om fördelningen som var fel. Vi räknar nu
+        andelarna per modell i stället för att härleda dem.
       </p>
       <p>
         Och tack vare log-transformen är trösklarna procentuella. En bil
@@ -289,7 +293,7 @@ export default function SaPrissatterViBilar() {
           </div>
           <div>
             <div className="text-[var(--muted)]">Andel &rdquo;Bra pris&rdquo;</div>
-            <div className="font-mono font-semibold text-[var(--foreground)]">~23 %</div>
+            <div className="font-mono font-semibold text-[var(--foreground)]">14,1 %</div>
           </div>
           <div>
             <div className="text-[var(--muted)]">Fyndpris (tröskel)</div>
@@ -297,7 +301,7 @@ export default function SaPrissatterViBilar() {
           </div>
           <div>
             <div className="text-[var(--muted)]">Andel &rdquo;Fyndpris&rdquo;</div>
-            <div className="font-mono font-semibold text-[var(--foreground)]">~7 %</div>
+            <div className="font-mono font-semibold text-[var(--foreground)]">5,0 %</div>
           </div>
           <div>
             <div className="text-[var(--muted)]">Skalning</div>

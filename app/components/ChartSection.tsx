@@ -171,7 +171,8 @@ export default function ChartSection() {
           <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Restvärde</h2>
           <p className="text-[var(--muted)] text-sm mt-1">
             Andel av priset för den yngsta årsmodell vi har tillräckligt underlag för. För de flesta modeller är det en nybil, men inte för alla — se Metod.
-            Skuggade band visar 95% prediktionsosäkerhet.
+            Det skuggade bandet visar var hälften av annonserna ligger — inte
+            osäkerhet i kurvan, utan spridning mellan enskilda bilar.
           </p>
         </div>
         <RetentionChart

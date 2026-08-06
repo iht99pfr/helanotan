@@ -44,8 +44,12 @@ interface MedianPoint {
 interface PredictionPoint {
   age: number;
   predicted: number;
+  /** 2.5th and 97.5th percentile of observed residuals, applied to predicted. */
   lower: number;
   upper: number;
+  /** The inner half of listings. Absent on older cached payloads. */
+  p25?: number;
+  p75?: number;
 }
 
 interface Props {
@@ -155,7 +159,6 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
 const AGE_TICKS = [0, 3, 6, 9, 12, 15];
 const formatPriceK = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1).replace(".0", "")}M` : `${(v / 1000).toFixed(0)}k`;
-const formatTkr = (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1).replace(".0", "")}M` : `${v.toFixed(0)}k`;
 const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
 export default function DepreciationChart({ scatter, medians, predictionCurves, hiddenModels, onToggleModel, modelConfig, fuelFilter, maxAgePerModel, onDotClick }: Props) {
@@ -220,8 +223,11 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           const curve = predictionCurves[model]?.[curveKey];
           const match = curve?.find((p) => p.age === age);
           if (match) {
-            point[model] = Math.max(0, match.predicted) / 1000;
-            point[`${model}_range`] = [Math.max(0, match.lower) / 1000, Math.max(0, match.upper) / 1000];
+            point[model] = Math.max(0, match.predicted);
+            point[`${model}_range`] = [Math.max(0, match.lower), Math.max(0, match.upper)];
+            if (match.p25 != null && match.p75 != null) {
+              point[`${model}_inner`] = [Math.max(0, match.p25), Math.max(0, match.p75)];
+            }
           }
         }
         return point;
@@ -233,7 +239,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
         const point: Record<string, number | number[]> = { age };
         for (const model of models) {
           const match = medians[model].find((p) => p.age === age);
-          if (match) point[model] = match.median / 1000;
+          if (match) point[model] = match.median;
         }
         return point;
       });
@@ -258,44 +264,85 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   const hasPredictions = !!predictionCurves && Object.keys(predictionCurves).length > 0;
   const visibleModelsWithCurve = modelsWithCurve.filter((m) => !hiddenModels.has(m));
 
-  // Cap trend Y-axis to prediction values + 30% (not confidence bands)
-  const trendYMax = useMemo(() => {
-    let max = 0;
-    for (const model of modelsWithCurve) {
+  // One axis now serves both the dots and the curve, so it has to cover the
+  // scatter as well. Cap at a high percentile rather than the maximum: a
+  // single 2 M kr listing would otherwise flatten every curve on the chart.
+  const chartYMax = useMemo(() => {
+    const prices: number[] = [];
+    for (const points of Object.values(filteredScatter)) {
+      for (const p of points) prices.push(p.price);
+    }
+    prices.sort((a, b) => a - b);
+    const p98 = prices.length ? prices[Math.floor(prices.length * 0.98)] : 0;
+
+    let curveMax = 0;
+    for (const model of visibleModelsWithCurve) {
       for (const point of trendData) {
-        const val = point[model];
-        if (typeof val === "number" && val > max) max = val;
+        const band = point[`${model}_range`];
+        const upper = Array.isArray(band) ? band[1] : undefined;
+        const val = typeof upper === "number" ? upper : point[model];
+        if (typeof val === "number" && val > curveMax) curveMax = val;
       }
     }
-    return Math.ceil((max * 1.3) / 50) * 50; // Round up to nearest 50k
-  }, [trendData, modelsWithCurve]);
+    const max = Math.max(p98, curveMax) * 1.08;
+    return Math.ceil(max / 50_000) * 50_000;
+  }, [filteredScatter, trendData, visibleModelsWithCurve]);
 
   return (
-    <div className="space-y-2">
-      <div className="h-[350px] sm:h-[500px] [&_svg]:outline-none">
+    <div className="space-y-3">
+      {/* One chart, not two.
+       *
+       * The scatter and the prediction curve described the same thing and sat
+       * in separate frames on separate scales — one in kronor, one in
+       * thousands — so the reader had to hold two pictures in mind to ask the
+       * only question that matters: is this dot above or below the line? Now
+       * the curve runs through the cloud it was fitted on. */}
+      <div className="h-[420px] sm:h-[560px] [&_svg]:outline-none">
       <ResponsiveContainer width="100%" height="100%">
-        <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
+        <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis dataKey="age" type="number" name="Age"
-            label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }}
-            ticks={AGE_TICKS} tick={{ fill: "var(--muted)", fontSize: 11 }} domain={[0, 15]} />
-          <YAxis dataKey="price" type="number" name="Price"
+          <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
+            allowDuplicatedCategory={false}
             tick={{ fill: "var(--muted)", fontSize: 11 }}
-            tickFormatter={formatPriceK} domain={[0, "auto"]} width={35} />
+            label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
+          <YAxis dataKey="price" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
+            tickFormatter={formatPriceK} domain={[0, chartYMax]} allowDataOverflow width={38} />
           <Tooltip content={<CustomTooltip />} />
           <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
+
+          {/* Outer band: the 95% range, from percentiles of real residuals. */}
+          {hasPredictions && modelsWithCurve.map((model) => (
+            <Area key={`${model}_band`} dataKey={`${model}_range`} stroke="none"
+              fill={COLORS[model]} fillOpacity={hiddenModels.has(model) ? 0 : 0.08}
+              connectNulls type="monotone" legendType="none" isAnimationActive={false} />
+          ))}
+          {/* Inner band: where half of all listings sit. The 95% band is
+              honest but so wide it says little; this is the useful one. */}
+          {hasPredictions && modelsWithCurve.map((model) => (
+            <Area key={`${model}_inner`} dataKey={`${model}_inner`} stroke="none"
+              fill={COLORS[model]} fillOpacity={hiddenModels.has(model) ? 0 : 0.16}
+              connectNulls type="monotone" legendType="none" isAnimationActive={false} />
+          ))}
+
           {Object.entries(filteredScatter).map(([model, points]) => (
             points.length > 0 && !hiddenModels.has(model) && (
               <Scatter key={model} name={model} data={points} fill={COLORS[model]}
-                shape={<DealDot fill={COLORS[model]} />}
+                shape={<DealDot fill={COLORS[model]} />} isAnimationActive={false}
                 onClick={(data: { payload: ScatterPoint }) => onDotClick?.(model, data.payload)} />
             )
           ))}
-          {/* Invisible scatters for hidden models so they still appear in the legend */}
+          {/* Hidden models keep an empty series so the legend can bring them back. */}
           {Object.keys(filteredScatter).filter((m) => hiddenModels.has(m)).map((model) => (
             <Scatter key={model} name={model} data={[]} fill={COLORS[model]} r={4} />
           ))}
-        </ScatterChart>
+
+          {/* The curve last, so it draws on top of its own scatter. */}
+          {modelsWithCurve.map((model) => (
+            <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
+              strokeWidth={2.5} dot={false} connectNulls legendType="none"
+              hide={hiddenModels.has(model)} isAnimationActive={false} />
+          ))}
+        </ComposedChart>
       </ResponsiveContainer>
       </div>
 
@@ -330,55 +377,22 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       {dealFilter !== "all" && (
         <p className="text-xs text-[var(--muted)] text-center">
           Visar {Object.values(filteredScatter).reduce((n, p) => n + p.length, 0)} annonser
-          under predikterat pris. Klicka på en punkt för att se bilen.
+          under prisestimatet. Klicka på en punkt för att se bilen.
         </p>
       )}
 
-      {modelsWithCurve.length > 0 ? (
-        <div className="h-[280px] sm:h-[400px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-            <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
-              tick={{ fill: "var(--muted)", fontSize: 11 }}
-              label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
-            <YAxis tick={{ fill: "var(--muted)", fontSize: 11 }}
-              tickFormatter={formatTkr} domain={[0, trendYMax]} allowDataOverflow
-              width={35} />
-            <Tooltip
-              contentStyle={{ background: "#fff", border: "1px solid var(--border)", borderRadius: 8 }}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(value: any, name: any) => {
-                if (typeof name === "string" && name.includes("_range")) return null;
-                return [`${Number(value || 0).toFixed(0)}k kr`, displayName(String(name))];
-              }}
-              labelFormatter={(label: any) => `Ålder: ${label} år`}
-            />
-            <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
-            {hasPredictions && modelsWithCurve.map((model) => (
-              <Area key={`${model}_band`} dataKey={`${model}_range`} stroke="none"
-                fill={COLORS[model]} fillOpacity={hiddenModels.has(model) ? 0 : 0.1}
-                connectNulls type="monotone" legendType="none" />
-            ))}
-            {modelsWithCurve.map((model) => (
-              <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
-                strokeWidth={2.5} dot={{ r: 3, fill: COLORS[model] }} connectNulls
-                hide={hiddenModels.has(model)} />
-            ))}
-          </ComposedChart>
-        </ResponsiveContainer>
-        </div>
-      ) : (
-        <div className="text-center py-8 text-[var(--muted)] text-sm">
+      {!hasPredictions && (
+        <p className="text-center py-2 text-[var(--muted)] text-sm">
           Ingen prediktionskurva tillgänglig för &ldquo;{fuelFilter}&rdquo;.
           Otillräckligt med datapunkter för detta bränsle.
-        </div>
+        </p>
       )}
 
       {hasPredictions && visibleModelsWithCurve.length > 0 && (
         <p className="text-xs text-[var(--muted)] text-center">
-          Skuggade band visar 95% prediktionsintervall från multivariat regression
-          (justerat för bränsletyp, miltal, hk, utrustning, drivlina)
+          Linjen är prisestimatet. Det mörkare bandet är där hälften av
+          annonserna ligger, det ljusare 95&nbsp;% av dem — båda räknade från
+          faktiska avvikelser, inte från en antagen normalfördelning.
         </p>
       )}
     </div>
