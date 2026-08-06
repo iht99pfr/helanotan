@@ -60,6 +60,8 @@ export interface ModelPage {
   mileagePctPer1000: number | null;
   /** Typical prediction error in kronor at the median price — plainer than R². */
   uncertaintyPct: number | null;
+  /** False when the band is too wide to be information — see MAX_USEFUL_UNCERTAINTY. */
+  estimateUsable: boolean;
   sampleSize: number | null;
   fuelOptions: string[];
   deals: DealRow[];
@@ -95,6 +97,26 @@ export function slugify(label: string): string {
 }
 
 const MIN_YEAR_COUNT = 5;
+/**
+ * Past this, a price estimate is not an estimate.
+ *
+ * The band must be narrower than the thing it is estimating. At ±25% two cars in three
+ * already land inside a range spanning half again; beyond that the number
+ * carries no information. Toyota Land Cruiser reached ±44% —
+ * "450 221 kr, give or take 474 434 kr" — because 63 listings were asked to
+ * cover seven generations from a 1989 diesel at 85 000 kr to a 2024 300-series
+ * at 1 249 000 kr — the 95% band on that is ±105%, i.e. "450 221 kr, give or
+ * take 474 434 kr", with a negative lower bound. That is a nameplate, not a
+ * model, and no regression fixes
+ * it. Until the registry splits them the way it already splits Golf from Golf
+ * GTI and Golf R, such a model reports medians and no estimate.
+ *
+ * Measured as one standard deviation — "typically within", about two cars in
+ * three. The badges on the homepage used 1.96 SE while the model pages used
+ * one, so the same XC60 was ±22% on one page and ±11% on the other. One
+ * measure now, everywhere.
+ */
+const MAX_USEFUL_UNCERTAINTY = 25;
 /** A page needs this many year rows before it says anything a buyer can use. */
 const MIN_YEAR_ROWS_TO_INDEX = 4;
 
@@ -272,7 +294,10 @@ export async function getTopDeals(limit = 6): Promise<TopDeal[]> {
         if (p.age >= 0) rows++;
       }
     }
-    if (rows >= MIN_YEAR_ROWS_TO_INDEX) trusted.add(key);
+    const reg = agg.regression?.[key];
+    const pct = reg?.residual_se_log != null
+      ? (Math.exp(reg.residual_se_log) - 1) * 100 : Infinity;
+    if (rows >= MIN_YEAR_ROWS_TO_INDEX && pct <= MAX_USEFUL_UNCERTAINTY) trusted.add(key);
   }
 
   const out: TopDeal[] = [];
@@ -403,8 +428,11 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
   const medianByAge = new Map<number, number>(
     byAge.filter((p) => p.count >= MIN_YEAR_COUNT).map((p) => [p.age, p.median]),
   );
+  const estimateUsable =
+    uncertaintyPct != null && uncertaintyPct <= MAX_USEFUL_UNCERTAINTY;
   const [active, deals] = await Promise.all([
-    activeCounts(), liveDeals(key, reg, medianByAge),
+    activeCounts(),
+    estimateUsable ? liveDeals(key, reg, medianByAge) : Promise.resolve([]),
   ]);
 
   return {
@@ -425,6 +453,7 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
     firstYearLoss,
     mileagePctPer1000,
     uncertaintyPct,
+    estimateUsable,
     sampleSize: reg?.generations ? summary.count : null,
     fuelOptions: cfg.fuelOptions ?? [],
     deals,

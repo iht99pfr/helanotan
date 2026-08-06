@@ -188,24 +188,38 @@ export default async function ModelPage(
 
       <section className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 text-sm text-[var(--muted)] space-y-2">
         <h2 className="text-[var(--foreground)] font-semibold">Så säkert är estimatet</h2>
-        {data.uncertaintyPct != null ? (
+        {data.estimateUsable && data.uncertaintyPct != null ? (
           <p>
             {/* R² told a buyer nothing. A proportional error does: the model is
                 fitted on log(price), so residual_se_log converts directly into
-                "give or take X%". */}
+                "give or take X%". One standard deviation — two cars in three. */}
             Prisestimatet för en {data.label} träffar typiskt inom{" "}
             <strong className="text-[var(--foreground)]">
               ±{data.uncertaintyPct}%
             </strong>{" "}
-            av det begärda priset
+            av det begärda priset — två bilar av tre hamnar där
             {data.anchorPrice != null && (
               <>
-                {" "}— på en bil för {kr(data.anchorPrice)} kr betyder det ungefär{" "}
+                . På en bil för {kr(data.anchorPrice)} kr betyder det ungefär{" "}
                 ±{kr(Math.round((data.anchorPrice * data.uncertaintyPct) / 100))} kr
               </>
             )}
             . Enskilda bilar avviker mer: skick, servicehistorik och utrustning
             som inte står i annonsen syns inte i modellen.
+          </p>
+        ) : data.uncertaintyPct != null ? (
+          <p>
+            {/* A nameplate spanning seven generations and a fifteenfold price
+                range is not one model. Saying so is more useful than printing
+                a number with a negative lower bound. */}
+            Vi visar <strong className="text-[var(--foreground)]">inget
+            prisestimat</strong> för {data.label}. Namnet rymmer för olika bilar
+            — {data.yearRange[0]}–{data.yearRange[1]} och{" "}
+            {sv(Math.round((data.avgPrice ?? 0) / 1000) * 1000)} kr i snitt över
+            flera generationer — för att en gemensam prismodell ska betyda
+            något. Osäkerheten hamnar på ±{data.uncertaintyPct}%, vilket är
+            bredare än det den försöker mäta. Tabellen ovan är medianer av
+            faktiska annonser och står på egna ben.
           </p>
         ) : (
           <p>

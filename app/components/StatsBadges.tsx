@@ -37,22 +37,33 @@ interface Props {
  * into kronor on an actual car. That is what leads now, and what the colour
  * follows.
  */
+/**
+ * One standard deviation — "typically within", about two cars in three.
+ *
+ * This used 1.96 SE, the 95% band, while the model pages used one SD, so the
+ * same XC60 read ±22% here and ±11% there. Two numbers for one fact is worse
+ * than either number being slightly off. One measure now, and the copy says
+ * which.
+ */
 function intervalPct(stats: RegressionStats): number {
-  return (Math.exp(1.96 * stats.residual_se_log) - 1) * 100;
+  return (Math.exp(stats.residual_se_log) - 1) * 100;
 }
+
+/** Beyond this the estimate is not information. See MAX_USEFUL_UNCERTAINTY. */
+const UNUSABLE = 25;
 
 function precisionColor(pct: number) {
   // Not green: precision is a quality scale, and green on this site
   // means kronor you keep. Ink for good, warm tones for worse.
-  if (pct <= 15) return "text-[var(--foreground)]";
-  if (pct <= 25) return "text-amber-800";
+  if (pct <= 10) return "text-[var(--foreground)]";
+  if (pct <= UNUSABLE) return "text-amber-800";
   return "text-red-700";
 }
 
 function precisionLabel(pct: number) {
-  if (pct <= 15) return "Hög precision";
-  if (pct <= 25) return "Medel";
-  return "Låg precision";
+  if (pct <= 10) return "Hög precision";
+  if (pct <= UNUSABLE) return "Medel";
+  return "För spretigt underlag";
 }
 
 const kr = (n: number) => Math.round(n).toLocaleString("sv-SE");
@@ -83,15 +94,25 @@ export default function StatsBadges({ regression, summary, modelConfig, selected
               </span>
               <span className="text-xs text-[var(--muted)]">prisosäkerhet</span>
             </div>
-            {typical ? (
+            {pct <= UNUSABLE && typical ? (
               <p className="mt-1.5 text-sm text-[var(--foreground)]">
                 På en bil för {kr(typical)} kr:{" "}
                 <span className="font-mono font-semibold">±{kr((typical * pct) / 100)} kr</span>
               </p>
             ) : null}
             <p className="mt-1.5 text-xs text-[var(--muted)]">
-              Byggd på {stats.n_samples.toLocaleString("sv-SE")} annonser. Enskilda
-              bilar avviker mer — skick och servicehistorik syns inte i annonsen.
+              {pct > UNUSABLE ? (
+                <>
+                  Modellnamnet rymmer för olika bilar för att ett gemensamt
+                  prisestimat ska betyda något. Vi visar medianpriser i stället.
+                </>
+              ) : (
+                <>
+                  Två bilar av tre hamnar inom intervallet. Byggd på{" "}
+                  {stats.n_samples.toLocaleString("sv-SE")} annonser — enskilda bilar
+                  avviker mer, skick och servicehistorik syns inte i annonsen.
+                </>
+              )}
             </p>
           </div>
         );
