@@ -186,7 +186,11 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
     const seen = new Set<string>();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const items = (props.payload || []).filter((e: any) => {
-      if (String(e.value).includes("_range") || seen.has(e.value)) return false;
+      // The bands are series too, and each carries a name. Filtering only
+      // "_range" left "Yaris_inner" sitting in the legend as if it were a
+      // model, once the inner band was added.
+      const name = String(e.value);
+      if (name.includes("_range") || name.includes("_inner") || seen.has(name)) return false;
       seen.add(e.value);
       return true;
     });
