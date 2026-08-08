@@ -16,6 +16,8 @@ export interface RegressionModel {
       listings. Absent on payloads published before the switch. */
   dealGreatCut?: number;
   dealGoodCut?: number;
+  /** Half-width of the middle two thirds of residuals, as a proportion. */
+  typicalSpread?: number;
   log_transform: boolean;
   medianHp: number;
   medianEquipment: number;

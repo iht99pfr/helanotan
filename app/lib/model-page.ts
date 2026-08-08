@@ -418,12 +418,17 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
     mileagePctPer1000 = (1 - Math.exp(reg.coefficients.mileage_mil * 1000)) * 100;
   }
 
-  // residual_se_log is a proportional error because the model is fitted on
-  // log(price), so it converts straight into "give or take X%" — which means
-  // something to a buyer in a way that R² does not.
-  const uncertaintyPct = reg?.residual_se_log != null
-    ? Math.round((Math.exp(reg.residual_se_log) - 1) * 100)
-    : null;
+  // "Two cars in three land inside" is a claim about the middle two thirds, so
+  // measure the middle two thirds: the 16th to 84th percentile of the observed
+  // residuals. A standard deviation only says the same thing under a normal
+  // distribution, and these are not normal — it was pulled upward by a handful
+  // of extremes, making every model look vaguer than it is. Yaris reads 10%
+  // rather than 15% on the identical data.
+  const uncertaintyPct = reg?.typicalSpread != null
+    ? Math.round(reg.typicalSpread * 100)
+    : reg?.residual_se_log != null
+      ? Math.round((Math.exp(reg.residual_se_log) - 1) * 100)
+      : null;
 
   const medianByAge = new Map<number, number>(
     byAge.filter((p) => p.count >= MIN_YEAR_COUNT).map((p) => [p.age, p.median]),

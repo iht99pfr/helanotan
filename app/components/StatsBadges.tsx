@@ -7,6 +7,7 @@ interface RegressionStats {
   r2: number;
   rmse: number;
   residual_se_log: number;
+  typicalSpread?: number;
   log_transform: boolean;
   n_samples: number;
 }
@@ -46,6 +47,10 @@ interface Props {
  * which.
  */
 function intervalPct(stats: RegressionStats): number {
+  // The published 16th-to-84th percentile half-width — the middle two thirds,
+  // which is what the copy beneath the number claims. Falls back to the
+  // standard deviation for payloads published before that existed.
+  if (stats.typicalSpread != null) return stats.typicalSpread * 100;
   return (Math.exp(stats.residual_se_log) - 1) * 100;
 }
 
