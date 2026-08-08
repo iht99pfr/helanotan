@@ -297,6 +297,7 @@ export default function ChartSection() {
           point={selectedDot.point}
           modelKey={selectedDot.modelKey}
           modelLabel={modelConfig[selectedDot.modelKey]?.label || selectedDot.modelKey}
+          regression={aggregates?.regression?.[selectedDot.modelKey]}
           onClose={() => setSelectedDot(null)}
         />
       )}

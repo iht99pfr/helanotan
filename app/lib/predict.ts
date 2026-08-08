@@ -18,6 +18,11 @@ export interface RegressionModel {
   dealGoodCut?: number;
   /** Half-width of the middle two thirds of residuals, as a proportion. */
   typicalSpread?: number;
+  /** Reference car for a price breakdown: mil per year, and the model's
+      most common fuel. */
+  annualMileage?: number;
+  dominantFuel?: string;
+  medianPremiumEquip?: number;
   log_transform: boolean;
   medianHp: number;
   medianEquipment: number;

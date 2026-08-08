@@ -1,6 +1,8 @@
 "use client";
 
 import { track, priceBucket } from "@/app/lib/track";
+import { priceBreakdown } from "@/app/lib/price-breakdown";
+import type { RegressionModel } from "@/app/lib/predict";
 
 interface ScatterPoint {
   /** Blocket listing id. Present only for ads that are still live. */
@@ -31,11 +33,21 @@ interface Props {
   point: ScatterPoint | null;
   modelKey: string;
   modelLabel: string;
+  regression?: RegressionModel;
   onClose: () => void;
 }
 
-export default function CarDetailModal({ point, modelKey, modelLabel, onClose }: Props) {
+const kr = (n: number) => Math.round(n).toLocaleString("sv-SE");
+
+export default function CarDetailModal({ point, modelKey, modelLabel, regression, onClose }: Props) {
   if (!point) return null;
+
+  // Why this car costs what it costs. The estimate is a sum of coefficients,
+  // so the model already knows — it was simply never asked.
+  const breakdown = priceBreakdown(regression, {
+    age: point.age, mileage: point.mileage, fuel: point.fuel,
+    hp: point.hp, seller: point.seller,
+  });
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
@@ -110,6 +122,43 @@ export default function CarDetailModal({ point, modelKey, modelLabel, onClose }:
                 </span>
               </div>
             )}
+          </div>
+        )}
+
+        {breakdown && breakdown.steps.length > 0 && (
+          <div data-testid="price-breakdown"
+               data-base={breakdown.base}
+               data-predicted={breakdown.predicted}
+               className="border-t border-[var(--border)] pt-3 space-y-1.5">
+            <p className="text-xs font-semibold text-[var(--foreground)]">
+              Varför modellen räknar så här
+            </p>
+            <div className="flex justify-between text-sm">
+              <span className="text-[var(--muted)]">
+                Typisk {modelLabel}, {point.age} år
+              </span>
+              <span className="font-mono text-[var(--foreground)]">{kr(breakdown.base)} kr</span>
+            </div>
+            {breakdown.steps.map((s) => (
+              <div key={s.label} data-delta={Math.round(s.delta)}
+                   className="flex justify-between gap-3 text-sm">
+                <span className="text-[var(--muted)] min-w-0">
+                  {s.label}
+                  <span className="block text-xs opacity-80">{s.detail}</span>
+                </span>
+                <span className={`font-mono whitespace-nowrap ${
+                  s.delta > 0 ? "text-[var(--foreground)]" : "text-[var(--money)]"
+                }`}>
+                  {s.delta > 0 ? "+" : "−"}{kr(Math.abs(s.delta))} kr
+                </span>
+              </div>
+            ))}
+            <div className="flex justify-between text-sm border-t border-[var(--border)] pt-1.5">
+              <span className="text-[var(--foreground)] font-medium">Prisestimat</span>
+              <span className="font-mono font-semibold text-[var(--foreground)]">
+                {kr(breakdown.predicted)} kr
+              </span>
+            </div>
           </div>
         )}
 

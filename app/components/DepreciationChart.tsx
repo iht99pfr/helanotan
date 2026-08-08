@@ -64,10 +64,38 @@ interface Props {
   onDotClick?: (modelKey: string, point: ScatterPoint) => void;
 }
 
+/**
+ * Mileage as a colour ramp, pale to dark.
+ *
+ * The vertical spread at a single age is the question the chart never answered
+ * — a five-year-old Yaris runs from 130 000 to 400 000 kr. Colouring by
+ * mileage answers part of it at a glance, and where it does not (a GR Yaris is
+ * dear because of its engine, not its odometer) the absence of a pattern is
+ * itself the finding. Model identity is traded away while this is on, which is
+ * why it is a toggle rather than the default.
+ */
+const MILEAGE_RAMP = ["#e8ddc8", "#c9b48c", "#a5854f", "#7a5c2e", "#4a3617"];
+const MILEAGE_STOPS = [1000, 5000, 10000, 20000];
+
+function mileageColor(mileage: number): string {
+  let i = 0;
+  while (i < MILEAGE_STOPS.length && mileage >= MILEAGE_STOPS[i]) i++;
+  return MILEAGE_RAMP[i];
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function DealDot(props: any) {
-  const { cx, cy, payload, fill } = props;
+  const { cx, cy, payload, fill, colorBy } = props;
   if (!cx || !cy) return null;
+  if (colorBy === "mileage") {
+    const c = mileageColor(payload?.mileage ?? 0);
+    const isDeal = payload?.deal === "great" || payload?.deal === "good";
+    return (
+      <circle cx={cx} cy={cy} r={isDeal ? 5 : 4} fill={c}
+        stroke={isDeal ? "#1a5c3a" : "none"} strokeWidth={isDeal ? 1.5 : 0}
+        style={{ cursor: "pointer" }} />
+    );
+  }
   if (payload?.deal === "great") {
     return <circle cx={cx} cy={cy} r={6} fill="#1a5c3a" stroke="#f8f4ec" strokeWidth={1.5} style={{ cursor: "pointer" }} />;
   }
@@ -241,6 +269,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   // rage clicks — people tapped once, nothing happened, and they left. Now
   // the affordance is real.
   const [dealFilter, setDealFilter] = useState<"all" | "great" | "good">("all");
+  const [colorBy, setColorBy] = useState<"model" | "mileage">("model");
 
   // Everything below used to run in the component body on every render: a
   // filter, a copy and a comparator sort over ~5 000 points, plus a rebuild of
@@ -396,7 +425,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           {Object.entries(filteredScatter).map(([model, points]) => (
             points.length > 0 && !hiddenModels.has(model) && (
               <Scatter key={model} name={model} data={points} fill={COLORS[model]}
-                shape={<DealDot fill={COLORS[model]} />} isAnimationActive={false}
+                shape={<DealDot fill={COLORS[model]} colorBy={colorBy} />} isAnimationActive={false}
                 onClick={(data: { payload: ScatterPoint }) => onDotClick?.(model, data.payload)} />
             )
           ))}
@@ -413,6 +442,33 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           ))}
         </ComposedChart>
       </ResponsiveContainer>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
+        <button
+          onClick={() => {
+            const next = colorBy === "model" ? "mileage" : "model";
+            setColorBy(next);
+            track("chart_color_by", { value: next });
+          }}
+          aria-pressed={colorBy === "mileage"}
+          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border transition ${
+            colorBy === "mileage"
+              ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+              : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
+          }`}
+        >
+          Färga efter miltal
+        </button>
+        {colorBy === "mileage" && (
+          <span className="inline-flex items-center gap-1.5 text-[var(--muted)]">
+            <span>låg</span>
+            {MILEAGE_RAMP.map((c) => (
+              <span key={c} className="w-4 h-3 rounded-sm" style={{ background: c }} />
+            ))}
+            <span>hög mil</span>
+          </span>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-2 text-xs">
