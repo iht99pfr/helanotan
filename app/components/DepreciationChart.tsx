@@ -74,8 +74,12 @@ interface Props {
  * itself the finding. Model identity is traded away while this is on, which is
  * why it is a toggle rather than the default.
  */
-const MILEAGE_RAMP = ["#e8ddc8", "#c9b48c", "#a5854f", "#7a5c2e", "#4a3617"];
+// A cool ramp, because the page is warm cream and the money colour is green.
+// The first attempt ran beige to brown, which left low-mileage cars invisible
+// against the paper and the whole scale washed out at arm's length.
+const MILEAGE_RAMP = ["#a9cbe8", "#5d97c9", "#2f6ba3", "#1d4470", "#101f38"];
 const MILEAGE_STOPS = [1000, 5000, 10000, 20000];
+const MILEAGE_LABELS = ["<1 000", "1–5 000", "5–10 000", "10–20 000", "20 000+"];
 
 function mileageColor(mileage: number): string {
   let i = 0;
@@ -88,11 +92,13 @@ function DealDot(props: any) {
   const { cx, cy, payload, fill, colorBy } = props;
   if (!cx || !cy) return null;
   if (colorBy === "mileage") {
-    const c = mileageColor(payload?.mileage ?? 0);
-    const isDeal = payload?.deal === "great" || payload?.deal === "good";
+    // No deal ring here. This mode exists to read mileage, and ringing a third
+    // of the dots in green turned the ramp into background noise — the deal
+    // filter directly below does that job when it is wanted. A thin paper-
+    // coloured edge separates dots where they overlap instead.
     return (
-      <circle cx={cx} cy={cy} r={isDeal ? 5 : 4} fill={c}
-        stroke={isDeal ? "#1a5c3a" : "none"} strokeWidth={isDeal ? 1.5 : 0}
+      <circle cx={cx} cy={cy} r={4.5} fill={mileageColor(payload?.mileage ?? 0)}
+        stroke="#f8f4ec" strokeWidth={0.75} fillOpacity={0.9}
         style={{ cursor: "pointer" }} />
     );
   }
@@ -461,12 +467,15 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           Färga efter miltal
         </button>
         {colorBy === "mileage" && (
-          <span className="inline-flex items-center gap-1.5 text-[var(--muted)]">
-            <span>låg</span>
-            {MILEAGE_RAMP.map((c) => (
-              <span key={c} className="w-4 h-3 rounded-sm" style={{ background: c }} />
+          <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--muted)]">
+            {MILEAGE_RAMP.map((c, i) => (
+              <span key={c} className="inline-flex items-center gap-1.5">
+                <span className="w-3.5 h-3.5 rounded-full shrink-0"
+                      style={{ background: c }} />
+                {MILEAGE_LABELS[i]}
+              </span>
             ))}
-            <span>hög mil</span>
+            <span className="opacity-80">mil</span>
           </span>
         )}
       </div>
