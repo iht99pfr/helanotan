@@ -12,6 +12,10 @@ export interface RegressionModel {
   intercept: number;
   coefficients: Record<string, number>;
   residual_se_log: number;
+  /** Log-residual cutoffs marking the cheapest 5% and 20% of this model's
+      listings. Absent on payloads published before the switch. */
+  dealGreatCut?: number;
+  dealGoodCut?: number;
   log_transform: boolean;
   medianHp: number;
   medianEquipment: number;
@@ -95,7 +99,23 @@ export function dealOf(
   price: number, predicted: number, reg: RegressionModel,
 ): "great" | "good" | null {
   if (!reg.log_transform || predicted <= 0 || price <= 0) return null;
-  const logScore = (Math.log(price) - Math.log(predicted)) / reg.residual_se_log;
+  const resid = Math.log(price) - Math.log(predicted);
+
+  // Percentiles of the model's own residuals, published by the pipeline. They
+  // replace fixed multiples of the residual standard error, which only
+  // correspond to a share of listings when the residuals are normal — measured
+  // across the 17 models they are not, with excess kurtosis from 0.1 to 58.9.
+  // That mismatch is why the site advertised "~7%" and "~23%" while actually
+  // flagging 5.0% and 14.1%.
+  if (reg.dealGreatCut != null && reg.dealGoodCut != null) {
+    if (resid <= reg.dealGreatCut) return "great";
+    if (resid <= reg.dealGoodCut) return "good";
+    return null;
+  }
+
+  // Payload published before the switch; keep the old behaviour rather than
+  // silently grading nothing.
+  const logScore = resid / reg.residual_se_log;
   if (logScore <= -1.5) return "great";
   if (logScore <= -0.75) return "good";
   return null;
