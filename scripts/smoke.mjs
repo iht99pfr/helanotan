@@ -69,13 +69,21 @@ async function check(browser, route, vp) {
 
   let status = 0;
   try {
+    // Not networkidle. Microsoft Clarity posts a telemetry beacon every few
+    // seconds, which keeps resetting the 500 ms of silence networkidle waits
+    // for — so the homepage "timed out" at 45 s on desktop while curl served
+    // it in 1.3 s. Playwright advises against networkidle for exactly this.
+    // Wait for the page to be usable instead: charts drawn, or 6 s elapsed.
     const res = await page.goto(BASE + route, {
-      waitUntil: "networkidle", timeout: 45_000,
+      waitUntil: "domcontentloaded", timeout: 45_000,
     });
     status = res?.status() ?? 0;
-    // Hydration and the client fetches finish after networkidle on the pages
-    // that draw charts; give them a beat before judging.
-    await page.waitForTimeout(2500);
+    await page.waitForLoadState("load", { timeout: 20_000 }).catch(() => {});
+    await page
+      .waitForFunction(() => document.querySelectorAll(".recharts-surface").length > 0,
+                       { timeout: 6_000 })
+      .catch(() => {});
+    await page.waitForTimeout(1500);
 
     // Loading the page is not the same as using it. A merged scatter-and-curve
     // chart shipped a tooltip that read `price.toLocaleString()` on every
