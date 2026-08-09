@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { track } from "@/app/lib/track";
 import { dealName, underEstimateLabel } from "@/app/lib/deal-format";
 import {
   ScatterChart,
   Scatter,
+  ReferenceArea,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -260,7 +261,22 @@ function renderLegend(hiddenModels: Set<string>, onToggle: (model: string) => vo
 }
 
 const FUEL_MAP: Record<string, string> = { Alla: "All", Bensin: "Petrol", Laddhybrid: "PHEV" };
-const AGE_TICKS = [0, 3, 6, 9, 12, 15];
+/** Whole years across whatever range is on screen.
+ *
+ * Left to itself Recharts divides the zoomed range evenly and produces ticks
+ * like "2.75" and "4.25". A car is not 2.75 years old in this data — age is
+ * rounded to whole years before it ever reaches the chart — so fractional
+ * labels invite a precision that does not exist. */
+function ageTicks(from: number, to: number): number[] {
+  const span = to - from;
+  const step = span <= 4 ? 1 : span <= 8 ? 2 : 3;
+  const out: number[] = [];
+  for (let a = Math.ceil(from); a <= to; a += step) out.push(a);
+  // Only add the endpoint if it will not sit on top of the previous tick.
+  const end = Math.floor(to);
+  if (out.length && end - out[out.length - 1] >= step / 2) out.push(end);
+  return out.length ? out : [from, to];
+}
 const formatPriceK = (v: number) => v >= 1000000 ? `${(v / 1000000).toFixed(1).replace(".0", "")}M` : `${(v / 1000).toFixed(0)}k`;
 const displayName = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
 
@@ -276,6 +292,31 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   // the affordance is real.
   const [dealFilter, setDealFilter] = useState<"all" | "great" | "good">("all");
   const [colorBy, setColorBy] = useState<"model" | "mileage">("model");
+
+  // Zoom on the age axis.
+  //
+  // Dragging across the plot is the natural gesture with a mouse. On a phone
+  // it is not: the chart lives inside a page that scrolls vertically, so a
+  // drag that starts on the plot is a scroll to the browser and a selection to
+  // us, and pinch fights the page zoom. The range buttons below do the same
+  // job with a tap, which is why both exist.
+  const [zoom, setZoom] = useState<{ from: number; to: number } | null>(null);
+  const [dragFrom, setDragFrom] = useState<number | null>(null);
+  const [dragTo, setDragTo] = useState<number | null>(null);
+
+  const endDrag = useCallback(() => {
+    if (dragFrom != null && dragTo != null) {
+      const from = Math.min(dragFrom, dragTo);
+      const to = Math.max(dragFrom, dragTo);
+      // A click is a drag of zero width; do not zoom to nothing.
+      if (to - from >= 0.5) {
+        setZoom({ from: Math.floor(from), to: Math.ceil(to) });
+        track("chart_zoom", { from: Math.floor(from), to: Math.ceil(to), how: "drag" });
+      }
+    }
+    setDragFrom(null);
+    setDragTo(null);
+  }, [dragFrom, dragTo]);
 
   // Everything below used to run in the component body on every render: a
   // filter, a copy and a comparator sort over ~5 000 points, plus a rebuild of
@@ -371,6 +412,26 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   // One axis now serves both the dots and the curve, so it has to cover the
   // scatter as well. Cap at a high percentile rather than the maximum: a
   // single 2 M kr listing would otherwise flatten every curve on the chart.
+  // Fit the axis to the data instead of always drawing 0–15 years.
+  //
+  // A Volvo XC40 has been on sale since 2018, so its listings stop at age 8 —
+  // and the chart still drew out to 15, leaving nearly half the canvas empty
+  // and squeezing every point into the left half. Zooming was being asked to
+  // fix something the axis should never have done.
+  const chartXMax = useMemo(() => {
+    let max = 0;
+    for (const points of Object.values(filteredScatter)) {
+      for (const p of points) if (p.age > max) max = p.age;
+    }
+    for (const model of visibleModelsWithCurve) {
+      for (const point of trendData) {
+        const a = point.age;
+        if (typeof a === "number" && typeof point[model] === "number" && a > max) max = a;
+      }
+    }
+    return Math.min(15, Math.max(4, Math.ceil(max)));
+  }, [filteredScatter, trendData, visibleModelsWithCurve]);
+
   const chartYMax = useMemo(() => {
     const prices: number[] = [];
     for (const points of Object.values(filteredScatter)) {
@@ -403,9 +464,22 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
        * the curve runs through the cloud it was fitted on. */}
       <div className="h-[420px] sm:h-[560px] [&_svg]:outline-none">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
+        <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onMouseDown={(e: any) => {
+            if (e?.activeLabel != null) setDragFrom(Number(e.activeLabel));
+          }}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onMouseMove={(e: any) => {
+            if (dragFrom != null && e?.activeLabel != null) setDragTo(Number(e.activeLabel));
+          }}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
+          <XAxis dataKey="age" type="number"
+            ticks={zoom ? ageTicks(zoom.from, zoom.to) : ageTicks(0, chartXMax)}
+            domain={zoom ? [zoom.from, zoom.to] : [0, chartXMax]}
+            allowDataOverflow
             allowDuplicatedCategory={false}
             tick={{ fill: "var(--muted)", fontSize: 11 }}
             label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
@@ -440,6 +514,11 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
             <Scatter key={model} name={model} data={[]} fill={COLORS[model]} r={4} />
           ))}
 
+          {dragFrom != null && dragTo != null && (
+            <ReferenceArea x1={Math.min(dragFrom, dragTo)} x2={Math.max(dragFrom, dragTo)}
+              strokeOpacity={0} fill="var(--foreground)" fillOpacity={0.08} />
+          )}
+
           {/* The curve last, so it draws on top of its own scatter. */}
           {modelsWithCurve.map((model) => (
             <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
@@ -448,6 +527,44 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           ))}
         </ComposedChart>
       </ResponsiveContainer>
+      </div>
+
+      {/* Age range: a tap does on a phone what a drag does with a mouse. */}
+      <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+        <span className="text-[var(--muted)]">Ålder:</span>
+        {([
+          { label: "Hela spannet", from: 0, to: chartXMax },
+          { label: "0–3 år", from: 0, to: 3 },
+          { label: "3–6 år", from: 3, to: 6 },
+          { label: "6–10 år", from: 6, to: 10 },
+        ] as const)
+          .filter((r) => r.from < chartXMax)
+          .map((r) => {
+            const isAll = r.from === 0 && r.to === chartXMax;
+            const active = isAll ? zoom === null : zoom?.from === r.from && zoom?.to === r.to;
+            return (
+              <button
+                key={r.label}
+                onClick={() => {
+                  setZoom(isAll ? null : { from: r.from, to: Math.min(r.to, chartXMax) });
+                  track("chart_zoom", { from: r.from, to: r.to, how: "button" });
+                }}
+                aria-pressed={active}
+                className={`px-3 py-1.5 rounded-full border transition ${
+                  active
+                    ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+                    : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
+                }`}
+              >
+                {r.label}
+              </button>
+            );
+          })}
+        {zoom && (
+          <span className="text-[var(--muted)] hidden sm:inline">
+            — dra i diagrammet för att zooma fritt
+          </span>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
