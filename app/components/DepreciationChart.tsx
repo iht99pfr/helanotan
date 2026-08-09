@@ -7,6 +7,7 @@ import {
   ScatterChart,
   Scatter,
   ReferenceArea,
+  ReferenceLine,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -25,6 +26,8 @@ interface ScatterPoint {
       to the actual car rather than to a search for its model and year. */
   id?: string;
   age: number;
+  /** Age to the day, from the registration date. Present on 98% of listings. */
+  ageExact?: number;
   price: number;
   mileage: number;
   year: number;
@@ -300,6 +303,11 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   // drag that starts on the plot is a scroll to the browser and a selection to
   // us, and pinch fights the page zoom. The range buttons below do the same
   // job with a tap, which is why both exist.
+  // Focusing one model year spreads its cars along the axis by the day they
+  // were registered, instead of stacking them in a single vertical line. That
+  // line is exactly where a buyer's question lives — of these forty cars, which
+  // is newest, least driven and cheapest — and stacking hid it.
+  const [yearFocus, setYearFocus] = useState<number | null>(null);
   const [zoom, setZoom] = useState<{ from: number; to: number } | null>(null);
   const [dragFrom, setDragFrom] = useState<number | null>(null);
   const [dragTo, setDragTo] = useState<number | null>(null);
@@ -328,20 +336,28 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
     const dealOrder = { undefined: 0, good: 1, great: 2 };
     const out: Record<string, ScatterPoint[]> = {};
     for (const [model, points] of Object.entries(scatter)) {
-      const filtered = points.filter(
+      let filtered = points.filter(
         (p) =>
           p.age <= 15 &&
           (internalFuel === "All" || p.fuel === internalFuel) &&
+          (yearFocus == null || p.age === yearFocus) &&
           (dealFilter === "all" ||
             (dealFilter === "great" ? p.deal === "great" : p.deal != null))
       );
+      if (yearFocus != null) {
+        // Cars with no registration date keep their rounded age and land on
+        // the whole year. They are not spread, because we do not know where
+        // they belong — inventing a day would be the one thing this feature
+        // must not do.
+        filtered = filtered.map((p) => ({ ...p, age: p.ageExact ?? p.age }));
+      }
       // Sort so deals render on top (SVG paint order)
       out[model] = filtered.sort(
         (a, b) => (dealOrder[a.deal as keyof typeof dealOrder] ?? 0) - (dealOrder[b.deal as keyof typeof dealOrder] ?? 0)
       );
     }
     return out;
-  }, [scatter, internalFuel, dealFilter]);
+  }, [scatter, internalFuel, dealFilter, yearFocus]);
 
   const { trendData, modelsWithCurve } = useMemo(() => {
     const models = Object.keys(medians);
@@ -432,6 +448,80 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
     return Math.min(15, Math.max(4, Math.ceil(max)));
   }, [filteredScatter, trendData, visibleModelsWithCurve]);
 
+  // How many listings each model year holds, so a year with nothing in it
+  // never gets a button and every button can say what it will show.
+  const yearCounts = useMemo(() => {
+    const counts: Record<number, number> = {};
+    for (const points of Object.values(scatter)) {
+      for (const p of points) {
+        if (p.age < 0 || p.age > 15) continue;
+        if (internalFuel !== "All" && p.fuel !== internalFuel) continue;
+        counts[p.age] = (counts[p.age] ?? 0) + 1;
+      }
+    }
+    return counts;
+  }, [scatter, internalFuel]);
+
+  // Cars with a registration date, i.e. the ones actually spread out. The rest
+  // sit on the whole year, and the caption says so rather than implying that
+  // every dot has been placed to the day.
+  const spreadCount = useMemo(() => {
+    if (yearFocus == null) return 0;
+    let n = 0;
+    for (const points of Object.values(scatter)) {
+      for (const p of points) {
+        if (p.age !== yearFocus) continue;
+        if (internalFuel !== "All" && p.fuel !== internalFuel) continue;
+        if (p.ageExact != null) n++;
+      }
+    }
+    return n;
+  }, [scatter, internalFuel, yearFocus]);
+
+  // In year mode the axis spans the registration dates of that year's cars,
+  // so the spread fills the plot instead of hiding in a tenth of it.
+  const yearDomain = useMemo<[number, number] | null>(() => {
+    if (yearFocus == null) return null;
+    let lo = Infinity, hi = -Infinity;
+    for (const points of Object.values(filteredScatter)) {
+      for (const p of points) {
+        if (p.age < lo) lo = p.age;
+        if (p.age > hi) hi = p.age;
+      }
+    }
+    if (!Number.isFinite(lo) || hi - lo < 0.05) return [yearFocus - 0.5, yearFocus + 0.5];
+    const pad = (hi - lo) * 0.04;
+    return [lo - pad, hi + pad];
+  }, [filteredScatter, yearFocus]);
+
+  // In year mode the price axis fits that year too. Left at 0–450k while the
+  // year's cars sit between 320k and 420k, every dot crushed into the top
+  // eighth of the plot and the comparison the mode exists for was invisible.
+  //
+  // This is the one place the axis deliberately does not start at zero. Across
+  // ages a zero baseline keeps the depreciation curve honest; inside a single
+  // year the question is which of these cars is cheaper than the others, and a
+  // baseline that leaves 80% of the canvas empty answers nothing. The caption
+  // says the axis is cropped.
+  const yearYDomain = useMemo<[number, number] | null>(() => {
+    if (yearFocus == null) return null;
+    const prices: number[] = [];
+    for (const points of Object.values(filteredScatter)) {
+      for (const p of points) prices.push(p.price);
+    }
+    if (prices.length < 2) return null;
+    // The estimate line has to fit too — it is the benchmark every dot is read
+    // against, and fitting the axis to the dots alone pushed it off screen.
+    for (const model of visibleModelsWithCurve) {
+      const est = trendData.find((d) => d.age === yearFocus)?.[model];
+      if (typeof est === "number") prices.push(est);
+    }
+    const lo = Math.min(...prices), hi = Math.max(...prices);
+    const pad = Math.max((hi - lo) * 0.12, 5000);
+    return [Math.max(0, Math.floor((lo - pad) / 10_000) * 10_000),
+            Math.ceil((hi + pad) / 10_000) * 10_000];
+  }, [filteredScatter, yearFocus, trendData, visibleModelsWithCurve]);
+
   const chartYMax = useMemo(() => {
     const prices: number[] = [];
     for (const points of Object.values(filteredScatter)) {
@@ -477,26 +567,45 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           onMouseLeave={endDrag}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="age" type="number"
-            ticks={zoom ? ageTicks(zoom.from, zoom.to) : ageTicks(0, chartXMax)}
-            domain={zoom ? [zoom.from, zoom.to] : [0, chartXMax]}
+            ticks={yearDomain ? undefined : zoom ? ageTicks(zoom.from, zoom.to) : ageTicks(0, chartXMax)}
+            tickFormatter={yearDomain ? (v: number) => v.toFixed(1).replace(".", ",") : undefined}
+            domain={yearDomain ?? (zoom ? [zoom.from, zoom.to] : [0, chartXMax])}
             allowDataOverflow
             allowDuplicatedCategory={false}
             tick={{ fill: "var(--muted)", fontSize: 11 }}
-            label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />
+            label={{
+              value: yearFocus != null
+                ? "Exakt ålder (år) — vänster är nyare"
+                : "Ålder (år)",
+              position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5,
+            }} />
           <YAxis dataKey="price" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
-            tickFormatter={formatPriceK} domain={[0, chartYMax]} allowDataOverflow width={38} />
+            tickFormatter={formatPriceK}
+            domain={yearYDomain ?? [0, chartYMax]} allowDataOverflow width={38} />
           <Tooltip content={<CustomTooltip modelConfig={modelConfig} />} />
           <Legend verticalAlign="top" height={36} content={renderLegend(hiddenModels, onToggleModel)} />
 
+          {yearFocus != null && visibleModelsWithCurve.map((model) => {
+            const point = trendData.find((d) => d.age === yearFocus);
+            const est = point?.[model];
+            if (typeof est !== "number") return null;
+            return (
+              <ReferenceLine key={`${model}_est`} y={est} stroke={COLORS[model]}
+                strokeWidth={2} strokeDasharray="6 4"
+                label={{ value: `Prisestimat ${formatPriceK(est)}`, position: "insideTopRight",
+                         fill: COLORS[model], fontSize: 11 }} />
+            );
+          })}
+
           {/* Outer band: the 95% range, from percentiles of real residuals. */}
-          {hasPredictions && modelsWithCurve.map((model) => (
+          {yearFocus == null && hasPredictions && modelsWithCurve.map((model) => (
             <Area key={`${model}_band`} dataKey={`${model}_range`} stroke="none"
               fill={COLORS[model]} fillOpacity={hiddenModels.has(model) ? 0 : 0.08}
               connectNulls type="monotone" legendType="none" isAnimationActive={false} />
           ))}
           {/* Inner band: where half of all listings sit. The 95% band is
               honest but so wide it says little; this is the useful one. */}
-          {hasPredictions && modelsWithCurve.map((model) => (
+          {yearFocus == null && hasPredictions && modelsWithCurve.map((model) => (
             <Area key={`${model}_inner`} dataKey={`${model}_inner`} stroke="none"
               fill={COLORS[model]} fillOpacity={hiddenModels.has(model) ? 0 : 0.16}
               connectNulls type="monotone" legendType="none" isAnimationActive={false} />
@@ -520,7 +629,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           )}
 
           {/* The curve last, so it draws on top of its own scatter. */}
-          {modelsWithCurve.map((model) => (
+          {yearFocus == null && modelsWithCurve.map((model) => (
             <Line key={model} type="monotone" dataKey={model} stroke={COLORS[model]}
               strokeWidth={2.5} dot={false} connectNulls legendType="none"
               hide={hiddenModels.has(model)} isAnimationActive={false} />
@@ -529,43 +638,51 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
       </ResponsiveContainer>
       </div>
 
-      {/* Age range: a tap does on a phone what a drag does with a mouse. */}
-      <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
-        <span className="text-[var(--muted)]">Ålder:</span>
-        {([
-          { label: "Hela spannet", from: 0, to: chartXMax },
-          { label: "0–3 år", from: 0, to: 3 },
-          { label: "3–6 år", from: 3, to: 6 },
-          { label: "6–10 år", from: 6, to: 10 },
-        ] as const)
-          .filter((r) => r.from < chartXMax)
-          .map((r) => {
-            const isAll = r.from === 0 && r.to === chartXMax;
-            const active = isAll ? zoom === null : zoom?.from === r.from && zoom?.to === r.to;
-            return (
-              <button
-                key={r.label}
-                onClick={() => {
-                  setZoom(isAll ? null : { from: r.from, to: Math.min(r.to, chartXMax) });
-                  track("chart_zoom", { from: r.from, to: r.to, how: "button" });
-                }}
-                aria-pressed={active}
-                className={`px-3 py-1.5 rounded-full border transition ${
-                  active
-                    ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
-                    : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
-                }`}
-              >
-                {r.label}
-              </button>
-            );
-          })}
-        {zoom && (
-          <span className="text-[var(--muted)] hidden sm:inline">
-            — dra i diagrammet för att zooma fritt
-          </span>
-        )}
+      {/* One year at a time, or the whole span. A tap does on a phone what a
+          drag does with a mouse, and picking a single year switches the axis
+          to exact registration dates. */}
+      <div className="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+        <span className="text-[var(--muted)] mr-1">Årsmodell:</span>
+        <button
+          onClick={() => { setYearFocus(null); setZoom(null); track("chart_year", { value: "all" }); }}
+          aria-pressed={yearFocus === null && zoom === null}
+          className={`px-3 py-1.5 rounded-full border transition ${
+            yearFocus === null && zoom === null
+              ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+              : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
+          }`}
+        >
+          Alla år
+        </button>
+        {Array.from({ length: chartXMax + 1 }, (_, age) => age)
+          .filter((age) => yearCounts[age] > 0)
+          .map((age) => (
+            <button
+              key={age}
+              onClick={() => {
+                setYearFocus(yearFocus === age ? null : age);
+                setZoom(null);
+                track("chart_year", { value: age });
+              }}
+              aria-pressed={yearFocus === age}
+              title={`${yearCounts[age]} annonser`}
+              className={`px-3 py-1.5 rounded-full border transition ${
+                yearFocus === age
+                  ? "bg-[var(--foreground)] text-white border-[var(--foreground)]"
+                  : "bg-white text-[var(--muted)] border-[var(--border)] hover:border-[var(--muted)]"
+              }`}
+            >
+              {age === 0 ? "Ny" : `${age} år`}
+            </button>
+          ))}
       </div>
+      {yearFocus != null && (
+        <p className="text-xs text-[var(--muted)] text-center">
+          {spreadCount} av {yearCounts[yearFocus]} annonser placerade efter sitt
+          registreringsdatum — längst till vänster står de nyaste. Färga efter
+          miltal för att hitta de som gått kort.
+        </p>
+      )}
 
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs">
         <button
@@ -641,9 +758,19 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
 
       {hasPredictions && visibleModelsWithCurve.length > 0 && (
         <p className="text-xs text-[var(--muted)] text-center">
-          Linjen är prisestimatet. Det mörkare bandet är där hälften av
-          annonserna ligger, det ljusare 95&nbsp;% av dem — båda räknade från
-          faktiska avvikelser, inte från en antagen normalfördelning.
+          {yearFocus != null ? (
+            <>
+              Den streckade linjen är prisestimatet för {yearFocus === 0 ? "en ny bil" : `${yearFocus} år`}.
+              Prisaxeln är beskuren till årets bilar för att skillnaderna
+              mellan dem ska synas.
+            </>
+          ) : (
+            <>
+              Linjen är prisestimatet. Det mörkare bandet är där hälften av
+              annonserna ligger, det ljusare 95&nbsp;% av dem — båda räknade från
+              faktiska avvikelser, inte från en antagen normalfördelning.
+            </>
+          )}
         </p>
       )}
     </div>
