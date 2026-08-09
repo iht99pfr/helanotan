@@ -15,7 +15,6 @@ interface ScatterPoint {
   hp: number;
   seller: string;
   predicted?: number;
-  residual?: number;
   deal?: "good" | "great";
 }
 
@@ -44,6 +43,9 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
 
   // Why this car costs what it costs. The estimate is a sum of coefficients,
   // so the model already knows — it was simply never asked.
+  // price - predicted, computed here rather than shipped for every point.
+  const residual = point.predicted != null ? point.price - point.predicted : null;
+
   const breakdown = priceBreakdown(regression, {
     age: point.age, mileage: point.mileage, fuel: point.fuel,
     hp: point.hp, seller: point.seller, predicted: point.predicted,
@@ -112,15 +114,15 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
                 {kr(point.predicted)} kr
               </span>
             </div>
-            {point.residual != null && Math.abs(point.residual) >= 500 && (
+            {residual != null && Math.abs(residual) >= 500 && (
               <div className="flex justify-between text-sm">
                 <span className="text-[var(--muted)]">
                   Begärt pris ligger
                 </span>
                 <span className={`font-mono font-semibold ${
-                  point.residual < 0 ? "text-[var(--money)]" : "text-[var(--foreground)]"
+                  residual < 0 ? "text-[var(--money)]" : "text-[var(--foreground)]"
                 }`}>
-                  {kr(Math.abs(point.residual))} kr {point.residual < 0 ? "under" : "över"}
+                  {kr(Math.abs(residual))} kr {residual < 0 ? "under" : "över"}
                 </span>
               </div>
             )}

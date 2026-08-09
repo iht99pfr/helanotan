@@ -35,7 +35,6 @@ interface ScatterPoint {
   hp: number;
   seller: string;
   predicted?: number;
-  residual?: number;
   deal?: "good" | "great";
 }
 
@@ -84,6 +83,57 @@ interface Props {
 const MILEAGE_RAMP = ["#a9cbe8", "#5d97c9", "#2f6ba3", "#1d4470", "#101f38"];
 const MILEAGE_STOPS = [1000, 5000, 10000, 20000];
 const MILEAGE_LABELS = ["<1 000", "1–5 000", "5–10 000", "10–20 000", "20 000+"];
+
+/**
+ * Thin for drawing, never for data.
+ *
+ * The pipeline sends every listing, because a chart that says "varje punkt är
+ * en verklig annons" must not silently drop a third of them — filtering to
+ * model year 2026 was showing 40 of 74 XC40s. But 8 597 SVG circles cost
+ * 1 199 ms on a fuel-filter click, and the whole point of the earlier INP work
+ * was to stop paying that.
+ *
+ * So the decision moves to where it belongs: the renderer. Two cars that would
+ * land within a couple of pixels of each other are indistinguishable on screen,
+ * so only one is drawn — and only while the view is dense enough for that to
+ * be true. Focus a single year, or filter to deals, and every point is drawn,
+ * which is exactly when completeness is being relied on. Deals are never
+ * dropped.
+ */
+const DRAW_LIMIT = 3_000;
+const GRID = 220;
+
+function thinForDisplay(
+  byModel: Record<string, ScatterPoint[]>, complete: boolean,
+): Record<string, ScatterPoint[]> {
+  const total = Object.values(byModel).reduce((n, p) => n + p.length, 0);
+  if (complete || total <= DRAW_LIMIT) return byModel;
+
+  let maxPrice = 0, maxAge = 0;
+  for (const points of Object.values(byModel)) {
+    for (const p of points) {
+      if (p.price > maxPrice) maxPrice = p.price;
+      if (p.age > maxAge) maxAge = p.age;
+    }
+  }
+  const priceStep = Math.max(1, maxPrice / GRID);
+  const ageStep = Math.max(0.01, maxAge / GRID);
+
+  const out: Record<string, ScatterPoint[]> = {};
+  for (const [model, points] of Object.entries(byModel)) {
+    const seen = new Set<string>();
+    const kept: ScatterPoint[] = [];
+    for (const p of points) {
+      if (p.deal) { kept.push(p); continue; }
+      const cell = `${Math.round(p.age / ageStep)}:${Math.round(p.price / priceStep)}`;
+      if (seen.has(cell)) continue;
+      seen.add(cell);
+      kept.push(p);
+    }
+    out[model] = kept;
+  }
+  return out;
+}
 
 function mileageColor(mileage: number): string {
   let i = 0;
@@ -166,10 +216,10 @@ function CustomTooltip({ active, payload, label, modelConfig }: {
             <p className="text-xs text-[var(--muted)]">
               Prisestimat: <span className="font-mono">{sek(listing.predicted)} kr</span>
             </p>
-            {listing.residual != null && listing.residual < 0 && (
+            {listing.price < listing.predicted && (
               <p className="text-xs font-semibold text-[var(--money)]">
                 {underEstimateLabel(listing.price, listing.predicted) ?? "Under prisestimat"}
-                {" · "}{sek(Math.abs(listing.residual))} kr
+                {" · "}{sek(listing.predicted - listing.price)} kr
               </p>
             )}
             {listing.deal && (
@@ -356,7 +406,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
         (a, b) => (dealOrder[a.deal as keyof typeof dealOrder] ?? 0) - (dealOrder[b.deal as keyof typeof dealOrder] ?? 0)
       );
     }
-    return out;
+    return thinForDisplay(out, yearFocus != null);
   }, [scatter, internalFuel, dealFilter, yearFocus]);
 
   const { trendData, modelsWithCurve } = useMemo(() => {
