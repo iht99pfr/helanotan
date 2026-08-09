@@ -38,6 +38,19 @@ export interface BreakdownInput {
   fuel: string;
   hp: number;
   seller: string;
+  /**
+   * The model's actual estimate for this listing, as published with the point.
+   *
+   * The walk below can only account for what the point carries — age, power,
+   * mileage, fuel, seller. The fitted model also used equipment, generation,
+   * drivetrain and WLTP range, which the scatter payload does not include, so
+   * the walk lands somewhere near the estimate but not on it. On a 2024 XC40
+   * the gap was 14 560 kr, and the modal showed both numbers under two
+   * different names — "Predikterat pris" and "Prisestimat" — inviting the
+   * reader to wonder which one was the answer. Given the true value, the
+   * difference becomes a named row instead of a contradiction.
+   */
+  predicted?: number;
   equipmentCount?: number;
   premiumEquipCount?: number;
   isAwd?: boolean;
@@ -157,14 +170,16 @@ export function priceBreakdown(
     }
   }
 
-  const predicted = Math.exp(logPrice(reg, featuresFor(reg, state)));
+  // The published estimate is the truth; the walk explains as much of it as
+  // the point's fields allow.
+  const walked = Math.exp(logPrice(reg, featuresFor(reg, state)));
+  const predicted = car.predicted ?? walked;
 
-  // Whatever the individual lines did not account for, named rather than lost.
   const leftover = predicted - base - steps.reduce((sum, s) => sum + s.delta, 0);
   if (Math.abs(leftover) >= 500) {
     steps.push({
-      label: "Mindre skillnader",
-      detail: "utrustning, drivning och miltal nära modellens normalvärde",
+      label: "Utrustning och skick",
+      detail: "utrustningsnivå, generation och drivning enligt annonsen",
       delta: leftover,
     });
   }

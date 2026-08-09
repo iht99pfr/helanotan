@@ -148,8 +148,8 @@ export default function ChartSection() {
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">Pris per ålder</h2>
           <p className="text-[var(--muted)] text-sm mt-1">
-            Varje punkt är en verklig annons. Trendlinjer visar predikterat pris
-            med 95% konfidensband.
+            Varje punkt är en verklig annons. Linjen visar prisestimatet — vad
+            modellen räknar ut att bilen borde kosta.
           </p>
         </div>
         <DepreciationChart

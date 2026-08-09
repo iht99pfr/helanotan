@@ -46,7 +46,7 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
   // so the model already knows — it was simply never asked.
   const breakdown = priceBreakdown(regression, {
     age: point.age, mileage: point.mileage, fuel: point.fuel,
-    hp: point.hp, seller: point.seller,
+    hp: point.hp, seller: point.seller, predicted: point.predicted,
   });
 
   return (
@@ -92,22 +92,35 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
           </div>
           <div>
             <span className="text-[var(--muted)]">Ålder</span>
-            <p className="font-mono text-[var(--foreground)]">{point.age} år</p>
+            <p className="font-mono text-[var(--foreground)]">
+              {point.age.toLocaleString("sv-SE", { maximumFractionDigits: 1 })} år
+            </p>
           </div>
         </div>
 
-        {/* Deal info */}
+        {/* One estimate, named once.
+         *
+         * This block used to head "Predikterat pris" while the breakdown below
+         * ended in "Prisestimat", with different numbers under each — the same
+         * quantity given two names and two values. There is one estimate; what
+         * changes is whether the seller is asking more or less than it. */}
         {point.predicted != null && (
           <div className="bg-[var(--card)] rounded-lg p-3 space-y-1">
             <div className="flex justify-between text-sm">
-              <span className="text-[var(--muted)]">Predikterat pris</span>
-              <span className="font-mono text-[var(--foreground)]">{point.predicted.toLocaleString("sv-SE")} kr</span>
+              <span className="text-[var(--muted)]">Prisestimat</span>
+              <span className="font-mono text-[var(--foreground)]">
+                {kr(point.predicted)} kr
+              </span>
             </div>
-            {point.residual != null && point.residual < 0 && (
+            {point.residual != null && Math.abs(point.residual) >= 500 && (
               <div className="flex justify-between text-sm">
-                <span className="text-[var(--muted)]">Under predikterat</span>
-                <span className="font-mono font-semibold text-[var(--money)]">
-                  {Math.abs(point.residual).toLocaleString("sv-SE")} kr
+                <span className="text-[var(--muted)]">
+                  Begärt pris ligger
+                </span>
+                <span className={`font-mono font-semibold ${
+                  point.residual < 0 ? "text-[var(--money)]" : "text-[var(--foreground)]"
+                }`}>
+                  {kr(Math.abs(point.residual))} kr {point.residual < 0 ? "under" : "över"}
                 </span>
               </div>
             )}
@@ -154,7 +167,7 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
               </div>
             ))}
             <div className="flex justify-between text-sm border-t border-[var(--border)] pt-1.5">
-              <span className="text-[var(--foreground)] font-medium">Prisestimat</span>
+              <span className="text-[var(--foreground)] font-medium">Summa prisestimat</span>
               <span className="font-mono font-semibold text-[var(--foreground)]">
                 {kr(breakdown.predicted)} kr
               </span>
