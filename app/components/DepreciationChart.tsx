@@ -100,8 +100,15 @@ const MILEAGE_LABELS = ["<1 000", "1–5 000", "5–10 000", "10–20 000", "20 
  * which is exactly when completeness is being relied on. Deals are never
  * dropped.
  */
-const DRAW_LIMIT = 3_000;
-const GRID = 220;
+const DRAW_LIMIT = 2_000;
+// Cells across the plot. Deals get a finer grid so they survive preferentially
+// where they overlap an ordinary listing, but they are no longer exempt: they
+// are a fifth of all listings, so exempting them put a floor of ~1 800 circles
+// under the default three-model view and a filter click still cost 894 ms.
+// Nothing is lost by it — the deal filter and year focus both draw everything,
+// which is exactly when someone is relying on seeing every one.
+const GRID = 170;
+const DEAL_GRID = 340;
 
 function thinForDisplay(
   byModel: Record<string, ScatterPoint[]>, complete: boolean,
@@ -116,16 +123,20 @@ function thinForDisplay(
       if (p.age > maxAge) maxAge = p.age;
     }
   }
-  const priceStep = Math.max(1, maxPrice / GRID);
-  const ageStep = Math.max(0.01, maxAge / GRID);
+  const step = (grid: number) => ({
+    price: Math.max(1, maxPrice / grid),
+    age: Math.max(0.01, maxAge / grid),
+  });
+  const plain = step(GRID);
+  const deal = step(DEAL_GRID);
 
   const out: Record<string, ScatterPoint[]> = {};
   for (const [model, points] of Object.entries(byModel)) {
     const seen = new Set<string>();
     const kept: ScatterPoint[] = [];
     for (const p of points) {
-      if (p.deal) { kept.push(p); continue; }
-      const cell = `${Math.round(p.age / ageStep)}:${Math.round(p.price / priceStep)}`;
+      const g = p.deal ? deal : plain;
+      const cell = `${p.deal ? "d" : "p"}${Math.round(p.age / g.age)}:${Math.round(p.price / g.price)}`;
       if (seen.has(cell)) continue;
       seen.add(cell);
       kept.push(p);
