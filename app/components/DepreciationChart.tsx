@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { track } from "@/app/lib/track";
 import { dealName, underEstimateLabel } from "@/app/lib/deal-format";
 import {
@@ -154,17 +154,17 @@ function mileageColor(mileage: number): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function DealDot(props: any) {
-  const { cx, cy, payload, fill, colorBy } = props;
+  const { cx, cy, payload, fill, colorBy, multiModel } = props;
   if (!cx || !cy) return null;
   if (colorBy === "mileage") {
-    // No deal ring here. This mode exists to read mileage, and ringing a third
-    // of the dots in green turned the ramp into background noise — the deal
-    // filter directly below does that job when it is wanted. A thin paper-
-    // coloured edge separates dots where they overlap instead.
+    // Fill carries mileage; the ring carries the model. With one model the
+    // ring is paper-coloured and just separates overlapping dots, but with two
+    // models on screen an unringed ramp erased the only way to tell a RAV4
+    // from an X3 — the legend said red and blue while every dot was blue.
     return (
       <circle cx={cx} cy={cy} r={4.5} fill={mileageColor(payload?.mileage ?? 0)}
-        stroke="#f8f4ec" strokeWidth={0.75} fillOpacity={0.9}
-        style={{ cursor: "pointer" }} />
+        stroke={multiModel ? fill : "#f8f4ec"} strokeWidth={multiModel ? 1.4 : 0.75}
+        fillOpacity={0.9} style={{ cursor: "pointer" }} />
     );
   }
   if (payload?.deal === "great") {
@@ -370,22 +370,27 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
   // is newest, least driven and cheapest — and stacking hid it.
   const [yearFocus, setYearFocus] = useState<number | null>(null);
   const [zoom, setZoom] = useState<{ from: number; to: number } | null>(null);
-  const [dragFrom, setDragFrom] = useState<number | null>(null);
-  const [dragTo, setDragTo] = useState<number | null>(null);
+  // The gesture lives in a ref until it is unambiguously a drag. Every human
+  // click drifts a pixel or two between press and release, and the first
+  // version put each movement into state — re-rendering the chart mid-gesture
+  // and replacing the very circle being clicked, so its click event died. On
+  // desktop, 0 of 12 human-style clicks opened the modal. Only once the
+  // pointer has moved a quarter of a year does the selection become state.
+  const dragRef = useRef<{ from: number; to: number } | null>(null);
+  const [dragSel, setDragSel] = useState<{ from: number; to: number } | null>(null);
 
   const endDrag = useCallback(() => {
-    if (dragFrom != null && dragTo != null) {
-      const from = Math.min(dragFrom, dragTo);
-      const to = Math.max(dragFrom, dragTo);
-      // A click is a drag of zero width; do not zoom to nothing.
-      if (to - from >= 0.5) {
-        setZoom({ from: Math.floor(from), to: Math.ceil(to) });
-        track("chart_zoom", { from: Math.floor(from), to: Math.ceil(to), how: "drag" });
-      }
+    const d = dragRef.current;
+    dragRef.current = null;
+    setDragSel(null);
+    if (!d) return;
+    const from = Math.min(d.from, d.to);
+    const to = Math.max(d.from, d.to);
+    if (to - from >= 0.5) {
+      setZoom({ from: Math.floor(from), to: Math.ceil(to) });
+      track("chart_zoom", { from: Math.floor(from), to: Math.ceil(to), how: "drag" });
     }
-    setDragFrom(null);
-    setDragTo(null);
-  }, [dragFrom, dragTo]);
+  }, []);
 
   // Everything below used to run in the component body on every render: a
   // filter, a copy and a comparator sort over ~5 000 points, plus a rebuild of
@@ -618,11 +623,21 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
         <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onMouseDown={(e: any) => {
-            if (e?.activeLabel != null) setDragFrom(Number(e.activeLabel));
+            if (e?.activeLabel != null) {
+              const v = Number(e.activeLabel);
+              dragRef.current = { from: v, to: v };
+            }
           }}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onMouseMove={(e: any) => {
-            if (dragFrom != null && e?.activeLabel != null) setDragTo(Number(e.activeLabel));
+            const d = dragRef.current;
+            if (!d || e?.activeLabel == null) return;
+            d.to = Number(e.activeLabel);
+            const wide = Math.abs(d.to - d.from) >= 0.25;
+            // Render the selection only once it is a real drag; before that,
+            // touching state would replace the dot under the cursor.
+            if (wide) setDragSel({ from: d.from, to: d.to });
+            else if (dragSel) setDragSel(null);
           }}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}>
@@ -675,7 +690,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           {Object.entries(filteredScatter).map(([model, points]) => (
             points.length > 0 && !hiddenModels.has(model) && (
               <Scatter key={model} name={model} data={points} fill={COLORS[model]}
-                shape={<DealDot fill={COLORS[model]} colorBy={colorBy} />} isAnimationActive={false}
+                shape={<DealDot fill={COLORS[model]} colorBy={colorBy} multiModel={Object.keys(filteredScatter).length > 1} />} isAnimationActive={false}
                 onClick={(data: { payload: ScatterPoint }) => onDotClick?.(model, data.payload)} />
             )
           ))}
@@ -684,8 +699,8 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
             <Scatter key={model} name={model} data={[]} fill={COLORS[model]} r={4} />
           ))}
 
-          {dragFrom != null && dragTo != null && (
-            <ReferenceArea x1={Math.min(dragFrom, dragTo)} x2={Math.max(dragFrom, dragTo)}
+          {dragSel && (
+            <ReferenceArea x1={Math.min(dragSel.from, dragSel.to)} x2={Math.max(dragSel.from, dragSel.to)}
               strokeOpacity={0} fill="var(--foreground)" fillOpacity={0.08} />
           )}
 
