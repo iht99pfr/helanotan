@@ -149,7 +149,7 @@ export default function MileageChart({ scatter, hiddenModels, onToggleModel, mod
     <div className="h-[300px] sm:h-[450px] [&_svg]:outline-none">
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+        <CartesianGrid stroke="var(--border)" vertical={false} />
         <XAxis dataKey="mileage" type="number" tick={{ fill: "var(--muted)", fontSize: 11 }}
           tickFormatter={(v: number) => `${(v / 1000).toFixed(0)}k`}
           label={{ value: "Miltal (mil)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />

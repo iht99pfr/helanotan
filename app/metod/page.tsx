@@ -9,6 +9,7 @@ interface RegressionStats {
   r2: number;
   rmse: number;
   residual_se_log: number;
+  typicalSpread?: number;
   log_transform: boolean;
   n_samples: number;
   features: string[];
@@ -28,11 +29,23 @@ const FUEL_LABELS: Record<string, string> = {
   Electric: "El",
 };
 
-function qualityLabel(r2: number) {
-  if (r2 >= 0.95) return { text: "Utmärkt", cls: "bg-[var(--money-soft)] text-[var(--money)]" };
-  if (r2 >= 0.9) return { text: "Mycket bra", cls: "bg-[var(--money-soft)] text-[var(--money)]" };
-  if (r2 >= 0.8) return { text: "Bra", cls: "bg-amber-100 text-amber-700" };
-  return { text: "Måttlig", cls: "bg-red-100 text-red-700" };
+/**
+ * One uncertainty story, everywhere. This page used to grade models by R² in
+ * green/amber/red — the same inversion the homepage badges were cured of: a
+ * high-R² model can carry a wide prediction interval and vice versa. And it
+ * printed "95% KI ±22%" while the model page said ±11% for the same car. The
+ * ±% here is now the same measure as everywhere else: the middle two thirds.
+ */
+function spreadPct(reg: RegressionStats): number {
+  if (reg.typicalSpread != null) return reg.typicalSpread * 100;
+  return (Math.exp(reg.residual_se_log) - 1) * 100;
+}
+
+function qualityLabel(reg: RegressionStats) {
+  const pct = spreadPct(reg);
+  if (pct <= 10) return { text: `±${pct.toFixed(0)}%`, cls: "bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)]" };
+  if (pct <= 25) return { text: `±${pct.toFixed(0)}%`, cls: "bg-amber-100 text-amber-800" };
+  return { text: "inget estimat", cls: "bg-red-100 text-red-700" };
 }
 
 function formatBrackets(brackets: [number, number][]): string {
@@ -98,6 +111,7 @@ export default function ModelDataPage() {
           <thead className="bg-[var(--card)] text-[var(--muted)]">
             <tr>
               <th className="px-3 py-2 text-left">Modell</th>
+              <th className="px-3 py-2 text-right">Prisosäkerhet</th>
               <th className="px-3 py-2 text-right">R²</th>
               <th className="px-3 py-2 text-right">RMSE</th>
               <th className="px-3 py-2 text-right">Datapunkter</th>
@@ -110,7 +124,7 @@ export default function ModelDataPage() {
               const meta = getModelMeta(modelConfig, key);
               const reg = regression[key];
               const stats = modelStats[key];
-              const quality = reg ? qualityLabel(reg.r2) : null;
+              const quality = reg ? qualityLabel(reg) : null;
               const fuelOptions = modelConfig[key]?.fuelOptions || [];
               return (
                 <tr key={key} className="border-t border-[var(--border)] hover:bg-[var(--card)]/50">
@@ -120,9 +134,12 @@ export default function ModelDataPage() {
                   <td className="px-3 py-2 text-right">
                     {reg && (
                       <span className={`text-xs px-1.5 py-0.5 rounded-full font-mono font-semibold ${quality!.cls}`}>
-                        {(reg.r2 * 100).toFixed(1)}%
+                        {quality!.text}
                       </span>
                     )}
+                  </td>
+                  <td className="px-3 py-2 text-right font-mono text-[var(--muted)]">
+                    {reg ? `${(reg.r2 * 100).toFixed(0)}%` : "–"}
                   </td>
                   <td className="px-3 py-2 text-right font-mono text-[var(--foreground)]">
                     {reg ? `${(reg.rmse / 1000).toFixed(0)}k kr` : "–"}
@@ -156,7 +173,7 @@ export default function ModelDataPage() {
         const stats = modelStats[key];
         const costs = COST_PROFILES[key];
         const fuels = FUEL_PROFILES[key];
-        const quality = reg ? qualityLabel(reg.r2) : null;
+        const quality = reg ? qualityLabel(reg) : null;
 
         return (
           <section
@@ -178,8 +195,8 @@ export default function ModelDataPage() {
             {reg && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
                 <div>
-                  <span className="text-[var(--muted)] text-xs">R²-precision</span>
-                  <p className="font-mono font-bold text-lg text-[var(--foreground)]">{(reg.r2 * 100).toFixed(1)}%</p>
+                  <span className="text-[var(--muted)] text-xs">Prisosäkerhet (två bilar av tre)</span>
+                  <p className="font-mono font-bold text-lg text-[var(--foreground)]">±{spreadPct(reg).toFixed(0)}%</p>
                 </div>
                 <div>
                   <span className="text-[var(--muted)] text-xs">RMSE</span>
@@ -190,10 +207,8 @@ export default function ModelDataPage() {
                   <p className="font-mono font-semibold text-[var(--foreground)]">{reg.n_samples.toLocaleString("sv-SE")}</p>
                 </div>
                 <div>
-                  <span className="text-[var(--muted)] text-xs">95% KI</span>
-                  <p className="font-mono font-semibold text-[var(--foreground)]">
-                    ±{((Math.exp(1.96 * reg.residual_se_log) - 1) * 100).toFixed(0)}%
-                  </p>
+                  <span className="text-[var(--muted)] text-xs">R²</span>
+                  <p className="font-mono font-semibold text-[var(--foreground)]">{(reg.r2 * 100).toFixed(0)}%</p>
                 </div>
               </div>
             )}

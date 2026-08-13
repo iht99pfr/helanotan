@@ -1,5 +1,7 @@
 "use client";
 
+import { track } from "@/app/lib/track";
+
 import { useState } from "react";
 
 interface ShareBarProps {
@@ -10,12 +12,6 @@ interface ShareBarProps {
   eventPrefix?: string;
 }
 
-function track(event: string) {
-  if (typeof window !== "undefined") {
-    const w = window as unknown as { umami?: { track: (e: string) => void } };
-    w.umami?.track(event);
-  }
-}
 
 export default function ShareBar({
   url,
@@ -37,7 +33,7 @@ export default function ShareBar({
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
-      track(`${eventPrefix}-copy-link`);
+      track("share_click", { page: eventPrefix, channel: "copy" });
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // fallback
@@ -53,7 +49,7 @@ export default function ShareBar({
         href={twitterUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => track(`${eventPrefix}-share-twitter`)}
+        onClick={() => track("share_click", { page: eventPrefix, channel: "x" })}
         className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[var(--card)] border border-[var(--border)] hover:border-[var(--muted)] transition"
         title="Dela på X"
       >
@@ -67,7 +63,7 @@ export default function ShareBar({
         href={facebookUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => track(`${eventPrefix}-share-facebook`)}
+        onClick={() => track("share_click", { page: eventPrefix, channel: "facebook" })}
         className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[var(--card)] border border-[var(--border)] hover:border-[var(--muted)] transition"
         title="Dela på Facebook"
       >
@@ -81,7 +77,7 @@ export default function ShareBar({
         href={linkedinUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => track(`${eventPrefix}-share-linkedin`)}
+        onClick={() => track("share_click", { page: eventPrefix, channel: "linkedin" })}
         className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[var(--card)] border border-[var(--border)] hover:border-[var(--muted)] transition"
         title="Dela på LinkedIn"
       >

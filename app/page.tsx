@@ -38,29 +38,14 @@ export default async function Home() {
       <div className="space-y-10 sm:space-y-14">
         <HeroSection totalCars={stats.totalCars} lastUpdated={stats.lastUpdatedLong} />
 
-        {deals.length > 0 && (
-          <section className="space-y-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)]">
-                Under prisestimat just nu
-              </h2>
-              <p className="text-[var(--muted)] text-sm mt-1 max-w-2xl">
-                Annonser vars begärda pris ligger tydligt under vad modellen
-                förutsäger för den åldern, det miltalet och den utrustningen.
-                Ett lågt pris kan ha en bra förklaring — läs annonsen.
-              </p>
-            </div>
-            <TopDeals deals={deals} />
-            <p className="text-sm">
-              <Link href="/#explorer" className="underline hover:text-[var(--muted)] transition">
-                Se alla {sv(stats.activeCars)} annonser
-              </Link>
-            </p>
-          </section>
-        )}
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted)] -mt-6">
+          Inga annonser · Ingen inloggning · Vi säljer inget — data från
+          Blocket.se, uppdaterad {stats.lastUpdated}
+        </p>
 
         <section className="space-y-4">
           <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted)] mb-1">Not 01</p>
             <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)]">
               Värdeminskning per modell
             </h2>
@@ -83,10 +68,33 @@ export default async function Home() {
           </div>
         </section>
 
+        {deals.length > 0 && (
+          <section className="space-y-4">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted)] mb-1">Not 02</p>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)]">
+                Under prisestimat just nu
+              </h2>
+              <p className="text-[var(--muted)] text-sm mt-1 max-w-2xl">
+                Annonser vars begärda pris ligger tydligt under vad modellen
+                förutsäger för den åldern, det miltalet och den utrustningen.
+                Ett lågt pris kan ha en bra förklaring — läs annonsen.
+              </p>
+            </div>
+            <TopDeals deals={deals} />
+            <p className="text-sm">
+              <Link href="/#explorer" className="underline hover:text-[var(--muted)] transition">
+                Se alla {sv(stats.activeCars)} annonser
+              </Link>
+            </p>
+          </section>
+        )}
+
         <hr className="border-[var(--border)]" />
 
         <section className="space-y-4">
           <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted)] mb-1">Not 03</p>
             <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)]">
               Jämför modeller
             </h2>

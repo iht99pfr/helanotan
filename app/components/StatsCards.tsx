@@ -29,7 +29,7 @@ export default function StatsCards({ summary, modelConfig, selectedModels }: Pro
         return (
           <div
             key={model}
-            className={`bg-[var(--card)] border border-[var(--border)] border-l-4 ${meta.borderClass} rounded-lg p-5 space-y-3 hover:shadow-sm transition-shadow duration-200`}
+            className={`bg-[var(--card)] border border-[var(--border)] border-l-4 ${meta.borderClass} rounded-lg p-5 space-y-3 `}
           >
             <h2 className="text-lg font-bold">{meta.label}</h2>
             <div className="grid grid-cols-2 gap-y-2 text-sm">

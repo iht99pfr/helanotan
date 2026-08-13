@@ -16,6 +16,10 @@ const BASE = process.argv[2] || "https://helanotan.se";
 
 const ROUTES = [
   "/", "/bilar", "/bilar/volvo-xc60", "/bilar/vw-golf", "/bilar/bmw-x3-m",
+  "/bilar/volvo-xc60/vardera?ar=2021&mil=6800&drivmedel=Bensin&hk=197&pris=389000",
+  "/bilar/toyota-land-cruiser/vardera?ar=2015&mil=15000&drivmedel=Diesel",
+  "/jamfor/volvo-xc60-vs-toyota-rav4", "/jamfor/toyota-yaris-vs-vw-golf",
+  "/press",
   "/tco", "/kopguide", "/toppen", "/bevaka", "/saljtid", "/metod",
   "/artiklar", "/artiklar/sa-prissatter-vi-bilar", "/nyheter",
 ];

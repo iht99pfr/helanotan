@@ -34,7 +34,7 @@ export default function DataLoader<T>({ url, children, skeleton }: Props<T>) {
     return (
       <>
         {skeleton || (
-          <div className="animate-pulse space-y-4">
+          <div className="space-y-4">
             <div className="h-8 bg-[var(--border)] rounded w-1/3" />
             <div className="h-64 bg-[var(--border)] rounded" />
           </div>

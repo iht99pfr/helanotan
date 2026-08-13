@@ -55,7 +55,7 @@ export default function CarDetailModal({ point, modelKey, modelLabel, regression
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" onClick={onClose}>
       <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
       <div
-        className="relative bg-white rounded-xl border border-[var(--border)] shadow-xl max-w-sm w-full p-5 space-y-4"
+        className="relative bg-white rounded-lg border border-[var(--border)] max-w-sm w-full p-5 space-y-4"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

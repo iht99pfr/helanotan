@@ -13,7 +13,7 @@ export default function StatsSection() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="animate-pulse bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 h-40" />
+            <div key={i} className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 h-40" />
           ))}
         </div>
       </div>

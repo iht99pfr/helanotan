@@ -318,7 +318,7 @@ export default function TcoCalculator({ regression, modelConfig, scatter, predic
               </div>
             </div>
             <p className="text-xs text-[var(--muted)]">
-              ±{((Math.exp(1.96 * result.confidence) - 1) * 100).toFixed(0)}% prediktionsosäkerhet (95% KI)
+              Estimatet träffar typiskt inom ±{((Math.exp(result.confidence) - 1) * 100).toFixed(0)}% — två bilar av tre hamnar där
             </p>
           </div>
         )}

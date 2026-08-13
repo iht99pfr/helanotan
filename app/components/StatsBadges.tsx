@@ -85,7 +85,7 @@ export default function StatsBadges({ regression, summary, modelConfig, selected
         return (
           <div
             key={model}
-            className={`bg-[var(--card)] border border-[var(--border)] border-l-4 ${meta.borderClass} rounded-lg p-4 hover:shadow-sm transition-shadow duration-200`}
+            className={`bg-[var(--card)] border border-[var(--border)] border-l-4 ${meta.borderClass} rounded-lg p-4 `}
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-[var(--muted)]">{meta.label}</span>

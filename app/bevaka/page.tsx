@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import ShareBar from "@/app/components/ShareBar";
 import { track } from "@/app/lib/track";
 
@@ -34,9 +35,16 @@ function formatKr(n: number): string {
 
 export default function BevakaPage() {
   const [data, setData] = useState<AggregatesData | null>(null);
-  const [modelKey, setModelKey] = useState("");
-  const [fuelType, setFuelType] = useState("");
-  const [modelYear, setModelYear] = useState(2022);
+  // The ShareBar has emitted ?model=&fuel=&year= links since March, but this
+  // page never read them — a shared "min bil tappar X kr/mån" landed the
+  // recipient on an empty selector. The loop's whole point is that the link
+  // shows the car.
+  const searchParams = useSearchParams();
+  const [modelKey, setModelKey] = useState(searchParams.get("model") ?? "");
+  const [fuelType, setFuelType] = useState(searchParams.get("fuel") ?? "");
+  const [modelYear, setModelYear] = useState(
+    Number(searchParams.get("year")) || 2022,
+  );
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
@@ -47,11 +55,17 @@ export default function BevakaPage() {
       .then((r) => r.json())
       .then((d) => {
         setData(d);
-        const firstKey = Object.keys(d.modelConfig)[0];
-        if (firstKey) {
-          setModelKey(firstKey);
-          setFuelType(d.modelConfig[firstKey].fuelOptions[0] || "");
-        }
+        // Default only when nothing was restored from the URL — this used to
+        // set firstKey unconditionally, clobbering the very state a shared
+        // link had just restored.
+        setModelKey((prev) => {
+          const key = prev && d.modelConfig[prev] ? prev : Object.keys(d.modelConfig)[0] ?? "";
+          setFuelType((f) =>
+            f && d.modelConfig[key]?.fuelOptions?.includes(f)
+              ? f
+              : d.modelConfig[key]?.fuelOptions?.[0] ?? "");
+          return key;
+        });
       });
   }, []);
 

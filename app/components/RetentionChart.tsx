@@ -160,7 +160,7 @@ export default function RetentionChart({ retention, predictionCurves, hiddenMode
     <div className="h-[300px] sm:h-[450px]">
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={data} margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+        <CartesianGrid stroke="var(--border)" vertical={false} />
         <XAxis dataKey="age" type="number" ticks={AGE_TICKS} domain={[0, 15]}
           tick={{ fill: "var(--muted)", fontSize: 11 }}
           label={{ value: "Ålder (år)", position: "bottom", fill: "var(--muted)", fontSize: 10, offset: 5 }} />

@@ -113,8 +113,8 @@ export default function ChartSection() {
       <div className="space-y-8">
         {[0, 1, 2].map((i) => (
           <div key={i} className="space-y-4">
-            <div className="animate-pulse h-6 bg-[var(--border)] rounded w-1/4" />
-            <div className="animate-pulse h-[400px] bg-[var(--border)] rounded" />
+            <div className="h-6 bg-[var(--border)] rounded w-1/4" />
+            <div className="h-[400px] bg-[var(--border)] rounded" />
           </div>
         ))}
       </div>

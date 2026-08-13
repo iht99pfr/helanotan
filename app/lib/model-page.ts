@@ -38,6 +38,15 @@ export interface DealRow {
   deal: "great" | "good";
 }
 
+export interface FuelYearRow {
+  fuel: string;
+  /** Median price at ages 0/3/5 where enough listings exist, else null. */
+  at0: number | null;
+  at3: number | null;
+  at5: number | null;
+  count: number;
+}
+
 export interface ModelPage {
   key: string;
   slug: string;
@@ -64,6 +73,12 @@ export interface ModelPage {
   estimateUsable: boolean;
   sampleSize: number | null;
   fuelOptions: string[];
+  /** Median price per fuel at key ages — Sara's most open question
+      ("hybrid eller bensin?") answered where she already is. */
+  fuelSplit: FuelYearRow[];
+  /** The is_dealer coefficient as a percentage, when trustworthy. */
+  dealerPremiumPct: number | null;
+  medianHp: number;
   deals: DealRow[];
   /** See ModelIndexEntry.indexable. */
   indexable: boolean;
@@ -440,6 +455,36 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
     estimateUsable ? liveDeals(key, reg, medianByAge) : Promise.resolve([]),
   ]);
 
+  // Per-fuel medians at ages 0/3/5. priceByAgeFuel is already published; it
+  // was simply never rendered — the RAV4 page blended hybrid, PHEV and petrol
+  // into one median while the buyer's most open question was exactly that
+  // split.
+  const FUEL_SV: Record<string, string> = {
+    Hybrid: "Hybrid", PHEV: "Laddhybrid", Diesel: "Diesel",
+    Petrol: "Bensin", Electric: "El",
+  };
+  const byFuel = agg.priceByAgeFuel?.[key] ?? {};
+  const fuelSplit: FuelYearRow[] = [];
+  for (const [fuel, points] of Object.entries(byFuel) as [string, { age: number; count: number; median: number }[]][]) {
+    const at = (a: number) => {
+      const p = points.find((x) => x.age === a && x.count >= MIN_YEAR_COUNT);
+      return p ? Math.round(p.median) : null;
+    };
+    const count = points.reduce((n, p) => n + p.count, 0);
+    if (count < 30) continue; // too thin to compare honestly
+    fuelSplit.push({ fuel: FUEL_SV[fuel] ?? fuel, at0: at(0), at3: at(3), at5: at(5), count });
+  }
+  fuelSplit.sort((a, b) => b.count - a.count);
+
+  // Dealer premium: exp(coef)-1. Suppressed for thin models, where
+  // collinearity produces nonsense (Polestar 4 once showed +8010%).
+  let dealerPremiumPct: number | null = null;
+  const dealerCoef = reg?.coefficients?.is_dealer;
+  if (estimateUsable && dealerCoef != null && summary.count >= 500) {
+    const pct = (Math.exp(dealerCoef) - 1) * 100;
+    if (pct > -20 && pct < 25) dealerPremiumPct = Math.round(pct * 10) / 10;
+  }
+
   return {
     key,
     slug,
@@ -461,6 +506,9 @@ export async function getModelPage(slug: string): Promise<ModelPage | null> {
     estimateUsable,
     sampleSize: reg?.generations ? summary.count : null,
     fuelOptions: cfg.fuelOptions ?? [],
+    fuelSplit,
+    dealerPremiumPct,
+    medianHp: reg?.medianHp ?? 0,
     deals,
     indexable: years.length >= MIN_YEAR_ROWS_TO_INDEX,
   };

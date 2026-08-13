@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { articles } from "./artiklar/data/articles";
 import { getModelIndex } from "./lib/model-page";
+import { PAIRS, pairSlug } from "./lib/comparisons";
 
 const baseUrl = "https://helanotan.se";
 
@@ -62,6 +63,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    ...PAIRS.map(([a, b]) => ({
+      url: `${baseUrl}/jamfor/${pairSlug(a, b)}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    {
+      url: `${baseUrl}/press`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/metod`,

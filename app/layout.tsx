@@ -116,7 +116,7 @@ export default async function RootLayout({
               inLanguage: "sv",
               creator: {
                 "@type": "Organization",
-                name: "Up North AI",
+                name: "Hela Notan",
                 url: "https://www.upnorth.ai",
               },
             }),
@@ -149,6 +149,7 @@ export default async function RootLayout({
                 <a href="/bevaka" className="hover:text-[var(--foreground)] transition">Bevaka</a>
                 <a href="/artiklar" className="hover:text-[var(--foreground)] transition">Artiklar</a>
                 <a href="/metod" className="hover:text-[var(--foreground)] transition">Metod</a>
+                <a href="/press" className="hover:text-[var(--foreground)] transition">Press</a>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pt-4 border-t border-[var(--border)] text-xs text-[var(--muted)]">
@@ -156,7 +157,7 @@ export default async function RootLayout({
                 Data från Blocket.se — {sv(stats.totalCars)} annonser analyserade,{" "}
                 {sv(stats.activeCars)} till salu. Uppdaterad {stats.lastUpdatedLong}.
               </span>
-              <span>Ett projekt av <a href="https://upnorth.ai" className="underline hover:text-[var(--foreground)] transition" target="_blank" rel="noopener noreferrer">Up North AI</a></span>
+              <span>Ett oberoende projekt av Patrik Frisk · <a href="https://upnorth.ai" className="underline hover:text-[var(--foreground)] transition" target="_blank" rel="noopener noreferrer">Up North</a></span>
             </div>
           </div>
         </footer>

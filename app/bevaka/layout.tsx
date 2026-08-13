@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { canonical } from "@/app/lib/canonical";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   alternates: canonical("/bevaka"),
@@ -12,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function BevakaLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <Suspense fallback={null}>{children}</Suspense>;
 }

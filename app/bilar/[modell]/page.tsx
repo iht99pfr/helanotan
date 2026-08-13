@@ -5,6 +5,8 @@ import { canonical } from "@/app/lib/canonical";
 import { getModelIndex, getModelPage } from "@/app/lib/model-page";
 import { getSiteStats, sv } from "@/app/lib/site-stats";
 import DealList from "./DealList";
+import ValuationForm from "./ValuationForm";
+import { comparisonsFor } from "@/app/lib/comparisons";
 
 // Rebuilt hourly. The pipeline publishes roughly daily, so this is far more
 // often than the data changes — but a stale price on a page whose whole claim
@@ -91,6 +93,20 @@ export default async function ModelPage(
           varav {sv(data.activeCount)} till salu just nu. Årsmodell{" "}
           {data.yearRange[0]}–{data.yearRange[1]}. Uppdaterad {stats.lastUpdatedLong}.
         </p>
+        {data.firstYearLoss != null && (
+          <p className="text-[var(--foreground)]">
+            En {data.label} tappar i snitt{" "}
+            <strong>{kr(Math.round(data.firstYearLoss / 12))} kr per månad</strong>{" "}
+            det första året
+            {data.retention3 != null && (
+              <>
+                {" "}och har <strong>{data.retention3}%</strong> av priset kvar
+                efter tre år
+              </>
+            )}
+            , enligt {sv(data.count)} analyserade Blocket-annonser.
+          </p>
+        )}
       </header>
 
       {/* The numbers a buyer came for, in the HTML rather than behind a fetch. */}
@@ -124,6 +140,27 @@ export default async function ModelPage(
           />
         )}
       </section>
+
+      {data.estimateUsable && (
+        <section className="space-y-3 border border-[var(--border)] rounded-lg bg-[var(--card)] p-5">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">
+              Har du hittat en annons? Kolla priset
+            </h2>
+            <p className="text-[var(--muted)] text-sm mt-1">
+              Fyll i uppgifterna från annonsen — du får ett prisestimat med
+              osäkerhet, en förklaring av varje krona, och en länk att skicka
+              vidare eller visa upp.
+            </p>
+          </div>
+          <ValuationForm
+            slug={data.slug}
+            fuelOptions={data.fuelOptions}
+            defaultYear={data.anchorYear ?? new Date().getFullYear() - 2}
+            medianHp={data.medianHp}
+          />
+        </section>
+      )}
 
       <section className="space-y-3">
         <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">
@@ -171,6 +208,76 @@ export default async function ModelPage(
           </table>
         </div>
       </section>
+
+      {data.fuelSplit.length >= 2 && (
+        <section className="space-y-3">
+          <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">
+            Vilket drivmedel ska du välja?
+          </h2>
+          <p className="text-[var(--muted)] text-sm">
+            Medianpris per drivmedel vid olika ålder. Skillnaden mellan
+            kolumnerna är vad drivmedelsvalet kostar — och hur det står sig
+            när bilen åldras.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-[var(--border)] text-left text-[var(--muted)]">
+                  <th className="py-2 pr-3 font-medium">Drivmedel</th>
+                  <th className="py-2 pr-3 font-medium text-right">Ny/nyast</th>
+                  <th className="py-2 pr-3 font-medium text-right">3 år</th>
+                  <th className="py-2 pr-3 font-medium text-right">5 år</th>
+                  <th className="py-2 font-medium text-right">Annonser</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.fuelSplit.map((f) => (
+                  <tr key={f.fuel} className="border-b border-[var(--border)]/60">
+                    <td className="py-2 pr-3 text-[var(--foreground)]">{f.fuel}</td>
+                    <td className="py-2 pr-3 text-right font-mono text-[var(--foreground)]">
+                      {f.at0 != null ? `${kr(f.at0)} kr` : "—"}
+                    </td>
+                    <td className="py-2 pr-3 text-right font-mono text-[var(--foreground)]">
+                      {f.at3 != null ? `${kr(f.at3)} kr` : "—"}
+                    </td>
+                    <td className="py-2 pr-3 text-right font-mono text-[var(--foreground)]">
+                      {f.at5 != null ? `${kr(f.at5)} kr` : "—"}
+                    </td>
+                    <td className="py-2 text-right font-mono text-[var(--muted)]">{sv(f.count)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-[var(--muted)]">
+            Medianer av begärda priser — utrustning och motorstyrka skiljer
+            också mellan drivmedel, så hela skillnaden är inte drivmedlet.
+          </p>
+        </section>
+      )}
+
+      {data.dealerPremiumPct != null && Math.abs(data.dealerPremiumPct) >= 1 && (
+        <section className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-5 text-sm space-y-1">
+          <h2 className="text-[var(--foreground)] font-semibold">
+            Handlare eller privat?
+          </h2>
+          <p className="text-[var(--muted)]">
+            För {data.label} begär handlare i snitt{" "}
+            <strong className="text-[var(--foreground)]">
+              {data.dealerPremiumPct > 0 ? "+" : ""}{data.dealerPremiumPct.toLocaleString("sv-SE")}%
+            </strong>{" "}
+            jämfört med privatsäljare för likvärdig bil
+            {data.anchorPrice != null && data.dealerPremiumPct > 0 && (
+              <>
+                {" "}— cirka {kr(Math.round((data.anchorPrice * data.dealerPremiumPct) / 100))} kr
+                på en bil för {kr(data.anchorPrice)} kr
+              </>
+            )}
+            . I det priset ingår ofta garanti och bytesrätt — skillnaden är
+            vad tryggheten kostar, inte ett lurendrejeri.
+          </p>
+        </section>
+      )}
 
       {data.deals.length > 0 && (
         <section className="space-y-3">
@@ -245,11 +352,98 @@ export default async function ModelPage(
           <Link href="/kopguide" className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-[var(--muted)] transition">
             Vilken årsmodell ska jag köpa?
           </Link>
+          {comparisonsFor(data.slug).map(({ par, other }) => {
+            const otherLabel = index.find((m) => m.slug === other)?.label ?? other;
+            return (
+              <Link key={par} href={`/jamfor/${par}`}
+                className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-[var(--muted)] transition">
+                {data.label} eller {otherLabel}?
+              </Link>
+            );
+          })}
           <Link href="/toppen" className="px-3 py-2 rounded-lg border border-[var(--border)] hover:border-[var(--muted)] transition">
-            Jämför med andra modeller
+            Toppen — alla modeller rankade
           </Link>
         </div>
       </section>
+
+      {(() => {
+        const faqs: { q: string; a: string }[] = [];
+        if (data.years.length >= 4) {
+          const best = [...data.years]
+            .filter((y) => y.age >= 2 && y.age <= 6 && y.lossFromYounger != null)
+            .sort((a, b) => (b.lossFromYounger ?? 0) - (a.lossFromYounger ?? 0))[0];
+          if (best) {
+            faqs.push({
+              q: `Vilken årsmodell ${data.label} är bäst att köpa?`,
+              a: `Största pristappet sker mellan ${best.year + 1} och ${best.year} — ` +
+                 `en ${best.year} kostar i median ${kr(best.median)} kr, ` +
+                 `${kr(best.lossFromYounger!)} kr mindre än ett år nyare. ` +
+                 `Där får du mest bil för pengarna om du accepterar ${best.age} års ålder.`,
+            });
+          }
+        }
+        if (data.fuelSplit.length >= 2 && data.fuelSplit[0].at3 != null && data.fuelSplit[1].at3 != null) {
+          const [a, b] = data.fuelSplit;
+          faqs.push({
+            q: `${a.fuel} eller ${b.fuel} — vad håller värdet bäst?`,
+            a: `Vid tre års ålder kostar en ${data.label} ${a.fuel.toLowerCase()} i median ` +
+               `${kr(a.at3!)} kr och en ${b.fuel.toLowerCase()} ${kr(b.at3!)} kr, ` +
+               `baserat på ${sv(a.count + b.count)} annonser.`,
+          });
+        }
+        if (data.firstYearLoss != null) {
+          faqs.push({
+            q: `Vad kostar en ${data.label} i värdeminskning per månad?`,
+            a: `Cirka ${kr(Math.round(data.firstYearLoss / 12))} kr per månad det första året` +
+               (data.retention5 != null ? `; efter fem år är ${data.retention5}% av priset kvar.` : "."),
+          });
+        }
+        if (!faqs.length) return null;
+        return (
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-bold text-[var(--foreground)]">
+              Vanliga frågor om begagnad {data.label}
+            </h2>
+            <dl className="space-y-4">
+              {faqs.map((f) => (
+                <div key={f.q}>
+                  <dt className="font-medium text-[var(--foreground)]">{f.q}</dt>
+                  <dd className="text-sm text-[var(--muted)] mt-1">{f.a}</dd>
+                </div>
+              ))}
+            </dl>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: faqs.map((f) => ({
+                    "@type": "Question",
+                    name: f.q,
+                    acceptedAnswer: { "@type": "Answer", text: f.a },
+                  })),
+                }),
+              }}
+            />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Dataset",
+                  name: `${data.label} — begagnatpriser och värdeminskning`,
+                  description: `Prisstatistik för begagnad ${data.label} baserad på ${data.count} Blocket-annonser.`,
+                  url: `https://helanotan.se/bilar/${data.slug}`,
+                  dateModified: stats.lastUpdated,
+                  creator: { "@type": "Organization", name: "Hela Notan", url: "https://helanotan.se" },
+                }),
+              }}
+            />
+          </section>
+        );
+      })()}
 
       <section className="space-y-3 border-t border-[var(--border)] pt-6">
         <h2 className="text-lg font-bold text-[var(--foreground)]">Andra modeller</h2>

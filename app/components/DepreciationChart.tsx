@@ -210,7 +210,7 @@ function CustomTooltip({ active, payload, label, modelConfig }: {
   const listing = payload.map((e) => e.payload as unknown).find(isListing);
   if (listing) {
     return (
-      <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm shadow-lg">
+      <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm">
         <p className="font-semibold text-[var(--foreground)]">
           {listing.year} — {listing.fuel}
         </p>
@@ -258,7 +258,7 @@ function CustomTooltip({ active, payload, label, modelConfig }: {
   if (!lines.length) return null;
 
   return (
-    <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm shadow-lg">
+    <div className="bg-white border border-[var(--border)] rounded-lg px-3 py-2 text-sm">
       <p className="font-semibold text-[var(--foreground)]">Ålder: {label} år</p>
       {lines.map((e) => {
         const key = String(e.dataKey);
@@ -641,7 +641,7 @@ export default function DepreciationChart({ scatter, medians, predictionCurves, 
           }}
           onMouseUp={endDrag}
           onMouseLeave={endDrag}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <CartesianGrid stroke="var(--border)" vertical={false} />
           <XAxis dataKey="age" type="number"
             ticks={yearDomain ? undefined : zoom ? ageTicks(zoom.from, zoom.to) : ageTicks(0, chartXMax)}
             tickFormatter={yearDomain ? (v: number) => v.toFixed(1).replace(".", ",") : undefined}
